@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from models import Message
+from django.template import RequestContext, loader
 
 def home(request):
     return HttpResponse("Hello, World")
@@ -25,5 +26,9 @@ def create(request):
         message.save()
     '''
 
-    all_messages = Message.objects().first().text
-    return HttpResponse(all_messages)
+    all_messages = Message.objects()
+    template = loader.get_template('TestPage/index.html')
+    context = RequestContext(request, {
+        'all_messages': all_messages,
+    })
+    return HttpResponse(template.render(context))

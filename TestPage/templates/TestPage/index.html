@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+
+    {% if all_messages %}
+    <ul>
+    {% for message in all_messages %}
+        <li>Username: {{ message.username }} Text:{{ message.text }}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>No messages are available.</p>
+    {% endif %}
+
+    <form>
+        <input type="text" name="message">
+    </form>
+</head>
+<body>
+
+</body>
+</html>
