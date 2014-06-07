@@ -2,8 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
+
 def home(request,):
-        return HttpResponse("Hello, World")
-		
+    return HttpResponse("Hello, World")
+
 def secondfunction(request,):
-        return HttpResponse("Second function info")
+    return HttpResponse("Second function info")
