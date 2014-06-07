@@ -22,6 +22,8 @@ SECRET_KEY = '2m-*epf!=y-$u-z92q(cof_%ke*a55fq69wj_a=0$tv8%6i23e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DBNAME = 'people'
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
