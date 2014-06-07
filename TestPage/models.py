@@ -1,11 +1,11 @@
 from django.db import models
-import mongoengine as mdbeng
+from mongoengine import *
 
-from TestSite2 import DBNAME
+from TestSite2.settings import DBNAME
 
 # Create your models here.
-mdbeng.connect(DBNAME)
+#mdbeng.connect(DBNAME)
 
-class Post(Document):
-    username = mdbeng.StringField(max_length=50, required=True)
-    message = mdbeng.StringField(max_length=10000, required=True)
+class Message(Document):
+    username = StringField(max_length=50, required=True)
+    text = StringField(required=True)

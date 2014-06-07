@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-import TestPage.views as tp
+import TestPage.views as tpv
 #admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     #url(r'^admin/', include(admin.site.urls)),
     #url(r'^$', 'TestSite2.views.Home', name='home')
-    url(r'hello/$', tp.home),
-    url(r'second/$', tp.secondfunction),
+    url(r'hello/$', tpv.home),
+    url(r'second/$', tpv.secondfunction),
+    url(r'chat/$', tpv.create),
 )
