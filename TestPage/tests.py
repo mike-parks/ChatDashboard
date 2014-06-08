@@ -1,9 +1,28 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
+from mongoengine import connection
+from mongoengine import connect
 import urllib
 import views
 
-class TestCase2Pt1(TestCase):
+
+class MongoTestCase(TestCase):
+
+    def __init__(self, methodName='runtest'):
+        db_name = 'ourtestdb'
+        connect(db_name)
+        self.db = connection.get_db()
+        super(MongoTestCase, self).__init__(methodName)
+
+    def _post_teardown(self):
+        super(MongoTestCase, self)._post_teardown()
+        for collection in self.db.collection_names():
+            if collection == 'system.indexes':
+                continue
+            self.db.drop_collection(collection)
+
+
+class TestCase2Pt1(MongoTestCase):
 
     def test_connectivity(self):
         # urlopen returns 200 OK on success
@@ -15,14 +34,14 @@ class TestCase2Pt1(TestCase):
                          "Could not connect to localhost:8000/chat3")
 
 
-class TestCase4Pt1(TestCase):
+class TestCase4Pt1(MongoTestCase):
 
     def test_email(self):
         retval = views.email('tch161@psu.edu')
         self.assertEqual(retval,True,"Email Failed")
 
 
-class TestCase5Pt5(TestCase):
+class TestCase5Pt5(MongoTestCase):
 
     def setUp(self):
         self.factory = RequestFactory()

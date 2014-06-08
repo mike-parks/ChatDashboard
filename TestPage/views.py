@@ -40,6 +40,7 @@ def email(address):
     """Stub for email test case"""
     return None
 
+
 def send_message(request):
     """Stub for send message test case"""
     return None
