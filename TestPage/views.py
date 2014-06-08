@@ -5,13 +5,16 @@ from django.http import HttpResponse
 from models import Message
 from django.template import RequestContext, loader
 
+
 def home(request):
     return HttpResponse("Hello, World")
+
 
 def secondfunction(request):
     print_string = "Request is %s" % str(request)
     #return HttpResponse("Second function info")
     return HttpResponse(print_string)
+
 
 def create(request):
     """If we have a POST, sends the data to Mongo.
@@ -31,3 +34,12 @@ def create(request):
         'all_messages': all_messages,
     })
     return HttpResponse(template.render(context))
+
+
+def email(address):
+    """Stub for email test case"""
+    return None
+
+def send_message(request):
+    """Stub for send message test case"""
+    return None
