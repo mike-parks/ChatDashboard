@@ -17,14 +17,13 @@ def create(request):
     """If we have a POST, sends the data to Mongo.
     Each POST must have a username string and message string.
     Then displays all Mongo contents on webpage."""
-    '''
+    print "found create"
     if request.method == "POST":
         username = request.POST['username']
         text = request.POST['text']
         message = Message(username=username)
         message.text = text
         message.save()
-    '''
 
     all_messages = Message.objects()
     template = loader.get_template('TestPage/index.html')

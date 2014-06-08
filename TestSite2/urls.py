@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     #url(r'^$', 'TestSite2.views.Home', name='home')
     url(r'hello/$', tpv.home),
     url(r'second/$', tpv.secondfunction),
-    url(r'chat/$', tpv.create),
+    url(r'^$', tpv.create),
 )

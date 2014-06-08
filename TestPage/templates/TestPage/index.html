@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <title>Chat Room</title>
 
+    <form method="post" action="http://127.0.0.1:8000/">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="User Name" required>
+        <input type="text" name="text" placeholder="Message" required>
+        <input type="submit" value="Create Message">
+    </form>
+
     {% if all_messages %}
     <ul>
     {% for message in all_messages %}
-        <li>Username: {{ message.username }} Text:{{ message.text }}</li>
+        <li>{{ message.username }} says: {{ message.text }}</li>
     {% endfor %}
     </ul>
     {% else %}
         <p>No messages are available.</p>
     {% endif %}
-
-    <form>
-        <input type="text" name="message">
-    </form>
 </head>
 <body>
 
