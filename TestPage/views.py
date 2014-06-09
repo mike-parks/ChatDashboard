@@ -35,21 +35,26 @@ def create(request):
     })
     return HttpResponse(template.render(context))
 
+
 def register(address):
     """Stub for register test case"""
     return None
+
 
 def login(address):
     """Stub for login test case"""
     return None
 
+
 def logout(address):
     """Stub for logout test case"""
     return None
 
-def changePassword(address):
+
+def change_password(address):
     """Stub for Change Password test case"""
     return None
+
 
 def email(address):
     """Stub for email test case"""

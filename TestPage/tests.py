@@ -22,7 +22,6 @@ class MongoTestCase(TestCase):
             self.db.drop_collection(collection)
 
 
-
 class TestCase1Pt1(MongoTestCase):
     def setUp (self):
         self.factory = RequestFactory()
