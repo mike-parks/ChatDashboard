@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
-from mongoengine import connection
-from mongoengine import connect
+from mongoengine import connection, connect
 import urllib
 import views
 
