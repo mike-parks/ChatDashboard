@@ -68,6 +68,7 @@ def register(request):
         if statuscode == 200:
             new_user = User(username=user, password=password, email=email)
             new_user.save()
+            request.session["user"] = user
             template = loader.get_template('Authentication/confirmregistration.html')
         else:
             template = loader.get_template('Authentication/registration.html')
@@ -101,3 +102,12 @@ def email(address):
 def send_message(request):
     """Stub for send message test case"""
     return None
+
+def admin_functions(request):
+    
+    template = loader.get_template('Authentication/currentusers.html')
+    all_users = User.objects()
+    context = RequestContext(request, {
+        'all_users': all_users,
+        })
+    return HttpResponse(template.render(context))

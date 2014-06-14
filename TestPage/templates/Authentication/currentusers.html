@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="template.css">
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>Chatdashboard User Registration</title>
+</head>
+<body>
+
+    
+    <div id='regform_errorloc' class='error_strings'>
+        {% if all_users %}
+        <table>
+            {% for user in all_users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No Users Found!</p>
+        {% endif %}
+        
+
+    </div>   
+
+</body>
+</html>

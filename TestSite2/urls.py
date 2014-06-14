@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'second/$', tpv.secondfunction),
     url(r'^$', tpv.create),
     url(r'Register/$', tpv.register),
+    url(r'AdminFunctions/$', tpv.admin_functions),
 )
