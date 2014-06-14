@@ -57,12 +57,17 @@ def register(request):
 
         foundUser = User.objects.filter(username=user)
             
-        if foundUser > 0:
+        if foundUser.count() > 0:
             messages.append("Please choose another username.")
             statuscode = 400
         
         
+        
+        
+        
         if statuscode == 200:
+            new_user = User(username=user, password=password, email=email)
+            new_user.save()
             template = loader.get_template('Authentication/confirmregistration.html')
         else:
             template = loader.get_template('Authentication/registration.html')
