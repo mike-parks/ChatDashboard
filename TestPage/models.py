@@ -13,4 +13,4 @@ class Message(Document):
 class User(Document):
     username = StringField(max_length=50, required=True)
     password = StringField(max_length=50, required=True)
-    email = StringField(mx_length=100, required=True)
+    email = StringField(max_length=100, required=True)

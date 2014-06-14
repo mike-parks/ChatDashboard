@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+    {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="template.css">
-    <script type="text/javascript" src="validation.js" ></script>
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>Chatdashboard User Registration</title>
 </head>
 <body>
-    <meta charset="UTF-8">
-    <title>Chatdashboard User Registration/title>
 
-    <form method="post" name="RegistrationForm" onSubmit="return validateRegistrationForm();" action="http://127.0.0.1:8000/authentication/confirmregistration.html">
+    <form method="post" name="RegistrationForm" onSubmit="return validateRegistrationForm();" ><!--action="http://127.0.0.1:8000/authentication/confirmregistration.html"-->
         {% csrf_token %}
         <table>
         	<tr>
@@ -44,6 +45,14 @@
         </table>
     </form>
     <div id='regform_errorloc' class='error_strings'>
+        {% if all_messages %}
+            {% for message in all_messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    
 
     <script>
         function validateRegistrationForm() {
@@ -51,32 +60,32 @@
             var errorString = "";
             if (RegistrationForm.username.value === null) {
                 formValid = false;
-                errorString += "Please Enter a username.<br />";
+                errorString += "<li>Please Enter a username.</li>";
             }
 
             if (RegistrationForm.password.value === null) {
                 formValid = false;
-                errorString += "Please Enter a password.<br />";
+                errorString += "<li>Please Enter a password.</li>";
             }
 
             if (RegistrationForm.password2.value === null) {
                 formValid = false;
-                errorString += "Please Enter a verification password.<br />";
+                errorString += "<li>Please Enter a verification password.</li>";
             }
 
             if (RegistrationForm.password.value !== RegistrationForm.password2.value) {
                 formValid = false;
-                errorString += "Passwords don't match.<br />";
+                errorString += "<li>Passwords don't match.</li>";
             }
 
             if (!validatePassword(RegistrationForm.password.value)) {
                 formValid = false;
-                errorString += "Passwords must have at least one lowercase letter, one uppercase letter, and one number.<br />";
+                errorString += "<li>Passwords must have at least one lowercase letter, one uppercase letter, and one number.</li>";
             }
 
             if (!validateEmail(RegistrationForm.email.value)) {
                 formValid = false;
-                errorString += "Please enter a valid email.<br />";
+                errorString += "<li>Please enter a valid email.</li>";
             }
 
             regform_errorloc.innerHTML = errorString;
@@ -86,15 +95,7 @@
 
     </script>
 
-    {% if all_messages %}
-    <ul>
-    {% for message in all_messages %}
-        <li>{{ message.username }} says: {{ message.text }}</li>
-    {% endfor %}
-    </ul>
-    {% else %}
-        <p>No messages are available.</p>
-    {% endif %}
+    
 
 </body>
 </html>

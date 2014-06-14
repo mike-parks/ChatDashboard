@@ -44,23 +44,37 @@ def register(request):
         user = request.POST['username']
         password = request.POST['password']
         email = request.POST['email']
+        messages = []
+        statuscode = 200
         
         if not RegistrationFunctions.validateEmail(email):
-            return HttpResponse(status_code=400, reason_phrase="Invalid Email.")
+            messages.append("Invalid Email")
+            statuscode = 400
         if not RegistrationFunctions.validatePassword(password):
-            return HttpResponse(status_code=400, reason_phrase="Invalid Password.")
+            messages.append("Invalid Password")
+            statuscode = 400
         
 
         foundUser = User.objects.filter(username=user)
             
         if foundUser > 0:
-            return HttpResponse(status_code=500, reason_phrase="Please choose another username.")
+            messages.append("Please choose another username.")
+            statuscode = 400
         
         
-        
-        template = loader.get_template('Authentication/confirmregistration.html')
-        context = RequestContext()
-    return HttpResponse(template.render(context))
+        if statuscode == 200:
+            template = loader.get_template('Authentication/confirmregistration.html')
+        else:
+            template = loader.get_template('Authentication/registration.html')
+            
+        context = RequestContext(request, {'all_messages': messages, })
+        return HttpResponse( content=template.render(context), status=statuscode)
+    else:
+        template = loader.get_template('Authentication/registration.html')
+        context = RequestContext(request, {
+        'all_messages': None,
+        })
+        return HttpResponse(template.render(context))
 
 def login(address):
     """Stub for login test case"""
