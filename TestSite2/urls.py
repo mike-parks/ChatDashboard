@@ -16,4 +16,5 @@ urlpatterns = patterns('',
     url(r'^$', tpv.create),
     url(r'Register/$', tpv.register),
     url(r'AdminFunctions/$', tpv.admin_functions),
+    url(r'Login/$', tpv.login_user),
 )

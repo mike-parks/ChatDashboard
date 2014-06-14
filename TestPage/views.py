@@ -37,6 +37,7 @@ def create(request):
     })
     return HttpResponse(template.render(context))
 
+from django.contrib.auth.models import User
 def register(request):
     """Stub for register test case"""
     print "Found Register"
@@ -66,14 +67,19 @@ def register(request):
         
         
         if statuscode == 200:
-            new_user = User(username=user, password=password, email=email)
-            new_user.save()
-            request.session["user"] = user
+            sessionUser = User.objects.create_user(user, email, password)
+            user.save()
+            
+            new_user = User(username=user, email=email)
+            #new_user = User(username=user, password=password, email=email)
+            #new_user.save()
+            #request.session["user"] = user
+            #request.session["authenticated"] = True
             template = loader.get_template('Authentication/confirmregistration.html')
         else:
             template = loader.get_template('Authentication/registration.html')
             
-        context = RequestContext(request, {'all_messages': messages, })
+        context = RequestContext(request, {'all_messages': messages, 'username':user, 'email':email})
         return HttpResponse( content=template.render(context), status=statuscode)
     else:
         template = loader.get_template('Authentication/registration.html')
@@ -81,10 +87,49 @@ def register(request):
         'all_messages': None,
         })
         return HttpResponse(template.render(context))
-
-def login(address):
+    
+from django.contrib.auth import authenticate
+def login_user(request):
     """Stub for login test case"""
-    return None
+    if request.method == "POST" and not request.user.is_authenticated(): #TODO: add in check for if user currently has a logged in session
+        user = request.POST['username']
+        password = request.POST['password']
+        messages = []
+        statuscode = 400 # assume credentials are invalid
+              
+        #foundUser = User.objects.get(username=user)
+           
+        user = authenticate(username='john', password='secret')
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                    statuscode = 200
+                    request.user.login(request, user)
+                    messages.append("User is valid, active and authenticated")
+            else:
+                    messages.append("The account has been disabled!")
+        else:   
+            # the authentication system was unable to verify the username and password
+            messages.append("The username and password were incorrect.")
+            
+       # if foundUser:
+       #     if foundUser.password == password:
+        #        statuscode = 200
+        
+        
+        if statuscode == 200:
+            request.session["user"] = user
+            request.session["authenticated"] = True
+            context = RequestContext(request, {'all_messages': messages, 'authenticated': True })
+        else:
+            context = RequestContext(request, {'all_messages': messages,'authenticated': False })            
+        
+        template = loader.get_template('Authentication/login.html')
+        return HttpResponse( content=template.render(context), status=statuscode)
+    else:
+       template = loader.get_template('Authentication/login.html')
+       context = RequestContext(request, {'all_messages': None, 'authenticated': False} )        
+    return HttpResponse(template.render(context))
 
 def logout(address):
     """Stub for logout test case"""
