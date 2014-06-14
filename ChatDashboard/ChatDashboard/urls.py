@@ -10,6 +10,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^/', include('chatapp.urls')),
-    url(r'^$', RedirectView.as_view(url='/')),
+    #url(r'^$', RedirectView.as_view(url='/')),
+    url(r'^$', include('chatapp.urls')),
 )

@@ -7,5 +7,5 @@ urlpatterns = patterns('',
     # url(r'^$', 'ChatDashboard.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    #url(r'^$', views.list),
+    url(r'^$', views.list),
 )
