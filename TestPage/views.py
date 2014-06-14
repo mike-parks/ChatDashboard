@@ -3,7 +3,9 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from models import Message
+from models import User
 from django.template import RequestContext, loader
+import RegistrationFunctions
 
 
 def home(request):
@@ -35,9 +37,30 @@ def create(request):
     })
     return HttpResponse(template.render(context))
 
-def register(address):
+def register(request):
     """Stub for register test case"""
-    return None
+    print "Found Register"
+    if request.method == "POST":
+        user = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        
+        if not RegistrationFunctions.validateEmail(email):
+            return HttpResponse(status_code=400, reason_phrase="Invalid Email.")
+        if not RegistrationFunctions.validatePassword(password):
+            return HttpResponse(status_code=400, reason_phrase="Invalid Password.")
+        
+
+        foundUser = User.objects.filter(username=user)
+            
+        if foundUser > 0:
+            return HttpResponse(status_code=500, reason_phrase="Please choose another username.")
+        
+        
+        
+        template = loader.get_template('Authentication/confirmregistration.html')
+        context = RequestContext()
+    return HttpResponse(template.render(context))
 
 def login(address):
     """Stub for login test case"""
