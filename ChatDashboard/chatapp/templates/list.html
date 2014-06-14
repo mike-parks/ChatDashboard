@@ -5,12 +5,13 @@
     <title>Chat Dashboard List</title>
 </head>
 <body>
+    <h1>Here are the Chat Dashboards...</h1>
     <form method="post" action="http://127.0.0.1:8000/">
         {% csrf_token %}
         <input type="text" name="title" placeholder="Title" required>
         <input type="submit" value="Create Message">
     </form>
-    <h1>Here are the Chat Dashboards...</h1>
+
     {% if all_dashboards %}
     <ul>
     {% for dash in all_dashboards %}
