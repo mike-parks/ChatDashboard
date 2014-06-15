@@ -18,7 +18,7 @@ def list(request):
     })
     return HttpResponse(template.render(context))
 
-def render_dashboard(request, dbid):
+def render_dashboard(request, title):
     template = loader.get_template('dashboard.html')
     context = RequestContext(request, {
 

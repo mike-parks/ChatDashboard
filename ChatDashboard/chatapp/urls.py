@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'ChatDashboard.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^(?P<dbid>\w+/?)$', views.render_dashboard),
-    url(r'$', views.list),
+    url(r'^(?P<dbid>\w+/?)$', views.render_dashboard, name="render_dashboard"),
+    url(r'$', views.list, name="list"),
 )

@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34aa0644-b362-4cae-9e42-b68c61bc8481" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/models.py" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/urls.py" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/views.py" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ChatDashboard.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,21 +28,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="urls.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.20310633" vertical-offset="0" max-vertical-offset="837">
+              <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="list.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="510">
-              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3046595" vertical-offset="0" max-vertical-offset="837">
-              <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="527">
+              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -66,11 +80,11 @@
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/template/list.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/ChatDashboard/settings.py" />
         <option value="$PROJECT_DIR$/ChatDashboard/ChatDashboard/urls.py" />
-        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/views.py" />
-        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
-        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/models.py" />
+        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/urls.py" />
+        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html" />
+        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/views.py" />
       </list>
     </option>
   </component>
@@ -499,36 +513,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14673243" vertical-offset="0" max-vertical-offset="811">
-          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ChatDashboard/ChatDashboard/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3046595" vertical-offset="0" max-vertical-offset="837">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08124253" vertical-offset="0" max-vertical-offset="837">
-          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="510">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -541,12 +529,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14673243" vertical-offset="0" max-vertical-offset="811">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="510">
+          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3046595" vertical-offset="0" max-vertical-offset="837">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="527">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20310633" vertical-offset="0" max-vertical-offset="837">
+          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
