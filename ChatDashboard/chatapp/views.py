@@ -17,3 +17,10 @@ def list(request):
         'all_dashboards': all_dashboards
     })
     return HttpResponse(template.render(context))
+
+def render_dashboard(request, dbid):
+    template = loader.get_template('dashboard.html')
+    context = RequestContext(request, {
+
+    })
+    return HttpResponse(template.render(context))

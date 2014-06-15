@@ -9,13 +9,13 @@
     <form method="post" action="http://127.0.0.1:8000/">
         {% csrf_token %}
         <input type="text" name="title" placeholder="Title" required>
-        <input type="submit" value="Create Message">
+        <input type="submit" value="Create Chat Dashboard">
     </form>
 
     {% if all_dashboards %}
     <ul>
     {% for dash in all_dashboards %}
-        <li><a href={% url 'render_dashboard' dash.id %}>{{ dash.title }}</a></li>
+
     {% endfor %}
     </ul>
     {% else %}
