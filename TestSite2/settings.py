@@ -27,8 +27,9 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DBNAME = 'people'
+DBNAME = 'peoplevtwo'
 import mongoengine
+from mongoengine.django.auth import User
 mongoengine.connect(DBNAME)
 
 # Application definition
@@ -40,8 +41,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mongoengine.django.mongo_auth',
     'TestPage',
 )
+
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,17 +66,21 @@ WSGI_APPLICATION = 'TestSite2.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': '',
+        'ENGINE': 'django.db.backends.dummy',
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
 AUTHENTICATION_BACKENDS = (
     'mongoengine.django.auth.MongoEngineBackend',
 )
+MONGOADMIN_OVERRIDE_ADMIN = True
+AUTH_USER_MODEL = 'mongo_auth.MongoUser'
+MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

@@ -10,7 +10,7 @@ class Message(Document):
     username = StringField(max_length=50, required=True)
     text = StringField(required=True)
     
-class User(Document):
-    username = StringField(max_length=50, required=True)
-    password = StringField(max_length=50, required=True)
-    email = StringField(max_length=100, required=True)
+#class User(Document):
+#    username = StringField(max_length=50, required=True)
+#    password = StringField(max_length=50, required=True)
+#    email = StringField(max_length=100, required=True)

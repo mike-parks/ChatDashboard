@@ -9,10 +9,34 @@
 </head>
 <body>
 
-    
+    <form method="post" name="UserActionForm" onSubmit="return validateRegistrationForm();">
+        <table>
+        	<tr>
+                <td>
+                    <label>Please Username and Command:</label>
+                </td>
+            </tr>
+            <tr>
+        		<td>a
+        			<input type="text" name="username" placeholder="User Name" required>
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+                    <input type="radio" name="useraction" value="delete">Delete
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+        			<input type="submit" value="SubmitUserAction">
+        		</td>
+        	</tr>
+        </table>
+    </form>
+
     <div id='regform_errorloc' class='error_strings'>
         {% if all_users %}
-        <table>
+        <table id="usertable">
             {% for user in all_users %}
                 <tr>
                     <td>{{ user.username }}</td>
@@ -22,8 +46,7 @@
         </table>
         {% else %}
             <p>No Users Found!</p>
-        {% endif %}
-        
+        {% endif %}     
 
     </div>   
 

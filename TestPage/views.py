@@ -2,8 +2,11 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
+from mongoengine.django.auth import *
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
 from models import Message
-from models import User
 from django.template import RequestContext, loader
 import RegistrationFunctions
 
@@ -56,21 +59,23 @@ def register(request):
             statuscode = 400
         
 
-        foundUser = User.objects.filter(username=user)
+        #foundUser = User.objects.filter(username=user)
             
-        if foundUser.count() > 0:
-            messages.append("Please choose another username.")
-            statuscode = 400
+        #if foundUser.count() > 0:
+        #    messages.append("Please choose another username.")
+        #    statuscode = 400
         
         
         
         
         
         if statuscode == 200:
-            sessionUser = User.objects.create_user(user, email, password)
-            user.save()
+           # sessionUser = User.objects.create_user(user, email, password)
+            #sessionUser = User.create_user(username=user, password=password, email=email)
+            sessionUser =  get_user_model().objects.create_user(username=user, password=password, email=email)
+            sessionUser.save()
             
-            new_user = User(username=user, email=email)
+            #new_user = User(username=user, email=email)
             #new_user = User(username=user, password=password, email=email)
             #new_user.save()
             #request.session["user"] = user
@@ -92,19 +97,21 @@ from django.contrib.auth import authenticate
 def login_user(request):
     """Stub for login test case"""
     if request.method == "POST" and not request.user.is_authenticated(): #TODO: add in check for if user currently has a logged in session
-        user = request.POST['username']
+        usernm = request.POST['username']
         password = request.POST['password']
         messages = []
         statuscode = 400 # assume credentials are invalid
               
         #foundUser = User.objects.get(username=user)
            
-        user = authenticate(username='john', password='secret')
+        user = authenticate(username=usernm, password=password)
         if user is not None:
             # the password verified for the user
             if user.is_active:
                     statuscode = 200
-                    request.user.login(request, user)
+                    login(request, user)
+                    #request.user.login(request, user)
+                    user
                     messages.append("User is valid, active and authenticated")
             else:
                     messages.append("The account has been disabled!")
@@ -118,7 +125,7 @@ def login_user(request):
         
         
         if statuscode == 200:
-            request.session["user"] = user
+            request.session["user"] = usernm
             request.session["authenticated"] = True
             context = RequestContext(request, {'all_messages': messages, 'authenticated': True })
         else:
@@ -150,9 +157,15 @@ def send_message(request):
 
 def admin_functions(request):
     
+    
+    if request.method=="POST" and request.POST['useraction']== "delete":
+        user = request.POST['username']
+        User.objects().filter(username=user).delete()
+        
     template = loader.get_template('Authentication/currentusers.html')
     all_users = User.objects()
     context = RequestContext(request, {
         'all_users': all_users,
         })
+        
     return HttpResponse(template.render(context))
