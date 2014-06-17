@@ -15,7 +15,7 @@
     {% if all_dashboards %}
     <ul>
     {% for dash in all_dashboards %}
-        <li>{{ dash.title }}</li>
+        <li><a href="{{ dash.title }}">{{ dash.title }}</a></li>
     {% endfor %}
     </ul>
     {% else %}
