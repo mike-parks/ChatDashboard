@@ -1,5 +1,6 @@
 from django.shortcuts import HttpResponse
 from django.template import loader, RequestContext
+from mongoengine.django.shortcuts import get_document_or_404
 
 from models import Dashboard
 
@@ -20,7 +21,8 @@ def list(request):
 
 def render_dashboard(request, title):
     template = loader.get_template('dashboard.html')
+    dashboard = get_document_or_404(Dashboard, pk=title)
     context = RequestContext(request, {
-
+        'dashboard': dashboard
     })
     return HttpResponse(template.render(context))
