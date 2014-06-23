@@ -140,13 +140,17 @@ from mongoengine.django.sessions import MongoSession
 
 #from flask.ext.mongoengine import MongoEngine, MongoEngineSessionInterface
 def admin_functions(request):
-    
-    
-    #if request.method=="POST" and request.POST['useraction']== "delete":
-    #    user = request.POST['username']
-    #    User.objects().filter(username=user).delete()
     usernames = []
     userids = []
+    
+    if request.method=="POST" and request.POST['useraction']== "delete":
+        rmvuser = request.POST['username']
+        User.objects().filter(username=rmvuser).delete()
+        
+        users = User.objects.all()
+        for user in users:
+            usernames.append(user.username)
+    
     #ursfound = User.objects.all()
     #if ursfound is not None: 
     #    for usr in ursfound:
@@ -166,8 +170,8 @@ def admin_functions(request):
     
 
     if request.method=="POST" and request.POST['useraction']== "viewusers":
-        users = MongoEngineBackend().user_document().User.objects.all()
-        #users = User.objects.all()
+        #users = MongoEngineBackend().user_document().User.objects.all()
+        users = User.objects.all()
         for user in users:
             usernames.append(user.username)
         
