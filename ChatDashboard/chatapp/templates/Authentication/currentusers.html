@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="template.css">
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>Chatdashboard User Registration</title>
+</head>
+<body>
+
+    <form method="post" name="UserActionForm">
+        {% csrf_token %}
+        <table>
+        	<tr>
+                <td>
+                    <label>Please Username and Command:</label>
+                </td>
+            </tr>
+            <tr>
+        		<td>a
+        			<input type="text" name="username" placeholder="User Name" />
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+                    <input type="radio" name="useraction" value="viewactiveusers" />View Active Users
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+                    <input type="radio" name="useraction" value="viewusers" />View All Users
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+                    <input type="radio" name="useraction" value="delete" />Delete
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+        			<input type="submit" value="SubmitUserAction" />
+        		</td>
+        	</tr>
+        </table>
+    </form>
+
+    <div id='regform_errorloc' >
+        {% if ursfound %}
+            <table id="usertable">
+                    <tr>
+                        <td>Username</td>
+                    </tr>
+                {% for usr in ursfound %}
+                    <tr>
+                        <td>{{ usr }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No Users Found!</p>
+        {% endif %}  
+
+    </div>   
+
+</body>
+</html>

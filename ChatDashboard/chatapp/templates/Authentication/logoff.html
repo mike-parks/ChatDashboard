@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="template.css">
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>Chatdashboard User Registration</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    
+        <p>
+            You are currently logged in as {{user}}
+        </p>
+    {% else %}
+        <p>
+            You have successfully logged out.
+        </p>
+    {% endif %}
+
+    
+    
+    <div id='regform_errorloc' class='error_strings'>
+        {% if all_messages %}
+            {% for message in all_messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</body>
+</html>

@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mongoengine.django.mongo_auth',
     'chatapp'
 )
 
@@ -58,6 +59,7 @@ WSGI_APPLICATION = 'ChatDashboard.wsgi.application'
 
 DBNAME = "chatdata"
 import mongoengine
+from mongoengine.django.auth import User
 mongoengine.connect(DBNAME)
 
 DATABASES = {
@@ -67,6 +69,15 @@ DATABASES = {
         'ENGINE': 'dhango.db.backends.dummy'
     }
 }
+
+SESSION_ENGINE = 'mongoengine.django.sessions'
+SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+)
+MONGOADMIN_OVERRIDE_ADMIN = True
+AUTH_USER_MODEL = 'mongo_auth.MongoUser'
+MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
