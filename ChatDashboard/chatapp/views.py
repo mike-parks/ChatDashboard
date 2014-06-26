@@ -16,6 +16,7 @@ import datetime
 # Create your views here.
 def list(request):
     print "found list"
+
     if request.method == "POST":
         title = request.POST['title']
         dashboard = Dashboard(title=title)
