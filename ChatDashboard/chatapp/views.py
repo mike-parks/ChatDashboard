@@ -20,6 +20,7 @@ import datetime
 # Create your views here.
 def list(request):
     print "found list"
+
     if request.method == "POST":
         title = request.POST['title']
         dashboard = Dashboard(title=title)
@@ -179,3 +180,4 @@ def admin_functions(request):
     template = loader.get_template('Authentication/currentusers.html')
     context = RequestContext(request, {'ursfound': usernames }) 
     return HttpResponse(template.render(context))
+

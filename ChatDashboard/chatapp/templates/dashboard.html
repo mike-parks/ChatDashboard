@@ -3,15 +3,70 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script>
+// Move to its own file later
+    connect();
+
+    function connect(){
+        try {
+            var socket;
+            var host = "ws://echo.websocket.org/";
+            var socket = new WebSocket(host);
+
+            message('<p class="event">Socket Status: '+socket.readyState);
+
+            socket.onopen = function(){
+                 message('<p class="event">Socket Status: '+socket.readyState+' (open)');
+            }
+
+            socket.onmessage = function(msg){
+                 message('<p class="message">Received: '+msg.data);
+            }
+
+            socket.onclose = function(){
+                 message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
+            }
+        }
+        catch(exception){
+             message('<p>Error'+exception);
+        }
+
+        function message(msg){
+            $('#chatLog').append(msg+'</p>');
+        }
+
+        function send(){
+            var text = $('#text').val();
+            if(text==""){
+                message('<p class="warning">Please enter a message');
+                return ;
+            }
+            try {
+                socket.send(text);
+                message('<p class="event">Sent: '+text)
+            }
+            catch(exception){
+                message('<p class="warning"> Error:' + exception);
+            }
+
+            $('#text').val("");
+        }
+    }
+
+    </script>
 </head>
 <body>
     <h1>You found {{ dashboard.title }}</h1>
     {% for message in all_messages %}
         <li>{{ message.msgtext }}</a></li>
     {% endfor %}
-     <form method="post" action="http://127.0.0.1:8000/{{ dashboard.title }}">
+    <div id="chatLog">
+
+    </div>
+     <form onsubmit="send(); return false;">
         {% csrf_token %}
-        <input type="text" name="message" placeholder="Message" required>
+        <input id="text" type="text" name="message" placeholder="Message" required>
         <input type="hidden" name="dashboard_title" value="{{ dashboard.title }}">
          <input type="submit" value="Submit Message">
     </form>
