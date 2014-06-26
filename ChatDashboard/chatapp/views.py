@@ -7,12 +7,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from mongoengine.django.sessions import *
-from django.contrib.sessions.models import Session
-from models import Message
-from django.template import RequestContext, loader
+from RegistrationFunctions import *
 import RegistrationFunctions
-from datetime import datetime
 
 from models import Dashboard, Message
 import datetime
@@ -97,16 +93,19 @@ def login_user(request):
         messages = []
         statuscode = 400 # assume credentials are invalid
               
-        #foundUser = User.objects.get(username=user)
-           
-        user = authenticate(username=usernm, password=password)
+        foundUser = User.objects.get(username=usernm)
+        
+        if foundUser is not None:
+            user = authenticate(username=usernm, password=password)
+        else:
+            messages.append(usernm + " is already taken. Please try another username.")
+            
         #user = User.objects.get(username=usernm)
         if user is not None:
             # the password verified for the user
-            if user.check_password(password):#user.is_active:
+            if user.check_password(password):
                     statuscode = 200
                     login(request, user)
-                    #request.user.login(request, user)
                     
                     messages.append("User is valid, active and authenticated")
             else:
@@ -134,9 +133,7 @@ def logoff_user(request):
     context = RequestContext(request, {'all_messages': None, 'authenticated': False} )  
     return HttpResponse(template.render(context))
 
-from mongoengine.django.mongo_auth.models import MongoUserManager
-from mongoengine.django.sessions import SessionStore
-from mongoengine.django.sessions import MongoSession
+
 
 #from flask.ext.mongoengine import MongoEngine, MongoEngineSessionInterface
 def admin_functions(request):
@@ -145,37 +142,66 @@ def admin_functions(request):
     
     if request.method=="POST" and request.POST['useraction']== "delete":
         rmvuser = request.POST['username']
-        User.objects().filter(username=rmvuser).delete()
-        
-        users = User.objects.all()
-        for user in users:
-            usernames.append(user.username)
+        delete_user(rmvuser)
+        usernames = retrieve_all_usernames()
     
-    #ursfound = User.objects.all()
-    #if ursfound is not None: 
-    #    for usr in ursfound:
-    #        usernames.append(usr.username)
     
     if request.method=="POST" and request.POST['useraction']== "viewactiveusers":
-        sessions = MongoSession.objects.all() #Session.objects.filter(expire_date__gte=datetime.now())
-        for session in sessions:
-            data = session.get_decoded()
-            userids.append(data.get('_auth_user_id', None))
-            #session.delete()
-    
-    
-        for userid in userids:
-            usr = get_user(userid)
-            usernames.append(usr.username)
+        usernames = retrieve_active_usernames()
     
 
     if request.method=="POST" and request.POST['useraction']== "viewusers":
-        #users = MongoEngineBackend().user_document().User.objects.all()
-        users = User.objects.all()
-        for user in users:
-            usernames.append(user.username)
+        usernames = retrieve_all_usernames()
         
 
     template = loader.get_template('Authentication/currentusers.html')
     context = RequestContext(request, {'ursfound': usernames }) 
+    return HttpResponse(template.render(context))
+
+def password_functions(request):
+    form_type = "resetpassword"
+    screen_title = ""
+    error_messages = []
+    messages = []
+    if request.method == "POST" :        
+        if request.POST['password_action'] == "Change Password" :
+            screen_title = "Change Password"
+            username = request.POST["username"]
+            current_password = request.POST["current_password"]
+            new_password = request.POST["password"]
+            
+            
+            if change_password(username, current_password, new_password):
+                form_type = "sucessfullchange"
+                screen_title = "Change Password"
+                messages.append("Password successfully changed.")
+            else:
+                error_messages.append("Invalid username/password combination.")
+                screen_title = "Password Change Unsuccessful"
+                
+            
+            form_type = "successfullchange"
+        elif request.POST['password_action'] == "Reset Password":            
+            form_type = "checkemail"
+            screen_title = "Reset Password"
+            messages.append("Please check your email for a password reset link.")
+                
+        else:
+            screen_title = "ERROR"
+            error_messages.append("Please use the appropriate link.")
+    else:
+        if request.GET.get("function") == "changepassword":
+            screen_title = "Change Password"
+            form_type = "changepassword"
+        elif request.GET.get("function") =="resetpassword":
+            screen_title = "Reset Password"
+            form_type = "resetpassword"
+        else:
+            screen_title = "ERROR"
+            error_messages.append("Please use the appropriate link.")
+        
+    send_email("bulls_eye_99@yahoo.com", "hi", )
+    template = loader.get_template('Authentication/resetpassword.html')
+    context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type })
+        
     return HttpResponse(template.render(context))
