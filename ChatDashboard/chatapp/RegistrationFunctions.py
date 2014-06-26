@@ -79,40 +79,15 @@ import smtplib
 #from email.MIMEMultipart import MIMEMultipart
 #from email.MIMEText import MIMEText
 from email.mime.text import MIMEText
-def send_email(email, message):
-    #fromaddr = "ChatDashboard@gmail.com"
-    #msg = MIMEMultipart()
-    #msg['From'] = fromaddr
-    #msg['To'] = email
-    #msg['Subject'] = "Python email"
-
-    #msg.attach(MIMEText(message, 'plain'))
-    
-    #server = smtplib.SMTP('smtp.gmail.com', 587)
-    #server.ehlo()
-    #server.starttls()
-    #server.ehlo()
-    #server.login("youremailusername", "password")
-    #text = msg.as_string()
-    #server.sendmail(fromaddr, email, text)
-    
-    #to = []
-    #to.append(email)
-    #message = """\
-    #From: %s
-    #To: %s
-    #Subject: %s
-#
-#    %s
-#    """ % ("ChatDashboard@gmail.com", ", ".join(to), "Python Email", msg)
+from ChatDashboard import settings
+def send_email(email, subject, message):
     msg = MIMEText(message)
-    msg['Subject'] = "Python Email"
-    msg['From'] = "ChatDashboard@gmail.com"
+    msg['Subject'] = subject
+    msg['From'] = settings.EMAIL_FROMADDRESS
     msg['To']=email
     
-    server = smtplib.SMTP("smtp-server.ma.rr.com", 587)
-    #server = smtplib.SMTP("smtp-server.roadrunner.com", 587)
-    server.sendmail("ChatDashboard@gmail.com", email, msg.as_string())
+    server = smtplib.SMTP(settings.EMAIL_SERVER, settings.EMAIL_PORT)
+    server.sendmail(settings.EMAIL_FROMADDRESS, email, msg.as_string())
     server.quit()
     
     

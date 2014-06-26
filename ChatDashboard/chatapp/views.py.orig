@@ -159,6 +159,7 @@ def admin_functions(request):
     context = RequestContext(request, {'ursfound': usernames }) 
     return HttpResponse(template.render(context))
 
+<<<<<<< HEAD
 def password_functions(request):
     form_type = "resetpassword"
     screen_title = ""
@@ -201,8 +202,10 @@ def password_functions(request):
             screen_title = "ERROR"
             error_messages.append("Please use the appropriate link.")
         
-    send_email("bulls_eye_99@yahoo.com", "Test Message", "hi", )
+    send_email("bulls_eye_99@yahoo.com", "hi", )
     template = loader.get_template('Authentication/resetpassword.html')
     context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type })
         
     return HttpResponse(template.render(context))
+=======
+>>>>>>> origin/master

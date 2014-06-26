@@ -80,6 +80,11 @@ MONGOADMIN_OVERRIDE_ADMIN = True
 AUTH_USER_MODEL = 'mongo_auth.MongoUser'
 MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
 
+
+EMAIL_SERVER = "smtp-server.ma.rr.com"
+EMAIL_PORT = 587
+EMAIL_FROMADDRESS = "ChatDashboard@gmail.com"
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
