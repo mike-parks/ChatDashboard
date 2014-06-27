@@ -75,9 +75,48 @@ def change_password(username, current_password, new_password):
     else:
         return False
    
+import os
+from models import PasswordReset
+import datetime
+def generate_reset_email(username):
+    email = ""
+    
+    #send email to email address associated with their username
+    user = User.objects.filter(username=username)
+    if user == None:
+        return False
+    else:
+        email = user[1].email
+    
+    pin = os.urandom(32)
+    url = "%sPasswordFunctions/?function=resetpassword&username=%s&pin=%s" %(settings.BASE_URL, username, pin)
+    
+    message = "Please Click the following URL to reset your password:\n%s" %(url)
+
+    #add reset stats to database
+    current_timestamp =  DateTimeField(default=datetime.datetime.now)
+    exptime = datetime.datetime.now + datetime.timedelta(minutes=30) 
+    expire_timestamp = DateTimeField(default=exptime)
+    passwordreset = PasswordReset(username=username, resetpin=pin, time_issued=current_timestamp, time_expire=expire_timestamp, used=False )
+    passwordreset.save()
+
+    send_email(email, "ChatDashboard Password Reset", message)
+
+    return True
+
+def check_password_reset(username, pin):
+    valid_pin = False
+    current_timestamp =  DateTimeField(default=datetime.datetime.now)
+    
+    passwordreset = PasswordReset(username=username, resetpin=pin, time_issued__gte=current_timestamp, time_expire__lt=current_timestamp, used=False)
+    for resetpin in passwordreset:
+        resetpin.used = True
+        resetpin.save()
+        valid_pin = True
+    
+    return valid_pin
+
 import smtplib 
-#from email.MIMEMultipart import MIMEMultipart
-#from email.MIMEText import MIMEText
 from email.mime.text import MIMEText
 from ChatDashboard import settings
 def send_email(email, subject, message):
@@ -89,6 +128,7 @@ def send_email(email, subject, message):
     server = smtplib.SMTP(settings.EMAIL_SERVER, settings.EMAIL_PORT)
     server.sendmail(settings.EMAIL_FROMADDRESS, email, msg.as_string())
     server.quit()
+    
     
     
     

@@ -160,7 +160,7 @@ def admin_functions(request):
     return HttpResponse(template.render(context))
 
 def password_functions(request):
-    form_type = "resetpassword"
+    form_type = ""
     screen_title = ""
     error_messages = []
     messages = []

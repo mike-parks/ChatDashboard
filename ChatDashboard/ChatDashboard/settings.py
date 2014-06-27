@@ -84,6 +84,7 @@ MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
 EMAIL_SERVER = "smtp-server.ma.rr.com"
 EMAIL_PORT = 587
 EMAIL_FROMADDRESS = "ChatDashboard@gmail.com"
+BASE_URL = "http://127.0.0.1:8000/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
