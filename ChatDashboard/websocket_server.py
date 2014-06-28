@@ -37,6 +37,7 @@ resource = WebSocketsResource(found_protocol)
 root = Resource()
 root.putChild("ws", resource)
 reactor.listenTCP(1025, Site(root))
+print("Running WebSocket server on ws://127.0.0.1:1025/ws")
 reactor.run()
 
 

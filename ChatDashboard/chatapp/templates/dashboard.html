@@ -11,7 +11,8 @@
     function connect(){
         try {
             var socket;
-            var host = "ws://echo.websocket.org/";
+            //var host = "ws://echo.websocket.org/";
+            var host = "ws://127.0.0.1:1025/ws";
             var socket = new WebSocket(host);
 
             message('<p class="event">Socket Status: '+socket.readyState);
