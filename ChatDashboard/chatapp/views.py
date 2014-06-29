@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
 
@@ -109,6 +110,7 @@ def login_user(request):
                     login(request, user)
                     
                     messages.append("User is valid, active and authenticated")
+                    return redirect('list/')
             else:
                     messages.append("The account has been disabled!")
         else:   

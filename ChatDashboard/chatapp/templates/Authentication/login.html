@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="template.css">
     <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
     <meta charset="UTF-8">
-    <title>Chatdashboard User Registration</title>
+    <title>Chat dashboard User Registration</title>
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -29,7 +29,7 @@
         	</tr>
         	<tr>
         		<td>
-        			<input type="text" name="password" placeholder="Password" required>
+        			<input type="password" name="password" placeholder="Password" required>
         		</td>
         	</tr>
         	<tr>
@@ -39,6 +39,7 @@
         	</tr>
         </table>
     </form>
+    <a href="Register/">Register</a>
     {% endif %}
 
     
