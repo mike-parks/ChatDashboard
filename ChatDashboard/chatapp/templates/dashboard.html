@@ -16,10 +16,10 @@ $(document).ready(function() {
           try{
               var socket = new WebSocket(host);
 
-              message('<p class="event">Socket Status: '+socket.readyState);
+              message('<p class="event">Connecting... ');
 
               socket.onopen = function(){
-                 message('<p class="event">Socket Status: '+socket.readyState+' (open)');
+                 message('<p class="event">Connected!');
               }
 
               socket.onmessage = function(msg){
@@ -27,7 +27,7 @@ $(document).ready(function() {
               }
 
               socket.onclose = function(){
-                message('<p class="event">Socket Status: '+socket.readyState+' (Closed)');
+                message('<p class="event">Lost connection.');
               }
 
           } catch(exception){
@@ -43,7 +43,7 @@ $(document).ready(function() {
               }
               try{
                   socket.send(text);
-                  message('<p class="event">Sent: '+text)
+                  //message('<p class="event">Sent: '+text)
 
               } catch(exception){
                  message('<p class="warning">');
@@ -73,7 +73,7 @@ $(document).ready(function() {
 <body>
     <h1>You found {{ dashboard.title }}</h1>
     {% for message in all_messages %}
-        <li>{{ message.msgtext }}</a></li>
+        <p class="message">{{ message.msgtext }}
     {% endfor %}
     <div id="chatLog">
 
