@@ -61,10 +61,10 @@ def register(request):
         statuscode = 200
         
         
-        if not RegistrationFunctions.validateEmail(email):
+        if not RegistrationFunctions.validate_email(email):
             messages.append("Invalid Email")
             statuscode = 400
-        if not RegistrationFunctions.validatePassword(password):
+        if not RegistrationFunctions.validate_password(password):
             messages.append("Invalid Password")
             statuscode = 400
 
@@ -166,45 +166,83 @@ def password_functions(request):
     screen_title = ""
     error_messages = []
     messages = []
-    if request.method == "POST" :        
+    context = None
+    # handle posts
+    if request.method == "POST" : 
+        #handle change password request       
         if request.POST['password_action'] == "Change Password" :
             screen_title = "Change Password"
             username = request.POST["username"]
             current_password = request.POST["current_password"]
             new_password = request.POST["password"]
             
+            screen_title = "Change Password"
             
-            if change_password(username, current_password, new_password):
-                form_type = "sucessfullchange"
-                screen_title = "Change Password"
-                messages.append("Password successfully changed.")
+            if validate_password(new_password):
+                if change_password(username, current_password, new_password):
+                    form_type = "sucessfullchange"
+                    messages.append("Password successfully changed.")
+                    form_type = "successfullchange"
+                else:
+                    error_messages.append("Invalid username/password combination.")
+                    form_type = "changepassword"
             else:
-                error_messages.append("Invalid username/password combination.")
-                screen_title = "Password Change Unsuccessful"
+                form_type = "changepassword"
+                error_messages.append("Invalid password format.")
                 
             
-            form_type = "successfullchange"
-        elif request.POST['password_action'] == "Reset Password":            
+        #handle reset email request
+        elif request.POST['password_action'] == "Reset Password": 
+            generate_reset_email(request.POST['username'])
             form_type = "checkemail"
             screen_title = "Reset Password"
             messages.append("Please check your email for a password reset link.")
                 
+        #handle reset request with pin and username from email
+        elif request.POST['password_action'] == "Reset My Password":
+            screen_title = "Reset Password"
+            username = request.POST['username']
+            pin = request.POST['pin']
+            password = request.POST['password']
+            reset_error_message = reset_password(username, pin, password)
+            if reset_error_message == None:
+                form_type="successfulchange"
+                messages.append("Password successfully reset.")
+            else:                
+                form_type = "resetpassword"
+                error_messages.append("Password Reset Failed")
+                error_messages.append(reset_error_message)
+                
+        # all gets that do not match a valid form_action should error
         else:
             screen_title = "ERROR"
             error_messages.append("Please use the appropriate link.")
+    # handle gets
     else:
         if request.GET.get("function") == "changepassword":
             screen_title = "Change Password"
             form_type = "changepassword"
+            
+        #handle initial resetpasword link request 
         elif request.GET.get("function") =="resetpassword":
             screen_title = "Reset Password"
             form_type = "resetpassword"
+            
+        #handle reset password request from email link
+        elif request.GET.get("function") =="resetpinsuccessful":
+            screen_title = "Reset Password"
+            username = request.GET.get("username")
+            pin = request.GET.get('pin')
+            form_type = "resetpinsuccessful"
+            context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type, 'reset_username':username, 'reset_pin':pin })
+        
+        # all gets that do not match a valid function should errror
         else:
             screen_title = "ERROR"
             error_messages.append("Please use the appropriate link.")
-        
-    send_email("bulls_eye_99@yahoo.com", "Test Message", "hi", )
+    
     template = loader.get_template('Authentication/resetpassword.html')
-    context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type })
+    if context == None:
+        context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type })
         
     return HttpResponse(template.render(context))
