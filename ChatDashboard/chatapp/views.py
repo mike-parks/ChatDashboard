@@ -17,6 +17,8 @@ import datetime
 # Create your views here.
 def list(request):
     print "found list"
+    print "Request: " + str(request)
+    print "User logged in: " + str(auth.user_logged_in)
 
     if request.method == "POST":
         title = request.POST['title']
@@ -108,7 +110,7 @@ def login_user(request):
             if user.check_password(password):
                     statuscode = 200
                     login(request, user)
-                    
+
                     messages.append("User is valid, active and authenticated")
                     return redirect('list/')
             else:
