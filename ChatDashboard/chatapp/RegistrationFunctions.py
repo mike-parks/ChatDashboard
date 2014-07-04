@@ -7,8 +7,15 @@ import re
 from mongoengine.django.sessions import MongoSession
 from mongoengine.django.auth import *
 from mongoengine.django.sessions import *
+import smtplib 
+from email.mime.text import MIMEText
+from ChatDashboard import settings
+import os
+from models import PasswordReset
+import datetime
+import random
 
-def validateEmail(email):
+def validate_email(email):
     regex_pattern = "[^@]+@[^@]+\.[^@]+"
     re.compile(regex_pattern)
     
@@ -17,7 +24,7 @@ def validateEmail(email):
     else:
         return True
     
-def validatePassword(password):
+def validate_password(password):
     regex_pattern = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
     re.compile(regex_pattern)
     
@@ -74,29 +81,41 @@ def change_password(username, current_password, new_password):
         return True
     else:
         return False
+    
+def reset_password(username, pin, new_password):
+    error_message = None
+    if validate_password(new_password):
+        if check_password_reset(username, pin):            
+            user = User.objects.get(username=username)                   
+            user.set_password(new_password)
+        else:
+            error_message = "Invalid Password Reset URL"
+    else:
+        error_message = "Invalid Password Format."
+        
+    return error_message
+    
    
-import os
-from models import PasswordReset
-import datetime
+
 def generate_reset_email(username):
     email = ""
-    
     #send email to email address associated with their username
     user = User.objects.filter(username=username)
-    if user == None:
+    if user == None or len(user) <> 1:
         return False
     else:
-        email = user[1].email
+        email = user[0].email
     
-    pin = os.urandom(32)
-    url = "%sPasswordFunctions/?function=resetpassword&username=%s&pin=%s" %(settings.BASE_URL, username, pin)
+
+    pin = ''.join(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") for _ in range(49))
+    url = "{}PasswordFunctions/?function=resetpinsuccessful&username={}&pin={}".format(settings.BASE_URL, username, pin)
     
     message = "Please Click the following URL to reset your password:\n%s" %(url)
 
     #add reset stats to database
-    current_timestamp =  DateTimeField(default=datetime.datetime.now)
-    exptime = datetime.datetime.now + datetime.timedelta(minutes=30) 
-    expire_timestamp = DateTimeField(default=exptime)
+    current_timestamp =  default=datetime.datetime.now()
+    exptime = datetime.datetime.now() + datetime.timedelta(minutes=30) 
+    expire_timestamp = exptime
     passwordreset = PasswordReset(username=username, resetpin=pin, time_issued=current_timestamp, time_expire=expire_timestamp, used=False )
     passwordreset.save()
 
@@ -106,19 +125,19 @@ def generate_reset_email(username):
 
 def check_password_reset(username, pin):
     valid_pin = False
-    current_timestamp =  DateTimeField(default=datetime.datetime.now)
+    current_timestamp =  datetime.datetime.now() 
     
-    passwordreset = PasswordReset(username=username, resetpin=pin, time_issued__gte=current_timestamp, time_expire__lt=current_timestamp, used=False)
-    for resetpin in passwordreset:
-        resetpin.used = True
-        resetpin.save()
-        valid_pin = True
+    # search for all password reset objects that are not used for the user and set them all to true
+    passwordreset = PasswordReset.objects.filter(username=username, used=False)
+    for resetobj in passwordreset:
+        resetobj.used = True
+        resetobj.save()
+        if resetobj.resetpin == pin and resetobj.time_issued < current_timestamp and resetobj.time_expire > current_timestamp:
+            valid_pin = True
     
     return valid_pin
 
-import smtplib 
-from email.mime.text import MIMEText
-from ChatDashboard import settings
+
 def send_email(email, subject, message):
     msg = MIMEText(message)
     msg['Subject'] = subject
