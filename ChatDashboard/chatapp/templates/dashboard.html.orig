@@ -71,6 +71,7 @@ $(document).ready(function() {
     </script>
 </head>
 <body>
+<<<<<<< HEAD
 	{% include "header.html"%}
 	<div class="cdbody">
 		<h1>You found {{ dashboard.title }}</h1>
@@ -83,6 +84,18 @@ $(document).ready(function() {
 				 <input id="text" type="text" name="message" placeholder="Message">
 	</div>
 	{% include "footer.html"%}
+=======
+    <h1>You found {{ dashboard.title }}</h1>
+    {% for message in all_messages %}
+        <p class="message">{{ message.msgtext }}
+    {% endfor %}
+    <div id="chatLog">
+
+    </div>
+             <input id="text" type="text" name="message" placeholder="Message">
+    <p>
+        <a href="./Logoff/">Log off</a>
     </p>
+>>>>>>> 8b2cc3170838a57d218683c00021b3243e46d9d2
 </body>
 </html>

@@ -12,6 +12,6 @@ urlpatterns = patterns('',
     url(r'Logoff/$', views.logoff_user),
     #url(r'PasswordFunctions/(?P<function>\w{0,50})/$', views.password_functions),
     url(r'PasswordFunctions/$', views.password_functions),
-    url(r'^(?P<title>\w+/?)$', views.render_dashboard, name="render_dashboard"),
-    url(r'$', views.login_user),
+    url(r'(?P<title>\w+/?)$', views.render_dashboard, name="render_dashboard"),
+    url(r'$', views.homepage),
 )
