@@ -71,14 +71,17 @@ $(document).ready(function() {
     </script>
 </head>
 <body>
-    <h1>You found {{ dashboard.title }}</h1>
-    {% for message in all_messages %}
-        <p class="message">{{ message.msgtext }}
-    {% endfor %}
-    <div id="chatLog">
+	{% include "header.html"%}
+	<div class="cdbody">
+		<h1>You found {{ dashboard.title }}</h1>
+		{% for message in all_messages %}
+			<p class="message">{{ message.msgtext }}
+		{% endfor %}
+		<div id="chatLog">
 
-    </div>
-             <input id="text" type="text" name="message" placeholder="Message">
-
+		</div>
+				 <input id="text" type="text" name="message" placeholder="Message">
+	</div>
+	{% include "footer.html"%}
 </body>
 </html>

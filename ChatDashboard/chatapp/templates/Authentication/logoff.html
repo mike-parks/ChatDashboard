@@ -9,26 +9,28 @@
 </head>
 <body>
 	{% include "header.html"%}
-    {% if user.is_authenticated %}
-    
-        <p>
-            You are currently logged in as {{user}}
-        </p>
-    {% else %}
-        <p>
-            You have successfully logged out.
-        </p>
-    {% endif %}
+	<div class="cdbody">
+		{% if user.is_authenticated %}
+		
+			<p>
+				You are currently logged in as {{user}}
+			</p>
+		{% else %}
+			<p>
+				You have successfully logged out.
+			</p>
+		{% endif %}
 
-    
-    
-    <div id='regform_errorloc' class='error_strings'>
-        {% if all_messages %}
-            {% for message in all_messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        {% endif %}
-
+		
+		
+		<div id='regform_errorloc' class='error_strings'>
+			{% if all_messages %}
+				{% for message in all_messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
+		</div>
     </div>
+	{% include "footer.html"%}
 </body>
 </html>
