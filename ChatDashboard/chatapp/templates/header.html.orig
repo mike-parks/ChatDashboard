@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div id="cdheader" class="cdheader">
 	<div class="row">
 		<div class="headerleft">
@@ -17,3 +18,6 @@
 		{% endif %}
 	</div>
 </div>
+=======
+<h1>Chat Dashboard</h1>
+>>>>>>> 8b2cc3170838a57d218683c00021b3243e46d9d2

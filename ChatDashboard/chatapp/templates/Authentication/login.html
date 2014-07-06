@@ -9,56 +9,60 @@
 </head>
 <body>
 	{% include "header.html"%}
-    {% if user.is_authenticated %}
-    
-        <p>Login Successful! <br />
-            You are currently logged in as {{user}}
-        </p>
-    {% else %}
-    <form method="post" name="LoginForm" onSubmit="return validateLoginForm();" >
-        {% csrf_token %}
-        <table>
-        	<tr>
-                <td>
-                    <label>Please Enter your username and password.</label>
-                </td>
-            </tr>
-            <tr>
-        		<td>
-        			<input type="text" name="username" placeholder="User Name" required>
-        		</td>
-        	</tr>
-        	<tr>
-        		<td>
-        			<input type="password" name="password" placeholder="Password" required>
-        		</td>
-        	</tr>
-        	<tr>
-        		<td>
-        			<input type="submit" value="Login">
-        		</td>
-        	</tr>
-        </table>
-    </form>
-    <a href="Register/">Register</a>
-    {% endif %}
+	<div class="cdbody">
+		{% if user.is_authenticated %}
+		
+			<p>Login Successful! <br />
+				You are currently logged in as {{user}}
+			</p>
+		{% else %}
+		<form method="post" name="LoginForm" onSubmit="return validateLoginForm();" >
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>
+						<label>Please Enter your username and password.</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" name="username" placeholder="User Name" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="password" name="password" placeholder="Password" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Login">
+					</td>
+				</tr>
+			</table>
+		</form>
+		<a href="Register/">Register</a> <br />
+		<a href="/PasswordFunctions/?function=resetpassword">Forgot Your Password</a>
+		{% endif %}
 
-    
-    <div id="passfuncsform_messageloc" class="message_strings">
-        {% if messages %}
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        {% endif %}
-    </div>
-	
-    <div id='regform_errorloc' class='error_strings'>
-        {% if error_messages %}
-            {% for message in error_messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        {% endif %}
+		
+		<div id="passfuncsform_messageloc" class="message_strings">
+			{% if messages %}
+				{% for message in messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
+		</div>
+		
+		<div id='regform_errorloc' class='error_strings'>
+			{% if error_messages %}
+				{% for message in error_messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
 
-    </div>
+		</div>
+	</div>
+	{% include "footer.html"%}
 </body>
 </html>

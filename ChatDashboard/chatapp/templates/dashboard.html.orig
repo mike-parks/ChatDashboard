@@ -35,9 +35,7 @@ $(document).ready(function() {
           }
 
           function send(){
-              var testusername = "Testuser"
-              var dashboardname = "{{ dashboard.title }}"
-              var text = dashboardname + "::" + testusername + "::" + $('#text').val();
+              var text = $('#text').val();
 
               if(text==""){
                   message('<p class="warning">Please enter a message');
@@ -74,17 +72,6 @@ $(document).ready(function() {
 </head>
 <body>
 <<<<<<< HEAD
-    <h1>You found {{ dashboard.title }}</h1>
-    {% for message in all_messages %}
-        <p class="message">{{ message.username }}: {{ message.msgtext }}
-    {% endfor %}
-    <div id="chatLog">
-
-    </div>
-             <input id="text" type="text" name="message" placeholder="Message">
-    <p>
-        <a href="./Logoff/">Log off</a>
-=======
 	{% include "header.html"%}
 	<div class="cdbody">
 		<h1>You found {{ dashboard.title }}</h1>
@@ -97,7 +84,18 @@ $(document).ready(function() {
 				 <input id="text" type="text" name="message" placeholder="Message">
 	</div>
 	{% include "footer.html"%}
->>>>>>> origin/master
+=======
+    <h1>You found {{ dashboard.title }}</h1>
+    {% for message in all_messages %}
+        <p class="message">{{ message.msgtext }}
+    {% endfor %}
+    <div id="chatLog">
+
+    </div>
+             <input id="text" type="text" name="message" placeholder="Message">
+    <p>
+        <a href="./Logoff/">Log off</a>
     </p>
+>>>>>>> 8b2cc3170838a57d218683c00021b3243e46d9d2
 </body>
 </html>

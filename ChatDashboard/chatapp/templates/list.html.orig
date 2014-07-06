@@ -16,6 +16,7 @@
 			<input type="submit" value="Create Chat Dashboard">
 		</form>
 
+<<<<<<< HEAD
 		{% if all_dashboards %}
 		<ul>
 		{% for dash in all_dashboards %}
@@ -28,5 +29,17 @@
 		<a href="/PasswordFunctions/?function=changepassword" >Change Password</a>
 	</div>
 	{% include "footer.html"%}
+=======
+    {% if all_dashboards %}
+    <ul>
+    {% for dash in all_dashboards %}
+        <li><a href="{{ dash.title }}">{{ dash.title }}</a></li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>No Chat Dashboards are available</p>
+    {% endif %}
+    <a href="./Logoff/">Log off</a>
+>>>>>>> 8b2cc3170838a57d218683c00021b3243e46d9d2
 </body>
 </html>

@@ -9,6 +9,7 @@
 </head>
 <body>
 	{% include "header.html"%}
+<<<<<<< HEAD
 	<div class="cdbody">
 		{% if user.is_authenticated %}
 		
@@ -20,6 +21,28 @@
 				You have successfully logged out.
 			</p>
 		{% endif %}
+=======
+    {% if user.is_authenticated %}
+    
+        <p>
+            You are currently logged in as {{user}}
+        </p>
+    {% else %}
+        <p>
+            You have successfully logged out.
+        </p>
+    <a href="/">Log in</a>
+    {% endif %}
+
+    
+    
+    <div id='regform_errorloc' class='error_strings'>
+        {% if all_messages %}
+            {% for message in all_messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        {% endif %}
+>>>>>>> 8b2cc3170838a57d218683c00021b3243e46d9d2
 
 		
 		
