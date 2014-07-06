@@ -94,15 +94,22 @@ def login_user(request):
        #request.session.create()
         usernm = request.POST['username']
         password = request.POST['password']
+        user = None
         messages = []
+        error_messages = []
         statuscode = 400 # assume credentials are invalid
               
-        foundUser = User.objects.get(username=usernm)
-        
-        if foundUser is not None:
+        try:
+            foundUser = User.objects.get(username=usernm)
             user = authenticate(username=usernm, password=password)
-        else:
-            messages.append(usernm + " is already taken. Please try another username.")
+        except:
+            pass #pass becuase error message will be added below
+            
+        
+        #if foundUser is not None:
+        #    user = authenticate(username=usernm, password=password)
+        #else:
+        #    messages.append(usernm + " is already taken. Please try another username.")
             
         #user = User.objects.get(username=usernm)
         if user is not None:
@@ -114,28 +121,28 @@ def login_user(request):
                     messages.append("User is valid, active and authenticated")
                     return redirect('list/')
             else:
-                    messages.append("The account has been disabled!")
+                    error_messages.append("Invalid Username/Password combination.")
         else:   
             # the authentication system was unable to verify the username and password
-            messages.append("The username and password were incorrect.")        
+            error_messages.append("Invalid Username/Password combination.")        
         
         if statuscode == 200:
-            context = RequestContext(request, {'all_messages': messages, 'authenticated': True })
+            context = RequestContext(request, {'messages': messages, 'authenticated': True, 'error_messages':error_messages})
         else:
-            context = RequestContext(request, {'all_messages': messages,'authenticated': False })            
+            context = RequestContext(request, {'messages': messages,'authenticated': False , 'error_messages':error_messages})            
         
         template = loader.get_template('Authentication/login.html')
         return HttpResponse( content=template.render(context), status=statuscode)
     else:
        template = loader.get_template('Authentication/login.html')
-       context = RequestContext(request, {'all_messages': None, 'authenticated': False} )        
+       context = RequestContext(request, {'messages': None, 'authenticated': False, 'error_messages':None} )        
     return HttpResponse(template.render(context))
 
 def logoff_user(request):
     logout(request)
     request.session.delete()
     template = loader.get_template('Authentication/logoff.html')
-    context = RequestContext(request, {'all_messages': None, 'authenticated': False} )  
+    context = RequestContext(request, {'messages': None, 'authenticated': False} )  
     return HttpResponse(template.render(context))
 
 

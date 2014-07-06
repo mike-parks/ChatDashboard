@@ -2,12 +2,13 @@
 <html>
 <head lang="en">
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="template.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
     <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
     <meta charset="UTF-8">
     <title>Chat dashboard User Registration</title>
 </head>
 <body>
+	{% include "header.html"%}
     {% if user.is_authenticated %}
     
         <p>Login Successful! <br />
@@ -43,10 +44,17 @@
     {% endif %}
 
     
-    
+    <div id="passfuncsform_messageloc" class="message_strings">
+        {% if messages %}
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        {% endif %}
+    </div>
+	
     <div id='regform_errorloc' class='error_strings'>
-        {% if all_messages %}
-            {% for message in all_messages %}
+        {% if error_messages %}
+            {% for message in error_messages %}
                 <li>{{ message }}</li>
             {% endfor %}
         {% endif %}
