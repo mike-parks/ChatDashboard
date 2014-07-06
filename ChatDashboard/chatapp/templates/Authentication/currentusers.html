@@ -2,12 +2,13 @@
 <html>
 <head lang="en">
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="template.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
     <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
     <meta charset="UTF-8">
     <title>Chatdashboard User Registration</title>
 </head>
 <body>
+	{% include "header.html"%}
 
     <form method="post" name="UserActionForm">
         {% csrf_token %}
