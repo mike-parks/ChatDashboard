@@ -87,9 +87,15 @@ def register(request):
         'all_messages': None,
         })
         return HttpResponse(template.render(context))
-    
+
+def homepage(request):
+    print "Homepage"
+    return login_user(request)
 
 def login_user(request):
+    print "Login user"
+    if request.user.is_authenticated():
+        return redirect('list/')
     if request.method == "POST" and not request.user.is_authenticated():#and not request.user.is_authenticated(): #TODO: add in check for if user currently has a logged in session
        #request.session.create()
         usernm = request.POST['username']
