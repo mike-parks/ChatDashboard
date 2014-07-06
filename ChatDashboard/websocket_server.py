@@ -3,6 +3,12 @@ from twisted.protocols import basic
 from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted_websockets import WebSocketsResource, lookupProtocolForFactory
+from chatapp.models import Message
+import datetime
+
+DBNAME = "chatdata"
+import mongoengine
+mongoengine.connect(DBNAME)
 
 """Creating Twisted protocol class.
 Requires these functions: connectionMade, connectionLost, lineReceived."""
@@ -25,8 +31,22 @@ class DashboardProtocol(basic.LineReceiver):
 
     def dataReceived(self, data):
         print "Received data: " + str(data)
+
+        # construct a model object message
+        splitinfo = str(data).split("::")
+        username = splitinfo[1]
+        messagetext = splitinfo[2]
+        dashboardname = splitinfo[0]
+        message = Message(msgtext=messagetext, timestamp=datetime.datetime.now(),
+                          username=username,
+                          dashboardtitle=dashboardname)
+        message.save()
+
+        print "New message is:"
+        print str(message)
+
         for c in self.factory.clients:
-            c.sendLine("<{}> {}".format(self.transport.getHost(), data))
+            c.sendLine("<{}> {}".format(self.transport.getHost(), username + ": " + messagetext))
 
 
 

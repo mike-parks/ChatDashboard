@@ -33,12 +33,6 @@ def list(request):
     return HttpResponse(template.render(context))
 
 def render_dashboard(request, title):
-    if request.method == "POST":
-        message = request.POST.get('message', '')
-        dashboard_title = request.POST['dashboard_title']
-        message = Message(msgtext=message, timestamp=datetime.datetime.now(), dashboardtitle=dashboard_title)
-        message.save()
-
     messages_here = Message.objects(dashboardtitle=title)
     template = loader.get_template('dashboard.html')
     dashboard = get_document_or_404(Dashboard, pk=title)

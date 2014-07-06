@@ -35,7 +35,9 @@ $(document).ready(function() {
           }
 
           function send(){
-              var text = $('#text').val();
+              var testusername = "Testuser"
+              var dashboardname = "{{ dashboard.title }}"
+              var text = dashboardname + "::" + testusername + "::" + $('#text').val();
 
               if(text==""){
                   message('<p class="warning">Please enter a message');
@@ -73,7 +75,7 @@ $(document).ready(function() {
 <body>
     <h1>You found {{ dashboard.title }}</h1>
     {% for message in all_messages %}
-        <p class="message">{{ message.msgtext }}
+        <p class="message">{{ message.username }}: {{ message.msgtext }}
     {% endfor %}
     <div id="chatLog">
 
