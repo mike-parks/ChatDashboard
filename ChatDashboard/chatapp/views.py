@@ -11,24 +11,44 @@ from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
 
-from models import Dashboard, Message
+from models import Dashboard, Message, Dashboard_Permission
 import datetime
 
 # Create your views here.
 def list(request):
     print "found list"
     print "Request: " + str(request)
-    print "User logged in: " + str(auth.user_logged_in)
+    print "User logged in: " + str(request.user.is_authenticated())#str(auth.user_logged_in)
+    messages = []
+    error_messages = []
+    
+    if (not request.user.is_authenticated()):
+        return login_user(request)
 
-    if request.method == "POST":
+#should check to make sure dashboard doesn't already exist
+    if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
         title = request.POST['title']
-        dashboard = Dashboard(title=title)
+        username = request.user.username
+        dashboard = Dashboard(title=title, creator=username)
         dashboard.save()
+        permission = Dashboard_Permission(dashboard_title=title, user=username, privilage="admin")
+        permission.save()
+        print "Created Dashboard: " + title
 
+# need to get to return all dashboards that the user has access to... not all existing dashboards
+    user_dashboards = None
+    try:
+        user_dashboards = Dashboard_Permission.objects(user=username)
+    except:
+        messages.append("You are not a user on any Dashboards.")
+        
     all_dashboards = Dashboard.objects()
     template = loader.get_template('list.html')
     context = RequestContext(request, {
-        'all_dashboards': all_dashboards
+        'all_dashboards': all_dashboards,
+        'user_dashboards': user_dashboards,
+        'messages': messages,
+        'error_messages': error_messages
     })
     return HttpResponse(template.render(context))
 
@@ -105,13 +125,7 @@ def login_user(request):
         except:
             pass #pass becuase error message will be added below
             
-        
-        #if foundUser is not None:
-        #    user = authenticate(username=usernm, password=password)
-        #else:
-        #    messages.append(usernm + " is already taken. Please try another username.")
-            
-        #user = User.objects.get(username=usernm)
+
         if user is not None:
             # the password verified for the user
             if user.check_password(password):
@@ -245,7 +259,7 @@ def password_functions(request):
             form_type = "resetpinsuccessful"
             context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type, 'reset_username':username, 'reset_pin':pin })
         
-        # all gets that do not match a valid function should errror
+        # all gets that do not match a valid function should error
         else:
             screen_title = "ERROR"
             error_messages.append("Please use the appropriate link.")

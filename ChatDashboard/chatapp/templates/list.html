@@ -10,23 +10,61 @@
 	{% include "header.html"%}
 	<div class="cdbody">
 		<h1>Here are the Chat Dashboards...</h1>
-		<form method="post" action="http://127.0.0.1:8000/">
+		<form method="post" name="create_dashboard_form"> <!--action="http://127.0.0.1:8000/">-->
 			{% csrf_token %}
 			<input type="text" name="title" placeholder="Title" required>
-			<input type="submit" value="Create Chat Dashboard">
+			<input type="submit" name="create_dashboard_submit" value="Create Chat Dashboard">
 		</form>
+		
+		<p>Your Accessable Dashboards:</p>
+		{% if user_dashboards %}
+			<ul>
+			{% for dash in user_dashboards %}
+				<li><a href="{{ dash.dashboard_title }}">{{ dash.dashboard_title }}</a></li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>No Chat Dashboards are available</p>
+		
+		{% endif %}
 
+		<br />
+		<br />
+		
+		<p>All Dashboards:</p>
 		{% if all_dashboards %}
-		<ul>
-		{% for dash in all_dashboards %}
-			<li><a href="{{ dash.title }}">{{ dash.title }}</a></li>
-		{% endfor %}
-		</ul>
+			<ul>
+			{% for dash in all_dashboards %}
+				<li><a href="{{ dash.title }}">{{ dash.title }}</a></li>
+			{% endfor %}
+			</ul>
 		{% else %}
 			<p>No Chat Dashboards are available</p>
 		{% endif %}
+		<br />
 		<a href="/PasswordFunctions/?function=changepassword" >Change Password</a>
+		<br />
+		
+		
+		<div id="passfuncsform_messageloc" class="message_strings">
+			{% if messages %}
+				{% for message in messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
+		</div>
+			
+		<div id='passfuncsform_errorloc' class='error_strings'>
+			{% if error_messages %}
+				{% for message in error_messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
+		</div>
 	</div>
+	
+	
+	
 	{% include "footer.html"%}
 </body>
 </html>
