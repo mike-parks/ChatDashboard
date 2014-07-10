@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head lang="en">
     <meta charset="UTF-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
     <title>Dashboard</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script>
@@ -85,7 +87,7 @@ $(document).ready(function() {
 				 <input id="text" type="text" name="message" placeholder="Message">
 	</div>
 <p>
-    <a href="./Logoff/">Log off</a>
+    <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Edit Dashboard Users</a>
 	{% include "footer.html"%}
     </p>
 </body>
