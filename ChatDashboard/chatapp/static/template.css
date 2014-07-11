@@ -40,15 +40,35 @@
 	float: left;
 	display: table-column;
 	}
-.row{
+	
+.textright{
+	position: relative;
+	float: right;
+	}
+.table {
+    display:table;
+}
+.col {
+    display: table-column;
+}
+
+.row {
+    display: table-row;
+}
+
+.cell {
+    display: table-cell;
+    padding: 5px;
+}
+
+.headderrow {
+    display: table-row;
+}
+
+.headderrow{
 	position: relative;
 	float: right;
 	display: table-row;
 	width: 100%;
 	margin: 0 auto;
 }
-	
-.textright{
-	position: relative;
-	float: right;
-	}

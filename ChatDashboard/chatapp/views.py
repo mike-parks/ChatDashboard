@@ -81,7 +81,7 @@ def dashboard_user_administration(request):
 
     # get dashboard title
     if  request.method == "POST":
-        dash_title = request.POST["dashboard"]
+        dash_title = request.POST['dashboard']
     else:
         dash_title = request.GET.get("dashboard")
     
@@ -101,8 +101,9 @@ def dashboard_user_administration(request):
         user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dash_title)
         
         if  request.method == "POST":
-            dash_action = request.POST["dashboard_action"]
-            action_user = request.POST["action_user"]
+            dash_action = request.POST['dashboard_action']
+            action_user = request.POST['action_user']
+
             if action_user == dashboard.creator:
                 error_messages.append("Unable to perform Dashboard user action on Dashboard creator.")
             else:
@@ -114,18 +115,19 @@ def dashboard_user_administration(request):
                         error_messages.append("Unable to delete user")
                 elif dash_action=="add_user":
                     user_permission = request.POST["user_permission"]
+                    print user_permission
                     success = add_dashboard_user(dash_title, action_user, user_permission)
                     if (success):
-                        messages.append("Successfully deleted the user: " + action_user)
+                        messages.append("Successfully added the user: " + action_user)
                     else:
-                        error_messages.append("Unable to delete user")
-                elif dash_action == "chane_permissions":
+                        error_messages.append("Unable to add user")
+                elif dash_action == "change_permissions":
                     user_permission = request.POST["user_permission"]
                     success = change_dashboard_permissions(dash_title, action_user, user_permission)
                     if (success):
-                        messages.append("Successfully deleted the user: " + action_user)
+                        messages.append("Successfully change the user permissions." + action_user)
                     else:
-                        error_messages.append("Unable to delete user")
+                        error_messages.append("Unable to change user permissions.")
                 else: 
                     error_messages.append("Invalid Dashboard User Action.")
         

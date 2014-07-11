@@ -4,6 +4,7 @@ Created on Jul 9, 2014
 @author: Nick
 '''
 from models import Dashboard_Permission
+from mongoengine.django.auth import *
 
 def delete_dashboard_user(dashboard, user):
     successfull = False
@@ -12,6 +13,7 @@ def delete_dashboard_user(dashboard, user):
         dashboard_perm = Dashboard_Permission.objects.get(dashboard_title=dashboard, user=user)
         
         dashboard_perm.delete()
+        successfull = True
     except:
         pass #will return false if permission is not found
     
@@ -23,7 +25,7 @@ def change_dashboard_permissions(dashboard, user, perm_level):
     try: 
         # retrieve user. Uses objects.get so that it will error if there are multiple permissions
         dashboard_perm = Dashboard_Permission.objects.get(dashboard_title=dashboard, user=user)
-        
+
         # only add permissions if the values are correct
         if perm_level == Dashboard_Permissions.ADMIN:
             dashboard_perm.privilage = Dashboard_Permissions.ADMIN
@@ -44,7 +46,18 @@ def add_dashboard_user(dashboard, user, perm_level):
     
     try: 
         # retrieve user. Uses objects.get so that it will error if there are multiple permissions
-        dashboard_perm = Dashboard_Permission.objects.get(dashboard_title=dashboard, user=user)
+        dashboard_perm = Dashboard_Permission.objects.filter(dashboard_title=dashboard, user=user)
+        users = User.objects.filter(username=user)
+        
+        if len(dashboard_perm) == 0 and len(users) == 1:
+            if perm_level == Dashboard_Permissions.ADMIN:
+                dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilage=Dashboard_Permissions.ADMIN)
+                dashboard_perm.save()
+                successfull = True
+            elif perm_level == Dashboard_Permissions.USER:            
+                dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilage=Dashboard_Permissions.USER)
+                dashboard_perm.save()
+                successfull = True
         
         #will not throw error if the permission exists. In that case it should return as a failure.
     except:
