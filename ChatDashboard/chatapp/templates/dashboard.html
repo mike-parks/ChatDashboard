@@ -23,7 +23,7 @@ $(document).ready(function() {
               }
 
               socket.onmessage = function(msg){
-                 message('<p class="message">Received: '+msg.data);
+                 message('<p class="message">'+msg.data);
               }
 
               socket.onclose = function(){
@@ -35,7 +35,7 @@ $(document).ready(function() {
           }
 
           function send(){
-              var testusername = "Testuser"
+              var testusername = "{{ user }}"
               var dashboardname = "{{ dashboard.title }}"
               var text = dashboardname + "::" + testusername + "::" + $('#text').val();
 
@@ -82,11 +82,8 @@ $(document).ready(function() {
 		<div id="chatLog">
 
 		</div>
-				 <input id="text" type="text" name="message" placeholder="Message">
+		<input id="text" type="text" name="message" placeholder="Message">
 	</div>
-<p>
-    <a href="./Logoff/">Log off</a>
 	{% include "footer.html"%}
-    </p>
 </body>
 </html>
