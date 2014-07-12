@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>Chatdashboard Admin Dashboard Functions</title>
+</head>
+<body>
+	{% include "header.html"%}
+	<div class="cdbody">
+		<form method="post" name="UserActionForm">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>
+						<label>Please Select Dashboard and Command:</label>
+					</td>
+				</tr>
+				<tr>
+					<td>a
+						<input type="text" name="dashboard" placeholder="Dashboard Name" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="dashboardaction" value="viewdashboards" />View Dashboards
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="dashboardaction" value="viewdashboardpermissions" />View All Dashboard Permissions
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="dashboardaction" value="delete" />Delete
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="SubmitDashboardAction" />
+					</td>
+				</tr>
+			</table>
+		</form>
+
+		<div  >
+			{% if dashprivfound %}
+				<table id="admintable">
+						<tr>
+							<td>Dashboard</td>
+							<td>User</td>
+							<td>Privilage</td>
+						</tr>
+					{% for dashpriv in dashprivfound %}
+						<tr>
+							<td>{{ dashpriv.dashboard_title }}</td>
+							<td>{{ dashpriv.user }}</td>
+							<td>{{ dashpriv.privilage }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>No Privilages Found!</p>
+			{% endif %}  
+
+		</div>   
+	</div>
+	{% include "footer.html"%}
+</body>
+</html>

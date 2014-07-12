@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>{{dashboard.title}} User Administration</title>
+</head>
+<body>
+	{% include "header.html"%}
+	<div class="cdbody">
+		
+		<form method="post" name="LoginForm" onSubmit="return validateLoginForm();" >
+			{% csrf_token %}
+			<input type="hidden" name="dashboard" id ="dashboardHidden" value="{{dashboard.title}}" />
+			<input type="hidden" name="action_user" id="userHidden"/>
+			<input type="hidden" name="user_permission" id="permissionHidden" value="user" />
+			<input type="hidden" name="dashboard_action" id ="actionHidden" value="change_permissions" />
+			
+			<div class="table">
+				<div class="col"> </div>
+				<div class="col"> </div>
+				<div class="col"> </div>
+				<div class="col"> </div>
+				<div class="col"> </div>
+				<div class="row">
+					<div class="cell">Username</div>
+					<div class="cell">Privelage</div>
+					<div class="cell">Action</div>
+                    <div class="cell">Privelage to Set</div>
+                    <div class="cell"> </div>
+				</div>
+				
+			{% if user_permissions %}
+				{% for userpriv in user_permissions %}					
+						<div class="row">
+							<div class="cell">{{userpriv.user}}</div>
+							<div class="cell">{{userpriv.privilage}}</div>
+							<div class="cell"><select name="formAction" id="formActionSelect{{userpriv.user}}" onchange="changeFormAction('{{userpriv.user}}')">
+									<option value="change_permissions">Change Permissions</option>
+									<option value="delete_user">Delete User</option>
+								</select>
+							</div>
+                            <div class="cell" ><select name="userPrivilageSelect" id="userPrivilageSelect{{userpriv.user}}" onchange="changeUserPrivilageSelect('{{userpriv.user}}')">
+									<option value="user">User</option>
+									<option value="admin">Admin</option>
+								</select>
+                            </div>
+                            <div class="cell">
+                                <input type="submit" onsubmit="addActionUserSubmit('{{userpriv.user}}')" onclick="addActionUserSubmit('{{userpriv.user}}')" onkeypress="addActionUserSubmit('{{userpriv.user}}')"/>
+                            </div>
+						</div>					
+				{% endfor %}
+			{% endif %}
+			
+			<br />
+			<br />
+                <div class="row">
+                    <div class="cell">
+                        Username: <input type="text" id="newUserInput" placeholder="New User" />
+                    </div>
+                    <div class="cell">
+                        Privelage: <select name="addUserPrivilageSelect" id="addUserPrivilageSelect" onchange="changeAddUserPrivilageSelect()">
+									<option value="user">User</option>
+									<option value="admin">Admin</option>
+								</select>
+                    </div>
+                    <div class="cell">
+                        <input type="submit" name="userActionSelect" onsubmit="addUserSubmit()" onclick="addUserSubmit()" onkeypress="addUserSubmit()"/>
+                    </div>
+					<div class="cell"> </div>
+					<div class="cell"> </div>
+                </div>
+			</div>
+		</form>
+
+		
+		<div id="passfuncsform_messageloc" class="message_strings">
+			{% if messages %}
+				{% for message in messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
+		</div>
+		
+		<div id='regform_errorloc' class='error_strings'>
+			{% if error_messages %}
+				{% for message in error_messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+			{% endif %}
+
+		</div>
+	</div>
+	{% include "footer.html"%}
+
+    <script>
+        function changeFormAction(username) {
+            var myselect = document.getElementById("formActionSelect" + username);
+            var actionHidden = document.getElementById("actionHidden");
+            var userHidden = document.getElementById("userHidden");
+			var myPrivSelect = document.getElementById("userPrivilageSelect" + username);
+
+            var selectedValue = myselect.options[myselect.selectedIndex].value;
+            userHidden.value = username;
+
+            if (selectedValue === "change_permissions") {
+                var myPrivSelect = document.getElementById("userPrivilageSelect" + username);
+                myPrivSelect.disabled = false;
+				myPrivSelect.visible = true;
+                actionHidden.value = selectedValue;
+            } else {
+                if (selectedValue === "delete_user") {
+                    actionHidden.value = selectedValue;
+					myPrivSelect.visible = false;
+					myPrivSelect.disabled = true;
+                }
+            }
+        }
+
+        function changeUserPrivilageSelect(username) {
+            var permissionHidden = document.getElementById("permissionHidden");
+            var myPrivSelect = document.getElementById("userPrivilageSelect" + username);
+
+            var selectedValue = myPrivSelect.options[myPrivSelect.selectedIndex].value;
+
+            permissionHidden.value = selectedValue;
+            
+        }
+		
+		function addActionUserSubmit(username){
+			
+            var userHidden = document.getElementById("userHidden");
+			userHidden.value = username;
+		}
+
+        function changeAddUserPrivilageSelect() {
+            var permissionHidden = document.getElementById("permissionHidden");
+            var myPrivSelect = document.getElementById("addUserPrivilageSelect");
+
+            var selectedValue = myPrivSelect.options[myPrivSelect.selectedIndex].value;
+
+            permissionHidden.value = selectedValue;
+
+        }
+
+        function addUserSubmit() {
+            var myUserInput = document.getElementById("newUserInput");
+            var myPrivSelect = document.getElementById("addUserPrivilageSelect");
+
+
+            var actionHidden = document.getElementById("actionHidden");
+            var userHidden = document.getElementById("userHidden");
+            var permissionHidden = document.getElementById("permissionHidden");
+            
+            userHidden.value = myUserInput.value;
+            actionHidden.value = "add_user";
+            permissionHidden.value = myPrivSelect.options[myPrivSelect.selectedIndex].value;
+        }
+    </script>
+
+</body>

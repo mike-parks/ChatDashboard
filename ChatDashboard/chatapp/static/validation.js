@@ -7,6 +7,7 @@ function validatePassword(password) {
     if (pos === -1) {
         return false;
     }
+	return true;
 
 }
 
@@ -19,5 +20,6 @@ function validateEmail(email) {
     if (pos === -1) {
         return false;
     }
+	return true;
 
 }

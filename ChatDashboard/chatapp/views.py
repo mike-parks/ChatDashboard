@@ -10,29 +10,55 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
+from  DashboardFunctions import *
 
-from models import Dashboard, Message
+from models import Dashboard, Message, Dashboard_Permission
 import datetime
 
 # Create your views here.
 def list(request):
-    print "found list"
-    print "Request: " + str(request)
-    print "User logged in: " + str(auth.user_logged_in)
+    #print "found list"
+    #print "Request: " + str(request)
+    #print "User logged in: " + str(request.user.is_authenticated())#str(auth.user_logged_in)
+    messages = []
+    error_messages = []
+    
+    
+    if (not request.user.is_authenticated()):
+        return login_user(request)
 
-    if request.method == "POST":
+
+    username = request.user.username
+#should check to make sure dashboard doesn't already exist
+    if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
         title = request.POST['title']
-        dashboard = Dashboard(title=title)
+        dashboard = Dashboard(title=title, creator=username)
+        permission = Dashboard_Permission(dashboard_title=title, user=username, privilage=Dashboard_Permissions.ADMIN)
         dashboard.save()
+        permission.save()
+        print "Created Dashboard: " + title
 
+
+    user_dashboards = None
+    try:
+        user_dashboards = Dashboard_Permission.objects.filter(user=username)
+    except:
+        messages.append("You are not a user on any Dashboards.")
+        
     all_dashboards = Dashboard.objects()
     template = loader.get_template('list.html')
     context = RequestContext(request, {
-        'all_dashboards': all_dashboards
+        'all_dashboards': all_dashboards,
+        'user_dashboards': user_dashboards,
+        'messages': messages,
+        'error_messages': error_messages
     })
     return HttpResponse(template.render(context))
 
 def render_dashboard(request, title):
+    if (not request.user.is_authenticated()):
+        return login_user(request)
+    
     messages_here = Message.objects(dashboardtitle=title)
     template = loader.get_template('dashboard.html')
     dashboard = get_document_or_404(Dashboard, pk=title)
@@ -42,7 +68,80 @@ def render_dashboard(request, title):
     })
     return HttpResponse(template.render(context))
 
+def dashboard_user_administration(request):
+    messages = []
+    error_messages = []
+    user_permissions_list = None
+    
+    if (not request.user.is_authenticated()):
+        return login_user(request)
+    
+    request_user = request.user.username
 
+
+    # get dashboard title
+    if  request.method == "POST":
+        dash_title = request.POST['dashboard']
+    else:
+        dash_title = request.GET.get("dashboard")
+    
+        
+    # retrieve dashboard and verify that the user has admin permissions
+    dashboard = Dashboard.objects.get(title=dash_title)
+    user_admin_perm = None
+    try:
+        user_admin_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user, privilage=Dashboard_Permissions.ADMIN)
+    except:
+        print "User," + request_user + " , does not have permissions for the " + dash_title + " Dashboard."
+    
+    if (user_admin_perm == None):
+        error_messages.append("You do not have admin permission on this Dashboard.")
+        user_permissions_list = Dashboard_Permission.objects()
+    else:  
+        user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dash_title)
+        
+        if  request.method == "POST":
+            dash_action = request.POST['dashboard_action']
+            action_user = request.POST['action_user']
+
+            if action_user == dashboard.creator:
+                error_messages.append("Unable to perform Dashboard user action on Dashboard creator.")
+            else:
+                if dash_action == "delete_user":
+                    success = delete_dashboard_user(dash_title, action_user)
+                    if (success):
+                        messages.append("Successfully deleted the user: " + action_user)
+                    else:
+                        error_messages.append("Unable to delete user")
+                elif dash_action=="add_user":
+                    user_permission = request.POST["user_permission"]
+                    print user_permission
+                    success = add_dashboard_user(dash_title, action_user, user_permission)
+                    if (success):
+                        messages.append("Successfully added the user: " + action_user)
+                    else:
+                        error_messages.append("Unable to add user")
+                elif dash_action == "change_permissions":
+                    user_permission = request.POST["user_permission"]
+                    success = change_dashboard_permissions(dash_title, action_user, user_permission)
+                    if (success):
+                        messages.append("Successfully change the user permissions." + action_user)
+                    else:
+                        error_messages.append("Unable to change user permissions.")
+                else: 
+                    error_messages.append("Invalid Dashboard User Action.")
+        
+
+
+
+    template = loader.get_template('dashboarduseractions.html')
+    context = RequestContext(request, {
+        'dashboard': dashboard,
+        'user_permissions': user_permissions_list,
+        'messages': messages,
+        'error_messages': error_messages
+    })
+    return HttpResponse(template.render(context))
 
 def send_message(request):
     """Stub for send message test case"""
@@ -105,13 +204,7 @@ def login_user(request):
         except:
             pass #pass becuase error message will be added below
             
-        
-        #if foundUser is not None:
-        #    user = authenticate(username=usernm, password=password)
-        #else:
-        #    messages.append(usernm + " is already taken. Please try another username.")
-            
-        #user = User.objects.get(username=usernm)
+
         if user is not None:
             # the password verified for the user
             if user.check_password(password):
@@ -168,6 +261,28 @@ def admin_functions(request):
 
     template = loader.get_template('Authentication/currentusers.html')
     context = RequestContext(request, {'ursfound': usernames }) 
+    return HttpResponse(template.render(context))
+
+def admin_dashboard_functions(request):
+    dashboard = []
+    userids = []
+    
+    if request.method=="POST" and request.POST['useraction']== "delete":
+        rmvuser = request.POST['username']
+        delete_user(rmvuser)
+        usernames = retrieve_all_usernames()
+    
+    
+    if request.method=="POST" and request.POST['useraction']== "viewactiveusers":
+        usernames = retrieve_active_usernames()
+    
+
+    if request.method=="POST" and request.POST['useraction']== "viewusers":
+        usernames = retrieve_all_usernames()
+        
+    dashprivs = Dashboard_Permission.objects()
+    template = loader.get_template('AdminDashboardFunctions.html')
+    context = RequestContext(request, {'dashprivfound': dashprivs }) 
     return HttpResponse(template.render(context))
 
 def password_functions(request):
@@ -245,7 +360,7 @@ def password_functions(request):
             form_type = "resetpinsuccessful"
             context = RequestContext(request, {'screen_title':screen_title , 'messages':messages, 'error_messages':error_messages, 'form_type': form_type, 'reset_username':username, 'reset_pin':pin })
         
-        # all gets that do not match a valid function should errror
+        # all gets that do not match a valid function should error
         else:
             screen_title = "ERROR"
             error_messages.append("Please use the appropriate link.")

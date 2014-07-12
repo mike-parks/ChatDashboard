@@ -15,7 +15,7 @@
 			<table>
 				<tr>
 					<td>
-						<label>Please Select Username and Command:</label>
+						<label>Please Username and Command:</label>
 					</td>
 				</tr>
 				<tr>

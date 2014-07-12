@@ -79,12 +79,12 @@
 					errorString += "<li>Passwords don't match.</li>";
 				}
 
-				if (!validatePassword(RegistrationForm.password.value)) {
+				if (validatePassword(RegistrationForm.password.value)) {
 					formValid = false;
 					errorString += "<li>Passwords must have at least one lowercase letter, one uppercase letter, and one number.</li>";
 				}
 
-				if (!validateEmail(RegistrationForm.email.value)) {
+				if (validateEmail(RegistrationForm.email.value)) {
 					formValid = false;
 					errorString += "<li>Please enter a valid email.</li>";
 				}
