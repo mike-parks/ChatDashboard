@@ -25,7 +25,10 @@ $(document).ready(function() {
               }
 
               socket.onmessage = function(msg){
-                 message('<p class="message">'+msg.data);
+                    console.log("Msg: " + msg.data)
+                 var msgcomponents = msg.data.split("::");
+                 var topicname = msgcomponents[1];
+                 message('<p class="message">' + msgcomponents[0], topicname);
               }
 
               socket.onclose = function(){
@@ -36,10 +39,10 @@ $(document).ready(function() {
              message('<p>Error'+exception);
           }
 
-          function send(){
+          function send(topicname, text){
               var testusername = "{{ user }}"
               var dashboardname = "{{ dashboard.title }}"
-              var text = dashboardname + "::" + testusername + "::" + $('#text').val();
+              var text = dashboardname + "::" + testusername + "::" + text + "::" + topicname
 
               if(text==""){
                   message('<p class="warning">Please enter a message');
@@ -52,16 +55,18 @@ $(document).ready(function() {
               } catch(exception){
                  message('<p class="warning">');
               }
-              $('#text').val("");
           }
 
-          function message(msg){
-            $('#chatLog').append(msg+'</p>');
+          function message(msg, topicname){
+            $('.'+ topicname + ' > #chatLog').append(msg+'</p>');
           }
 
-          $('#text').keypress(function(event) {
+          $('.textbox').keypress(function(event) {
               if (event.keyCode == '13') {
-                send();
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                var text = $(event.target).val()
+                send(id, text);
+                $(event.target).val("");
               }
           });
 
@@ -78,13 +83,25 @@ $(document).ready(function() {
 	{% include "header.html"%}
 	<div class="cdbody">
 		<h1>You found {{ dashboard.title }}</h1>
-		{% for message in all_messages %}
+        <div class="topic1">
+            Topic1
+		<div id="chatLog">
+        {% for message in all_messages_1 %}
 			<p class="message">{{ message.msgtext }}
 		{% endfor %}
-		<div id="chatLog">
-
 		</div>
-		<input id="text" type="text" name="message" placeholder="Message">
+        </div>
+        <input class="textbox" id="topic1" type="text" name="message" placeholder="Message">
+
+        <div class="topic2">
+            Topic2
+		<div id="chatLog">
+        {% for message in all_messages_2 %}
+			<p class="message">{{ message.msgtext }}
+		{% endfor %}
+		</div>
+        </div>
+		<input class="textbox" id="topic2" type="text" name="message" placeholder="Message">
 	</div>
 <p>
     <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Edit Dashboard Users</a>

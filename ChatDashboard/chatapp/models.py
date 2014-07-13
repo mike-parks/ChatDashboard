@@ -15,6 +15,7 @@ class Message(Document):
     msgtext = StringField(max_length=200)
     username = StringField(max_length=100)
     dashboardtitle = StringField(max_length=200)
+    topic = StringField(max_length=200)
     timestamp = DateTimeField()
     
 class PasswordReset(Document):

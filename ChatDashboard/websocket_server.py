@@ -36,17 +36,20 @@ class DashboardProtocol(basic.LineReceiver):
         splitinfo = str(data).split("::")
         username = splitinfo[1]
         messagetext = splitinfo[2]
+        topicname = splitinfo[3]
         dashboardname = splitinfo[0]
-        message = Message(msgtext=messagetext, timestamp=datetime.datetime.now(),
+        message = Message(msgtext=messagetext,
+                          timestamp=datetime.datetime.now(),
                           username=username,
-                          dashboardtitle=dashboardname)
+                          dashboardtitle=dashboardname,
+                          topic=topicname)
         message.save()
 
         print "New message is:"
         print str(message)
 
         for c in self.factory.clients:
-            c.sendLine("<{}> {}".format(self.transport.getHost(), username + ": " + messagetext))
+            c.sendLine("<{}> {}".format(self.transport.getHost(), username + ": " + messagetext + "::" + topicname))
 
 
 

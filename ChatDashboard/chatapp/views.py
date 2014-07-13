@@ -59,11 +59,13 @@ def render_dashboard(request, title):
     if (not request.user.is_authenticated()):
         return login_user(request)
     
-    messages_here = Message.objects(dashboardtitle=title)
+    messages_here_1 = Message.objects(dashboardtitle=title, topic="topic1")
+    messages_here_2 = Message.objects(dashboardtitle=title, topic="topic2")
     template = loader.get_template('dashboard.html')
     dashboard = get_document_or_404(Dashboard, pk=title)
     context = RequestContext(request, {
-        'all_messages': messages_here,
+        'all_messages_1': messages_here_1,
+        'all_messages_2': messages_here_2,
         'dashboard': dashboard
     })
     return HttpResponse(template.render(context))
