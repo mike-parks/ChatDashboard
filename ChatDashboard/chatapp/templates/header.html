@@ -8,7 +8,12 @@
 			<!--<div class="rowright"><p>You are currently logged in as {{user}}.</p></div>
 			<div class="rowright"><a href="/Logoff/">Logout</a></div>-->
 			<p class="textright" >You are currently logged in as {{user}}.</p><br/>
-			<a href="/Logoff/" class="textright">Logout</a>
+			<div class="textright">
+			{% if user.is_superuser %}
+				<a href="/AdminFunctions/" >Admin Functions</a>  &nbsp
+			{% endif %}
+			<a href="/Logoff/" >Logout</a>
+			</div>
 		</div>
 		{% else %}
 		<div class="headerright">

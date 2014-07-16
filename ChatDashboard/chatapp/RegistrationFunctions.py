@@ -148,6 +148,25 @@ def send_email(email, subject, message):
     server.sendmail(settings.EMAIL_FROMADDRESS, email, msg.as_string())
     server.quit()
     
+def set_site_admin(username):
+    user = User.objects.get(username=username)
+    user.is_superuser = True
+    user.save()
+    print("{} is now a superuser".format(user))
     
+def remove_site_admin(username):
+    user = User.objects.get(username=username)
+    user.is_superuser = False
+    user.save()
+    print("{} is no longer a superuser".format(user))
+    
+def view_site_admins():
+    admin_users = []
+    all_users = User.objects()
+    for user in all_users:
+        if user.is_superuser:
+            admin_users.append(user.username)
+    
+    return admin_users
     
     

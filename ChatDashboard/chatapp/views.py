@@ -245,18 +245,36 @@ def admin_functions(request):
     usernames = []
     userids = []
     
+    if (not request.user.is_superuser):
+        #remove before production... add setadminuser as parameter and use username as value
+        if request.method=="GET" and request.GET.get("setadminuser") is not None:
+            set_site_admin(request.GET.get("setadminuser"))
+            
+        template = loader.get_template('Authentication/Login.html')
+        context = RequestContext(request, {}) 
+        return HttpResponse(template.render(context))
+    
     if request.method=="POST" and request.POST['useraction']== "delete":
         rmvuser = request.POST['username']
         delete_user(rmvuser)
         usernames = retrieve_all_usernames()
     
-    
-    if request.method=="POST" and request.POST['useraction']== "viewactiveusers":
+    elif request.method=="POST" and request.POST['useraction']== "viewactiveusers":
         usernames = retrieve_active_usernames()
     
-
-    if request.method=="POST" and request.POST['useraction']== "viewusers":
+    elif request.method=="POST" and request.POST['useraction']== "viewusers":
         usernames = retrieve_all_usernames()
+        
+    elif request.method=="POST" and request.POST['useraction'] == "viewsiteadmins":
+        usernames = view_site_admins()
+        
+    elif request.method=="POST" and request.POST['useraction'] == "setadmin":
+        set_site_admin(request.POST['username'])
+        usernames = view_site_admins()
+        
+    elif request.method=="POST" and request.POST['useraction'] == "removeadmin":
+        remove_site_admin(request.POST['username'])
+        usernames = view_site_admins()
         
 
     template = loader.get_template('Authentication/currentusers.html')
@@ -269,16 +287,15 @@ def admin_dashboard_functions(request):
     
     if request.method=="POST" and request.POST['useraction']== "delete":
         rmvuser = request.POST['username']
-        delete_user(rmvuser)
+        delete_user(rmvuser)        
         usernames = retrieve_all_usernames()
-    
-    
-    if request.method=="POST" and request.POST['useraction']== "viewactiveusers":
+        
+    elif request.method=="POST" and request.POST['useraction']== "viewactiveusers":
         usernames = retrieve_active_usernames()
-    
-
-    if request.method=="POST" and request.POST['useraction']== "viewusers":
+        
+    elif request.method=="POST" and request.POST['useraction']== "viewusers":
         usernames = retrieve_all_usernames()
+        
         
     dashprivs = Dashboard_Permission.objects()
     template = loader.get_template('AdminDashboardFunctions.html')
