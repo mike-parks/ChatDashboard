@@ -31,7 +31,7 @@ def list(request):
     username = request.user.username
 #should check to make sure dashboard doesn't already exist
     if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
-        title = request.POST['title']
+        title = request.POST['title'].strip()
         dashboard = Dashboard(title=title, creator=username)
         permission = Dashboard_Permission(dashboard_title=title, user=username, privilage=Dashboard_Permissions.ADMIN)
         dashboard.save()

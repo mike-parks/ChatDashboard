@@ -35,7 +35,7 @@ $(document).ready(function() {
                  console.log("dash from msg is "+ dashboard)
                  var stringToDisplay = '<p class="message">' + username + ': ' + userMessage;
                  var dashTitle = String("{{dashboard.title}}")
-                 if(dashboard.replace(/\s+/g, "") == dashTitle.replace(/\s+/g, "")) {
+                 if(dashboard.trim() == dashTitle.trim()) {
                     displayMessage(stringToDisplay, topicname);
                  }
               }
