@@ -161,8 +161,11 @@ def register(request):
         email = request.POST['email']
         messages = []
         statuscode = 200
-        
-        
+
+        for user_obj in User.objects:
+            if user_obj.username == user:
+                messages.append("Username already exists")
+                statuscode = 400
         if not RegistrationFunctions.validate_email(email):
             messages.append("Invalid Email")
             statuscode = 400
