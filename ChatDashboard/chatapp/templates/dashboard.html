@@ -18,46 +18,53 @@ $(document).ready(function() {
           try{
               var socket = new WebSocket(host);
 
-              message('<p class="event">Connecting... ');
+              displayMessage('<p class="event">Connecting... ');
 
               socket.onopen = function(){
-                 message('<p class="event">Connected!');
+                 displayMessage('<p class="event">Connected!');
               }
 
               socket.onmessage = function(msg){
-                    console.log("Msg: " + msg.data)
+                 //console.log("Msg: " + msg.data)
                  var msgcomponents = msg.data.split("::");
+                 var dashTemp = String(msgcomponents[0]);
+                 var dashboard = dashTemp.split("\)>")[1];
                  var topicname = msgcomponents[1];
-                 message('<p class="message">' + msgcomponents[0], topicname);
+                 var username = msgcomponents[2];
+                 var userMessage = msgcomponents[3];
+                 console.log("dash from msg is "+ dashboard)
+                 var stringToDisplay = '<p class="message">' + username + ': ' + userMessage;
+                 var dashTitle = String("{{dashboard.title}}")
+                 if(dashboard.replace(/\s+/g, "") == dashTitle.replace(/\s+/g, "")) {
+                    displayMessage(stringToDisplay, topicname);
+                 }
               }
 
               socket.onclose = function(){
-                message('<p class="event">Lost connection.');
+                 displayMessage('<p class="event">Lost connection.');
               }
 
           } catch(exception){
-             message('<p>Error'+exception);
+             displayMessage('<p>Error'+exception);
           }
 
           function send(topicname, text){
-              var testusername = "{{ user }}"
+              var username = "{{ user }}"
               var dashboardname = "{{ dashboard.title }}"
-              var text = dashboardname + "::" + testusername + "::" + text + "::" + topicname
+              var textToSend = dashboardname + "::" + topicname + "::" + username + "::" + text
 
               if(text==""){
-                  message('<p class="warning">Please enter a message');
+                  displayMessage('<p class="warning">Please enter a message');
                   return ;
               }
               try{
-                  socket.send(text);
-                  //message('<p class="event">Sent: '+text)
-
+                  socket.send(textToSend);
               } catch(exception){
-                 message('<p class="warning">');
+                 displayMessage('<p class="warning">');
               }
           }
 
-          function message(msg, topicname){
+          function displayMessage(msg, topicname){
             $('.'+ topicname + ' > #chatLog').append(msg+'</p>');
           }
 
@@ -86,9 +93,9 @@ $(document).ready(function() {
         <div class="topic1">
             Topic1
 		<div id="chatLog">
-        {% for message in all_messages_1 %}
+        <!--{% for message in all_messages_1 %}
 			<p class="message">{{ message.msgtext }}
-		{% endfor %}
+		{% endfor %}-->
 		</div>
         </div>
         <input class="textbox" id="topic1" type="text" name="message" placeholder="Message">
@@ -96,9 +103,9 @@ $(document).ready(function() {
         <div class="topic2">
             Topic2
 		<div id="chatLog">
-        {% for message in all_messages_2 %}
+        <!--{% for message in all_messages_2 %}
 			<p class="message">{{ message.msgtext }}
-		{% endfor %}
+		{% endfor %}-->
 		</div>
         </div>
 		<input class="textbox" id="topic2" type="text" name="message" placeholder="Message">
