@@ -10,7 +10,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
-from  DashboardFunctions import *
+from DashboardFunctions import *
 
 from models import Dashboard, Message, Dashboard_Permission
 import datetime
@@ -23,10 +23,8 @@ def list(request):
     messages = []
     error_messages = []
     
-    
     if (not request.user.is_authenticated()):
         return login_user(request)
-
 
     username = request.user.username
 #should check to make sure dashboard doesn't already exist
@@ -34,10 +32,17 @@ def list(request):
         title = request.POST['title'].strip()
         dashboard = Dashboard(title=title, creator=username)
         permission = Dashboard_Permission(dashboard_title=title, user=username, privilage=Dashboard_Permissions.ADMIN)
-        dashboard.save()
-        permission.save()
-        print "Created Dashboard: " + title
-
+        to_save = True
+        for dash in Dashboard.objects:
+            if dash.title == title:
+                to_save = False
+        if to_save:
+            dashboard.save()
+            permission.save()
+            print "Created Dashboard: " + title
+        else:
+            messages.append("Cannot create dashboard - the dashboard "
+                            "already exists")
 
     user_dashboards = None
     try:
