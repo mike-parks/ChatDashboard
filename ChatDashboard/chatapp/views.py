@@ -31,7 +31,7 @@ def list(request):
     if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
         title = request.POST['title'].strip()
         dashboard = Dashboard(title=title, creator=username)
-        permission = Dashboard_Permission(dashboard_title=title, user=username, privilage=Dashboard_Permissions.ADMIN)
+        permission = Dashboard_Permission(dashboard_title=title, user=username, privilege=Dashboard_Permissions.ADMIN)
         to_save = True
         for dash in Dashboard.objects:
             if dash.title == title:
@@ -97,7 +97,7 @@ def dashboard_user_administration(request):
     dashboard = Dashboard.objects.get(title=dash_title)
     user_admin_perm = None
     try:
-        user_admin_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user, privilage=Dashboard_Permissions.ADMIN)
+        user_admin_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user, privilege=Dashboard_Permissions.ADMIN)
     except:
         print "User," + request_user + " , does not have permissions for the " + dash_title + " Dashboard."
     

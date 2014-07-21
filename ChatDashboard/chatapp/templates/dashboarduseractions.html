@@ -36,13 +36,13 @@
 				{% for userpriv in user_permissions %}					
 						<div class="row">
 							<div class="cell">{{userpriv.user}}</div>
-							<div class="cell">{{userpriv.privilage}}</div>
+							<div class="cell">{{userpriv.Privilege}}</div>
 							<div class="cell"><select name="formAction" id="formActionSelect{{userpriv.user}}" onchange="changeFormAction('{{userpriv.user}}')">
 									<option value="change_permissions">Change Permissions</option>
 									<option value="delete_user">Delete User</option>
 								</select>
 							</div>
-                            <div class="cell" ><select name="userPrivilageSelect" id="userPrivilageSelect{{userpriv.user}}" onchange="changeUserPrivilageSelect('{{userpriv.user}}')">
+                            <div class="cell" ><select name="userPrivilegeSelect" id="userPrivilegeSelect{{userpriv.user}}" onchange="changeUserPrivilegeSelect('{{userpriv.user}}')">
 									<option value="user">User</option>
 									<option value="admin">Admin</option>
 								</select>
@@ -61,7 +61,7 @@
                         Username: <input type="text" id="newUserInput" placeholder="New User" />
                     </div>
                     <div class="cell">
-                        Privelage: <select name="addUserPrivilageSelect" id="addUserPrivilageSelect" onchange="changeAddUserPrivilageSelect()">
+                        Privilege: <select name="addUserPrivilegeSelect" id="addUserPrivilegeSelect" onchange="changeAddUserPrivilegeSelect()">
 									<option value="user">User</option>
 									<option value="admin">Admin</option>
 								</select>
@@ -100,13 +100,13 @@
             var myselect = document.getElementById("formActionSelect" + username);
             var actionHidden = document.getElementById("actionHidden");
             var userHidden = document.getElementById("userHidden");
-			var myPrivSelect = document.getElementById("userPrivilageSelect" + username);
+			var myPrivSelect = document.getElementById("userPrivilegeSelect" + username);
 
             var selectedValue = myselect.options[myselect.selectedIndex].value;
             userHidden.value = username;
 
             if (selectedValue === "change_permissions") {
-                var myPrivSelect = document.getElementById("userPrivilageSelect" + username);
+                var myPrivSelect = document.getElementById("userPrivilegeSelect" + username);
                 myPrivSelect.disabled = false;
 				myPrivSelect.visible = true;
                 actionHidden.value = selectedValue;
@@ -119,9 +119,9 @@
             }
         }
 
-        function changeUserPrivilageSelect(username) {
+        function changeUserPrivilegeSelect(username) {
             var permissionHidden = document.getElementById("permissionHidden");
-            var myPrivSelect = document.getElementById("userPrivilageSelect" + username);
+            var myPrivSelect = document.getElementById("userPrivilegeSelect" + username);
 
             var selectedValue = myPrivSelect.options[myPrivSelect.selectedIndex].value;
 
@@ -135,9 +135,9 @@
 			userHidden.value = username;
 		}
 
-        function changeAddUserPrivilageSelect() {
+        function changeAddUserPrivilegeSelect() {
             var permissionHidden = document.getElementById("permissionHidden");
-            var myPrivSelect = document.getElementById("addUserPrivilageSelect");
+            var myPrivSelect = document.getElementById("addUserPrivilegeSelect");
 
             var selectedValue = myPrivSelect.options[myPrivSelect.selectedIndex].value;
 
@@ -147,7 +147,7 @@
 
         function addUserSubmit() {
             var myUserInput = document.getElementById("newUserInput");
-            var myPrivSelect = document.getElementById("addUserPrivilageSelect");
+            var myPrivSelect = document.getElementById("addUserPrivilegeSelect");
 
 
             var actionHidden = document.getElementById("actionHidden");

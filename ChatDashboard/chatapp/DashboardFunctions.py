@@ -29,11 +29,11 @@ def change_dashboard_permissions(dashboard, user, perm_level):
 
         # only add permissions if the values are correct
         if perm_level == Dashboard_Permissions.ADMIN:
-            dashboard_perm.privilage = Dashboard_Permissions.ADMIN
+            dashboard_perm.privilege = Dashboard_Permissions.ADMIN
             dashboard_perm.save()
             successfull = True
         elif perm_level == Dashboard_Permissions.USER:            
-            dashboard_perm.privilage = Dashboard_Permissions.USER
+            dashboard_perm.privilege = Dashboard_Permissions.USER
             dashboard_perm.save()
             successfull = True
     except:
@@ -64,12 +64,12 @@ def add_dashboard_user(dashboard, user, perm_level):
             
             # confirm that a valid permission level is being assigned
             if perm_level == Dashboard_Permissions.ADMIN:
-                dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilage=Dashboard_Permissions.ADMIN)
+                dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilege=Dashboard_Permissions.ADMIN)
                 dashboard_perm.save()
                 successfull = True # set to true first, because we want it to return true as long as the permissions are added, even if the email fails
                 send_add_dashboard_email(dashboard, user, email, perm_level)
             elif perm_level == Dashboard_Permissions.USER:            
-                dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilage=Dashboard_Permissions.USER)
+                dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilege=Dashboard_Permissions.USER)
                 dashboard_perm.save()
                 send_add_dashboard_email(dashboard, user, email, perm_level)
                 successfull = True # set to true first, because we want it to return true as long as the permissions are added, even if the email fails
@@ -80,11 +80,11 @@ def add_dashboard_user(dashboard, user, perm_level):
         
         # only add permissions if the values are correct
         if perm_level == Dashboard_Permissions.ADMIN:
-            dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilage=Dashboard_Permissions.ADMIN)
+            dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilege=Dashboard_Permissions.ADMIN)
             dashboard_perm.save()
             successfull = True
         elif perm_level == Dashboard_Permissions.USER:            
-            dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilage=Dashboard_Permissions.USER)
+            dashboard_perm = Dashboard_Permission(dashboard_title=dashboard, user=user, privilege=Dashboard_Permissions.USER)
             dashboard_perm.save()
             successfull = True
     
