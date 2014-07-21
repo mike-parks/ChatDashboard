@@ -52,18 +52,18 @@
 						<tr>
 							<td>Dashboard</td>
 							<td>User</td>
-							<td>Privilage</td>
+							<td>Privilege</td>
 						</tr>
 					{% for dashpriv in dashprivfound %}
 						<tr>
 							<td>{{ dashpriv.dashboard_title }}</td>
 							<td>{{ dashpriv.user }}</td>
-							<td>{{ dashpriv.privilage }}</td>
+							<td>{{ dashpriv.privilege }}</td>
 						</tr>
 					{% endfor %}
 				</table>
 			{% else %}
-				<p>No Privilages Found!</p>
+				<p>No Privileges Found!</p>
 			{% endif %}  
 
 		</div>   

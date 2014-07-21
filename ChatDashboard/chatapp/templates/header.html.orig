@@ -13,7 +13,7 @@
 		</div>
 		{% else %}
 		<div class="headerright">
-			<div class="rowright"><a href="/Login/">Logon</a></div>
+			<div class="rowright"><a href="/Login/">Login</a></div>
 		</div>
 		{% endif %}
 	</div>

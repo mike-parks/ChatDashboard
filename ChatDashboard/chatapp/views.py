@@ -10,7 +10,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
-from  DashboardFunctions import *
+from DashboardFunctions import *
 
 from models import Dashboard, Message, Dashboard_Permission
 import datetime
@@ -23,21 +23,26 @@ def list(request):
     messages = []
     error_messages = []
     
-    
     if (not request.user.is_authenticated()):
         return login_user(request)
-
 
     username = request.user.username
 #should check to make sure dashboard doesn't already exist
     if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
-        title = request.POST['title']
+        title = request.POST['title'].strip()
         dashboard = Dashboard(title=title, creator=username)
-        permission = Dashboard_Permission(dashboard_title=title, user=username, privilage=Dashboard_Permissions.ADMIN)
-        dashboard.save()
-        permission.save()
-        print "Created Dashboard: " + title
-
+        permission = Dashboard_Permission(dashboard_title=title, user=username, privilege=Dashboard_Permissions.ADMIN)
+        to_save = True
+        for dash in Dashboard.objects:
+            if dash.title == title:
+                to_save = False
+        if to_save:
+            dashboard.save()
+            permission.save()
+            print "Created Dashboard: " + title
+        else:
+            messages.append("Cannot create dashboard - the dashboard "
+                            "already exists")
 
     user_dashboards = None
     try:
@@ -92,7 +97,7 @@ def dashboard_user_administration(request):
     dashboard = Dashboard.objects.get(title=dash_title)
     user_admin_perm = None
     try:
-        user_admin_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user, privilage=Dashboard_Permissions.ADMIN)
+        user_admin_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user, privilege=Dashboard_Permissions.ADMIN)
     except:
         print "User," + request_user + " , does not have permissions for the " + dash_title + " Dashboard."
     
@@ -156,8 +161,11 @@ def register(request):
         email = request.POST['email']
         messages = []
         statuscode = 200
-        
-        
+
+        for user_obj in User.objects:
+            if user_obj.username == user:
+                messages.append("Username already exists")
+                statuscode = 400
         if not RegistrationFunctions.validate_email(email):
             messages.append("Invalid Email")
             statuscode = 400

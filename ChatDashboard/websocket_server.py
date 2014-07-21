@@ -27,16 +27,17 @@ class DashboardProtocol(basic.LineReceiver):
 
     def connectionLost(self, reason):
         self.factory.clients.remove(self)
-        print "Disconnected for reason: " + str(reason) + "\nConnected clients: " + str(self.factory.clients)
+        print "Disconnected for reason: " + str(reason) + \
+              "\nConnected clients: " + str(self.factory.clients)
 
     def dataReceived(self, data):
         print "Received data: " + str(data)
 
         # construct a model object message
-        splitinfo = str(data).split("::")
-        username = splitinfo[1]
-        messagetext = splitinfo[2]
-        topicname = splitinfo[3]
+        splitinfo = str(data).split("::",3)
+        username = splitinfo[2]
+        messagetext = splitinfo[3]
+        topicname = splitinfo[1]
         dashboardname = splitinfo[0]
         message = Message(msgtext=messagetext,
                           timestamp=datetime.datetime.now(),
@@ -45,13 +46,13 @@ class DashboardProtocol(basic.LineReceiver):
                           topic=topicname)
         message.save()
 
-        print "New message is:"
-        print str(message)
+        print "New message is:" + str(message)
+        print "dashboard is" + str(dashboardname)
 
         for c in self.factory.clients:
-            c.sendLine("<{}> {}".format(self.transport.getHost(), username + ": " + messagetext + "::" + topicname))
-
-
+            c.sendLine("<{}> {}".format(self.transport.getHost(), dashboardname
+                                        + "::" + topicname + "::" + username +
+                                        "::" + messagetext))
 
 """Factory for DashboardProtocol class.
 Each instance will store its own unique set of connected clients."""

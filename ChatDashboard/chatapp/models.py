@@ -9,7 +9,7 @@ class Dashboard(Document):
 class Dashboard_Permission(Document):
     dashboard_title = StringField(max_length=200)
     user = StringField(max_length=200)
-    privilage = StringField(max_length=50) #values: user, admin
+    privilege = StringField(max_length=50) #values: user, admin
 
 class Message(Document):
     msgtext = StringField(max_length=200)
