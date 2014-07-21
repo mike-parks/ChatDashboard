@@ -1,0 +1,59 @@
+<div name="DashboardActionForm" id="DashboardActionForm" {% if actionselected != "dashboard" %} style="display:none" {% endif %}>
+<form method="post"   >
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>
+						<label>Please Select Dashboard and Command:</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" name="dashboard" placeholder="Dashboard Name" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="adminaction" value="viewactivedashboards" />View Active Dashboards
+					</td>
+				</tr>				
+				<tr>
+					<td>
+						<input type="radio" name="adminaction" value="viewuserdashboards" />View Dashboards By User
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="adminaction" value="viewalldashboards" />View All Dashboards
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="adminaction" value="deletedashboard" />Delete dashboard
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Submitadminaction" />
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+		<div id='message_strings' >
+			{% if dashboardsfound %}
+				<table id="usertable">
+						<tr>
+							<td>Dashboard Name</td>
+						</tr>
+					{% for dashboard in dashboardsfound %}
+						<tr>
+							<td>{{ dashboard.title }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>No Dashboards Found!</p>
+			{% endif %}  
+</div>
+		</div> 

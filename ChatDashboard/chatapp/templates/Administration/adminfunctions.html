@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
+    <script type="text/javascript" src="{% static 'validation.js' %}" ></script>
+    <meta charset="UTF-8">
+    <title>Chatdashboard User Registration</title>
+</head>
+<body>
+	{% include "header.html"%}
+	<div class="cdbody">
+		<select name="userPrivilageSelect" id="AdminActionSelect" onchange="changeFormAction()">
+			<option value="user_actions" {% if actionselected == "user" %} selected=\"selected\" {% endif %}>User Actions</option>
+			<option value="dashboard_actions" {% if actionselected == "dashboard" %} selected=\"selected\" {% endif %} >Dashboard Actions</option>
+		</select>
+		{% include "Administration/users.html" %}
+		
+		{% include "Administration/dashboards.html" %}
+
+		  
+	</div>
+	{% include "footer.html"%}
+	
+	<script>
+        function changeFormAction() {
+			var actionSelect = document.getElementById("AdminActionSelect");
+			var selectedValue = actionSelect.options[actionSelect.selectedIndex].value;
+            var userForm = document.getElementById("UserActionForm");
+			var dashboardForm = document.getElementById("DashboardActionForm");
+            if (selectedValue === "user_actions") {
+					dashboardForm.style.display = "none";
+					userForm.style.display = "block";
+            } else {
+                if (selectedValue === "dashboard_actions") {
+					dashboardForm.style.display = "block";
+					userForm.style.display = "none";
+                }
+            }
+        }
+	</script>
+</body>
+</html>

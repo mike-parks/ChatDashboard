@@ -245,6 +245,7 @@ def logoff_user(request):
 #from flask.ext.mongoengine import MongoEngine, MongoEngineSessionInterface
 def admin_functions(request):
     usernames = []
+    dashboards = []
     userids = []
     
     if (not request.user.is_superuser):
@@ -255,32 +256,38 @@ def admin_functions(request):
         template = loader.get_template('Authentication/Login.html')
         context = RequestContext(request, {}) 
         return HttpResponse(template.render(context))
+    actionselected = "user"
     
-    if request.method=="POST" and request.POST['useraction']== "delete":
+    if request.method=="POST" and request.POST['adminaction']== "delete":
         rmvuser = request.POST['username']
         delete_user(rmvuser)
         usernames = retrieve_all_usernames()
     
-    elif request.method=="POST" and request.POST['useraction']== "viewactiveusers":
+    elif request.method=="POST" and request.POST['adminaction']== "viewactiveusers":
         usernames = retrieve_active_usernames()
     
-    elif request.method=="POST" and request.POST['useraction']== "viewusers":
+    elif request.method=="POST" and request.POST['adminaction']== "viewusers":
         usernames = retrieve_all_usernames()
         
-    elif request.method=="POST" and request.POST['useraction'] == "viewsiteadmins":
+    elif request.method=="POST" and request.POST['adminaction'] == "viewsiteadmins":
         usernames = view_site_admins()
         
-    elif request.method=="POST" and request.POST['useraction'] == "setadmin":
+    elif request.method=="POST" and request.POST['adminaction'] == "setadmin":
         set_site_admin(request.POST['username'])
         usernames = view_site_admins()
         
-    elif request.method=="POST" and request.POST['useraction'] == "removeadmin":
+    elif request.method=="POST" and request.POST['adminaction'] == "removeadmin":
         remove_site_admin(request.POST['username'])
         usernames = view_site_admins()
+    elif request.method=="POST" and request.POST['adminaction'] == "viewalldashboards":
+        actionselected = "dashboard"
+        dash_objs = Dashboard.objects()
+        for dash in dash_objs:
+            dashboards.append(dash.title)
         
-
-    template = loader.get_template('Authentication/currentusers.html')
-    context = RequestContext(request, {'ursfound': usernames }) 
+    print(actionselected)
+    template = loader.get_template('Administration/adminfunctions.html')
+    context = RequestContext(request, {'ursfound': usernames , 'dashboardsfound': dashboards, 'actionselected': actionselected }) 
     return HttpResponse(template.render(context))
 
 def admin_dashboard_functions(request):
