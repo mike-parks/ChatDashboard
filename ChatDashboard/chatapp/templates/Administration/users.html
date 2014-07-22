@@ -1,70 +1,70 @@
 <div name="UserActionForm" id="UserActionForm"  {% if actionselected != "user" %} style="display:none" {% endif %}>
-<form method="post" >
-			{% csrf_token %}
-			<table>
-				<tr>
-					<td>
-						<label>Please Select Username and Command:</label>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="text" name="username" placeholder="User Name" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="adminaction" value="viewactiveusers" />View Active Users
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="adminaction" value="viewsiteadmins" />View Site Admins
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="adminaction" value="viewusers" />View All Users
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="adminaction" value="setadmin" />Set Site Admin Permissions
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="adminaction" value="removeadmin" />Remove Site Admin Permissions
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="radio" name="adminaction" value="delete" />Delete User
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="submit" value="Submitadminaction" />
-					</td>
-				</tr>
-			</table>
-		</form>
+	<form method="post" >
+		{% csrf_token %}
+		<table>
+			<tr>
+				<td>
+					<label>Please Select Username and Command:</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" name="username" placeholder="User Name" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="adminaction" value="viewactiveusers" />View Active Users
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="adminaction" value="viewsiteadmins" />View Site Admins
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="adminaction" value="viewusers" />View All Users
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="adminaction" value="setadmin" />Set Site Admin Permissions
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="adminaction" value="removeadmin" />Remove Site Admin Permissions
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="adminaction" value="delete" />Delete User
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="Submit Admin Action" />
+				</td>
+			</tr>
+		</table>
+	</form>
 		
-		<div id='message_strings' >
-			{% if ursfound %}
-				<table id="usertable">
-						<tr>
-							<td>Username</td>
-						</tr>
-					{% for usr in ursfound %}
-						<tr>
-							<td>{{ usr }}</td>
-						</tr>
-					{% endfor %}
-				</table>
-			{% else %}
-				<p>No Users Found!</p>
-			{% endif %}  
+	<div id='message_strings' >
+		{% if ursfound %}
+			<table id="usertable">
+					<tr>
+						<td>Username</td>
+					</tr>
+				{% for usr in ursfound %}
+					<tr>
+						<td>{{ usr }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<p>No Users Found!</p>
+		{% endif %}  
 
-		</div> 
+	</div> 
 </div>

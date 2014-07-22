@@ -292,6 +292,16 @@ def admin_functions(request):
         dash_objs = Dashboard.objects()
         for dash in dash_objs:
             dashboards.append(dash.title)
+        print(dashboards)
+    elif request.method=="POST" and request.POST['adminaction'] == "deletedashboard":
+        actionselected = "dashboard"
+        delete_dashboard(request.POST['dashboard'])
+        dash_objs = Dashboard.objects()
+        for dash in dash_objs:
+            dashboards.append(dash.title)
+    elif request.method=="POST":
+        print(request.POST['adminaction'])
+    
         
     print(actionselected)
     template = loader.get_template('Administration/adminfunctions.html')
