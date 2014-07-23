@@ -14,6 +14,7 @@
 			<option value="user_actions" {% if actionselected == "user" %} selected=\"selected\" {% endif %}>User Actions</option>
 			<option value="dashboard_actions" {% if actionselected == "dashboard" %} selected=\"selected\" {% endif %} >Dashboard Actions</option>
 		</select>
+		<br />
 		{% include "Administration/users.html" %}
 		
 		{% include "Administration/dashboards.html" %}

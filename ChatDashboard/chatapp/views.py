@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
 from DashboardFunctions import *
+from django.http import HttpResponseRedirect
 
 from models import Dashboard, Message, Dashboard_Permission
 import datetime
@@ -89,7 +90,7 @@ def dashboard_user_administration(request):
     user_permissions_list = None
     
     if (not request.user.is_authenticated()):
-        return login_user(request)
+        return redirect(settings.BASE_URL)
     
     request_user = request.user.username
 
@@ -269,9 +270,9 @@ def admin_functions(request):
         if request.method=="GET" and request.GET.get("setadminuser") is not None:
             set_site_admin(request.GET.get("setadminuser"))
             
-        template = loader.get_template('Authentication/Login.html')
-        context = RequestContext(request, {}) 
-        return HttpResponse(template.render(context))
+        #template = loader.get_template('Authentication/Login.html')
+        #context = RequestContext(request, {}) 
+        return redirect(settings.BASE_URL)#HttpResponse(template.render(context))
     actionselected = "user"
     
     if request.method=="POST" and request.POST['adminaction']== "delete":
