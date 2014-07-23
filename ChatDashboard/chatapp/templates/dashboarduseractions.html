@@ -36,7 +36,7 @@
 				{% for userpriv in user_permissions %}					
 						<div class="row">
 							<div class="cell">{{userpriv.user}}</div>
-							<div class="cell">{{userpriv.Privilege}}</div>
+							<div class="cell">{{userpriv.privilege}}</div>
 							<div class="cell"><select name="formAction" id="formActionSelect{{userpriv.user}}" onchange="changeFormAction('{{userpriv.user}}')">
 									<option value="change_permissions">Change Permissions</option>
 									<option value="delete_user">Delete User</option>

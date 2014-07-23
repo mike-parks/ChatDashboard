@@ -169,4 +169,9 @@ def view_site_admins():
     
     return admin_users
     
+def invite_user(email, inviter):
+    subject = "You have been invited to join Chat Dashboard!"
     
+    message = "Congratulations!\nYou have been invited to join Chat Dashbaord by {}. \n {}".format(inviter, settings.BASE_URL)
+    
+    send_email(email, subject, message)

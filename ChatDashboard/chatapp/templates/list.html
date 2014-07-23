@@ -45,6 +45,25 @@
 		<a href="/PasswordFunctions/?function=changepassword" >Change Password</a>
 		<br />
 		
+		<div class="link" style="cursor:pointer;color:blue;text-decoration:underline" onClick="toggleInviteUser()"  >Invite a friend to use Chat Dashboard!</div>
+		<div name="sendInviteForm" id="InviteUserTable" style="display:none" >
+			<form method="post" >
+			{% csrf_token %}
+				<input type="text" name="inviteemail" placeholder="New User Email" /> &nbsp; <input type="submit" name="invite_user_submit" value="Invite User" />
+			</form>
+		</div>
+		
+		</div>
+		<script>
+			function toggleInviteUser(){
+				var inviteTable = document.getElementById("InviteUserTable");
+				if (inviteTable.style.display === "block") {
+					inviteTable.style.display = "none";
+				} else {
+					inviteTable.style.display = "block";
+				}
+			}
+		</script>
 		
 		<div id="passfuncsform_messageloc" class="message_strings">
 			{% if messages %}
@@ -61,10 +80,12 @@
 				{% endfor %}
 			{% endif %}
 		</div>
+		
+
+		
 	</div>
-	
-	
-	
 	{% include "footer.html"%}
+	
+	
 </body>
 </html>

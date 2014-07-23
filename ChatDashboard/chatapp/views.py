@@ -28,21 +28,29 @@ def list(request):
 
     username = request.user.username
 #should check to make sure dashboard doesn't already exist
-    if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
-        title = request.POST['title'].strip()
-        dashboard = Dashboard(title=title, creator=username)
-        permission = Dashboard_Permission(dashboard_title=title, user=username, privilege=Dashboard_Permissions.ADMIN)
-        to_save = True
-        for dash in Dashboard.objects:
-            if dash.title == title:
-                to_save = False
-        if to_save:
-            dashboard.save()
-            permission.save()
-            print "Created Dashboard: " + title
-        else:
-            messages.append("Cannot create dashboard - the dashboard "
-                            "already exists")
+    if request.method == "POST":
+        try:
+            if request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
+                title = request.POST['title'].strip()
+                dashboard = Dashboard(title=title, creator=username)
+                permission = Dashboard_Permission(dashboard_title=title, user=username, privilege=Dashboard_Permissions.ADMIN)
+                to_save = True
+                for dash in Dashboard.objects:
+                    if dash.title == title:
+                        to_save = False
+           
+                    if to_save:
+                        dashboard.save()
+                        permission.save()
+                        print "Created Dashboard: " + title
+                    else:
+                        messages.append("Cannot create dashboard - the dashboard already exists")
+        except:
+            try:
+                if request.POST["invite_user_submit"] == "Invite User":
+                    invite_user(request.POST["inviteemail"],username)
+            except:
+                pass
 
     user_dashboards = None
     try:
