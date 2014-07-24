@@ -3,7 +3,7 @@ Created on Jul 9, 2014
 
 @author: Nick
 '''
-from models import Dashboard_Permission
+from models import Dashboard_Permission, Dashboard, Message
 from mongoengine.django.auth import *
 from RegistrationFunctions import send_email
 
@@ -88,6 +88,35 @@ def add_dashboard_user(dashboard, user, perm_level):
             dashboard_perm.save()
             successfull = True
     
+    return successfull
+
+def delete_dashboard(dashboard):
+    successfull = True
+
+    #delete dashboard
+    dboards = Dashboard.objects.filter(title=dashboard)
+    #dboards = Dashboard.objects.filter(pk=dashboard)
+    
+    if len(dboards) > 0:
+        for dboard in dboards:
+            dboard.delete()
+    else: # if there are no dashboards, there is no need to continue
+        return False
+    
+    #delete user permissions
+    dperms = Dashboard_Permission.objects.filter(dashboard_title=dashboard)
+    if len(dperms) > 0:
+        for dperm in dperms:
+            dperm.delete
+    else:
+        successfull = False
+    
+    #delete messages: note may not always have messages
+    dmessages = Message.objects.filter(dashboardtitle=dashboard)
+    if len(dmessages) > 0:
+        for dmessage in dmessages:
+            dmessage.delete()
+            
     return successfull
 
 class Dashboard_Permissions(object):

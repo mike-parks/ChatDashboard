@@ -9,7 +9,13 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="text" name="dashboard" placeholder="Dashboard Name" />
+						<input type="text" name="dashboard" {% if dashboardsfound %}value="{{db}}"{%endif%} placeholder="Dashboard Name" /><br />
+					</td>
+				</tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr>
+					<td>
+						<label>Commands:</label>
 					</td>
 				</tr>
 				<tr>
@@ -32,23 +38,28 @@
 						<input type="radio" name="adminaction" value="deletedashboard" />Delete dashboard
 					</td>
 				</tr>
+				<tr><td>&nbsp;</td></tr>
 				<tr>
 					<td>
-						<input type="submit" value="Submitadminaction" />
+						<input type="submit" value="Submit Admin Action" />
 					</td>
-				</tr>
+				</tr>				
+				<tr><td>&nbsp;</td></tr>
 			</table>
 		</form>
 		
+		
+		
 		<div id='message_strings' >
 			{% if dashboardsfound %}
+			<p>{{db}}</p>
 				<table id="usertable">
 						<tr>
 							<td>Dashboard Name</td>
 						</tr>
 					{% for dashboard in dashboardsfound %}
 						<tr>
-							<td>{{ dashboard.title }}</td>
+							<td>{{ dashboard }}</td>
 						</tr>
 					{% endfor %}
 				</table>

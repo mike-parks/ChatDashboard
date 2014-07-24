@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
 from DashboardFunctions import *
+from django.http import HttpResponseRedirect
 
 from models import Dashboard, Message, Dashboard_Permission
 import datetime
@@ -28,21 +29,29 @@ def list(request):
 
     username = request.user.username
 #should check to make sure dashboard doesn't already exist
-    if request.method == "POST" and request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
-        title = request.POST['title'].strip()
-        dashboard = Dashboard(title=title, creator=username)
-        permission = Dashboard_Permission(dashboard_title=title, user=username, privilege=Dashboard_Permissions.ADMIN)
-        to_save = True
-        for dash in Dashboard.objects:
-            if dash.title == title:
-                to_save = False
-        if to_save:
-            dashboard.save()
-            permission.save()
-            print "Created Dashboard: " + title
-        else:
-            messages.append("Cannot create dashboard - the dashboard "
-                            "already exists")
+    if request.method == "POST":
+        try:
+            if request.POST["create_dashboard_submit"] == "Create Chat Dashboard":
+                title = request.POST['title'].strip()
+                dashboard = Dashboard(title=title, creator=username)
+                permission = Dashboard_Permission(dashboard_title=title, user=username, privilege=Dashboard_Permissions.ADMIN)
+                to_save = True
+                for dash in Dashboard.objects:
+                    if dash.title == title:
+                        to_save = False
+           
+                    if to_save:
+                        dashboard.save()
+                        permission.save()
+                        print "Created Dashboard: " + title
+                    else:
+                        messages.append("Cannot create dashboard - the dashboard already exists")
+        except:
+            try:
+                if request.POST["invite_user_submit"] == "Invite User":
+                    invite_user(request.POST["inviteemail"],username)
+            except:
+                pass
 
     user_dashboards = None
     try:
@@ -81,7 +90,7 @@ def dashboard_user_administration(request):
     user_permissions_list = None
     
     if (not request.user.is_authenticated()):
-        return login_user(request)
+        return redirect(settings.BASE_URL)
     
     request_user = request.user.username
 
@@ -261,9 +270,9 @@ def admin_functions(request):
         if request.method=="GET" and request.GET.get("setadminuser") is not None:
             set_site_admin(request.GET.get("setadminuser"))
             
-        template = loader.get_template('Authentication/Login.html')
-        context = RequestContext(request, {}) 
-        return HttpResponse(template.render(context))
+        #template = loader.get_template('Authentication/Login.html')
+        #context = RequestContext(request, {}) 
+        return redirect(settings.BASE_URL)#HttpResponse(template.render(context))
     actionselected = "user"
     
     if request.method=="POST" and request.POST['adminaction']== "delete":
@@ -292,6 +301,16 @@ def admin_functions(request):
         dash_objs = Dashboard.objects()
         for dash in dash_objs:
             dashboards.append(dash.title)
+        print(dashboards)
+    elif request.method=="POST" and request.POST['adminaction'] == "deletedashboard":
+        actionselected = "dashboard"
+        delete_dashboard(request.POST['dashboard'])
+        dash_objs = Dashboard.objects()
+        for dash in dash_objs:
+            dashboards.append(dash.title)
+    elif request.method=="POST":
+        print(request.POST['adminaction'])
+    
         
     print(actionselected)
     template = loader.get_template('Administration/adminfunctions.html')
