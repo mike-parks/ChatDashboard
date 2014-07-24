@@ -84,6 +84,13 @@ $(document).ready(function() {
       }//End connect
 });
 
+          function addTopicWindow(topicWindowName) {
+            var topicWindowString = '<div class="' + topicWindowName + '">' + topicWindowName +
+            '<div id="chatLog"></div> </div><input class="textbox" id="' + topicWindowName + '" type="text" name="message" placeholder="Message">';
+
+            $('.cdbody').append(topicWindowString);
+          }
+
     </script>
 </head>
 <body>
@@ -111,6 +118,7 @@ $(document).ready(function() {
 		<input class="textbox" id="topic2" type="text" name="message" placeholder="Message">
 	</div>
 <p>
+    <a href="javascript:addTopicWindow('New Topic Window')">Add Topic Window</a><br />
     <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Edit Dashboard Users</a>
 	{% include "footer.html"%}
 </body>
