@@ -17,65 +17,76 @@
 			<input type="hidden" name="action_user" id="userHidden"/>
 			<input type="hidden" name="user_permission" id="permissionHidden" value="user" />
 			<input type="hidden" name="dashboard_action" id ="actionHidden" value="change_permissions" />
-			
-			<div class="table">
-				<div class="col"> </div>
-				<div class="col"> </div>
-				<div class="col"> </div>
-				<div class="col"> </div>
-				<div class="col"> </div>
-				<div class="row">
-					<div class="cell">Username</div>
-					<div class="cell">Privilege</div>
-					<div class="cell">Action</div>
-                    <div class="cell">Privilege to Set</div>
-                    <div class="cell"> </div>
-				</div>
-				
-			{% if user_permissions %}
-				{% for userpriv in user_permissions %}					
-						<div class="row">
-							<div class="cell">{{userpriv.user}}</div>
-							<div class="cell">{{userpriv.privilege}}</div>
-							<div class="cell"><select name="formAction" id="formActionSelect{{userpriv.user}}" onchange="changeFormAction('{{userpriv.user}}')">
-									<option value="change_permissions">Change Permissions</option>
-									<option value="delete_user">Delete User</option>
-								</select>
-							</div>
-                            <div class="cell" ><select name="userPrivilegeSelect" id="userPrivilegeSelect{{userpriv.user}}" onchange="changeUserPrivilegeSelect('{{userpriv.user}}')">
-									<option value="user">User</option>
-									<option value="admin">Admin</option>
-								</select>
+            <select name="formAction" id="actionTypeSelect" onchange="changeActionType()">
+                <option value="usertable">Perform User Actions</option>
+                <option value="metricstable">Metrics Report</option>
+            </select>
+
+			<div id="usertable">
+                <div class="table">
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="row">
+                        <div class="cell">Username</div>
+                        <div class="cell">Privilege</div>
+                        <div class="cell">Action</div>
+                        <div class="cell">Privilege to Set</div>
+                        <div class="cell"> </div>
+                    </div>
+
+                {% if user_permissions %}
+                    {% for userpriv in user_permissions %}
+                            <div class="row">
+                                <div class="cell">{{userpriv.user}}</div>
+                                <div class="cell">{{userpriv.privilege}}</div>
+                                <div class="cell"><select name="formAction" id="formActionSelect{{userpriv.user}}" onchange="changeFormAction('{{userpriv.user}}')">
+                                        <option value="change_permissions">Change Permissions</option>
+                                        <option value="delete_user">Delete User</option>
+                                    </select>
+                                </div>
+                                <div class="cell" ><select name="userPrivilegeSelect" id="userPrivilegeSelect{{userpriv.user}}" onchange="changeUserPrivilegeSelect('{{userpriv.user}}')">
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                                <div class="cell">
+                                    <input type="submit" onsubmit="addActionUserSubmit('{{userpriv.user}}')" onclick="addActionUserSubmit('{{userpriv.user}}')" onkeypress="addActionUserSubmit('{{userpriv.user}}')"/>
+                                </div>
                             </div>
-                            <div class="cell">
-                                <input type="submit" onsubmit="addActionUserSubmit('{{userpriv.user}}')" onclick="addActionUserSubmit('{{userpriv.user}}')" onkeypress="addActionUserSubmit('{{userpriv.user}}')"/>
-                            </div>
-						</div>					
-				{% endfor %}
-			{% endif %}
-			
-			<br />
-			<br />
-                <div class="row">
-                    <div class="cell">
-                        Username: <input type="text" id="newUserInput" placeholder="New User" />
+                    {% endfor %}
+                {% endif %}
+
+                <br />
+                <br />
+                    <div class="row">
+                        <div class="cell">
+                            Username: <input type="text" id="newUserInput" placeholder="New User" />
+                        </div>
+                        <div class="cell">
+                            Privilege: <select name="addUserPrivilegeSelect" id="addUserPrivilegeSelect" onchange="changeAddUserPrivilegeSelect()">
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                        </div>
+                        <div class="cell">
+                            <input type="submit" name="userActionSelect" onsubmit="addUserSubmit()" onclick="addUserSubmit()" onkeypress="addUserSubmit()"/>
+                        </div>
+                        <div class="cell"> </div>
+                        <div class="cell"> </div>
                     </div>
-                    <div class="cell">
-                        Privilege: <select name="addUserPrivilegeSelect" id="addUserPrivilegeSelect" onchange="changeAddUserPrivilegeSelect()">
-									<option value="user">User</option>
-									<option value="admin">Admin</option>
-								</select>
-                    </div>
-                    <div class="cell">
-                        <input type="submit" name="userActionSelect" onsubmit="addUserSubmit()" onclick="addUserSubmit()" onkeypress="addUserSubmit()"/>
-                    </div>
-					<div class="cell"> </div>
-					<div class="cell"> </div>
                 </div>
-			</div>
+            </div>
+
+            <div id="metricstable">
+               {% include "reports.html"%}
+            </div>
 		</form>
 
-		
+
+
 		<div id="passfuncsform_messageloc" class="message_strings">
 			{% if messages %}
 				{% for message in messages %}
@@ -118,6 +129,26 @@
                 }
             }
         }
+
+        function changeActionType() {
+            var myselect = document.getElementById("actionTypeSelect");
+            var usertable = document.getElementById("usertable");
+            var metricstable = document.getElementById("metricstable");
+
+            var selectedValue = myselect.options[myselect.selectedIndex].value;
+
+            if (selectedValue === "usertable") {
+                usertable.style.display = "block";
+				metricstable.style.display = "none";
+            } else {
+                if (selectedValue === "metricstable") {
+					usertable.style.display = "none";
+				    metricstable.style.display = "block";
+                }
+            }
+        }
+
+
 
         function changeUserPrivilegeSelect(username) {
             var permissionHidden = document.getElementById("permissionHidden");

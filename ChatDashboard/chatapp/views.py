@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from RegistrationFunctions import *
 import RegistrationFunctions
 from DashboardFunctions import *
+from MetricsReportFunctions import *
 from django.http import HttpResponseRedirect
 
 from models import Dashboard, Message, Dashboard_Permission
@@ -87,6 +88,7 @@ def render_dashboard(request, title):
 def dashboard_user_administration(request):
     messages = []
     error_messages = []
+    postsbymonth = []
     user_permissions_list = None
     
     if (not request.user.is_authenticated()):
@@ -117,36 +119,40 @@ def dashboard_user_administration(request):
         user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dash_title)
         
         if  request.method == "POST":
-            dash_action = request.POST['dashboard_action']
-            action_user = request.POST['action_user']
 
-            if action_user == dashboard.creator:
-                error_messages.append("Unable to perform Dashboard user action on Dashboard creator.")
+            if request.POST['dashboard_action']== "viewmetricsreport":
+                postsbymonth = retrieve_dashboard_posts_by_month(None, None)
             else:
-                if dash_action == "delete_user":
-                    success = delete_dashboard_user(dash_title, action_user)
-                    if (success):
-                        messages.append("Successfully deleted the user: " + action_user)
+                dash_action = request.POST['dashboard_action']
+                action_user = request.POST['action_user']
+
+                if action_user == dashboard.creator:
+                    error_messages.append("Unable to perform Dashboard user action on Dashboard creator.")
+                else:
+                    if dash_action == "delete_user":
+                        success = delete_dashboard_user(dash_title, action_user)
+                        if (success):
+                            messages.append("Successfully deleted the user: " + action_user)
+                        else:
+                            error_messages.append("Unable to delete user")
+                    elif dash_action=="add_user":
+                        user_permission = request.POST["user_permission"]
+                        print user_permission
+                        success = add_dashboard_user(dash_title, action_user, user_permission)
+                        if (success):
+                            messages.append("Successfully added the user: " + action_user)
+                        else:
+                            error_messages.append("Unable to add user")
+                    elif dash_action == "change_permissions":
+                        user_permission = request.POST["user_permission"]
+                        success = change_dashboard_permissions(dash_title, action_user, user_permission)
+                        if (success):
+                            messages.append("Successfully change the user permissions." + action_user)
+                        else:
+                            error_messages.append("Unable to change user permissions.")
                     else:
-                        error_messages.append("Unable to delete user")
-                elif dash_action=="add_user":
-                    user_permission = request.POST["user_permission"]
-                    print user_permission
-                    success = add_dashboard_user(dash_title, action_user, user_permission)
-                    if (success):
-                        messages.append("Successfully added the user: " + action_user)
-                    else:
-                        error_messages.append("Unable to add user")
-                elif dash_action == "change_permissions":
-                    user_permission = request.POST["user_permission"]
-                    success = change_dashboard_permissions(dash_title, action_user, user_permission)
-                    if (success):
-                        messages.append("Successfully change the user permissions." + action_user)
-                    else:
-                        error_messages.append("Unable to change user permissions.")
-                else: 
-                    error_messages.append("Invalid Dashboard User Action.")
-        
+                        error_messages.append("Invalid Dashboard User Action.")
+
 
 
 
@@ -155,7 +161,8 @@ def dashboard_user_administration(request):
         'dashboard': dashboard,
         'user_permissions': user_permissions_list,
         'messages': messages,
-        'error_messages': error_messages
+        'error_messages': error_messages,
+        'postsbymonth':postsbymonth
     })
     return HttpResponse(template.render(context))
 
@@ -331,11 +338,14 @@ def admin_dashboard_functions(request):
         
     elif request.method=="POST" and request.POST['useraction']== "viewusers":
         usernames = retrieve_all_usernames()
+
+
         
         
     dashprivs = Dashboard_Permission.objects()
     template = loader.get_template('AdminDashboardFunctions.html')
-    context = RequestContext(request, {'dashprivfound': dashprivs }) 
+    context = RequestContext(request, {'dashprivfound': dashprivs,})
+
     return HttpResponse(template.render(context))
 
 def password_functions(request):

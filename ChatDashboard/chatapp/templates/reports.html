@@ -1,0 +1,14 @@
+{% if postsbymonth %}
+                <table id="postsbymonthtable">
+						<tr>
+							<td>Month</td>
+							<td>Posts</td>
+						</tr>
+					{% for month in postsbymonth %}
+						<tr>
+							<td>{{ month.month }}</td>
+							<td>{{ month.num_posts }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+{% endif %}
