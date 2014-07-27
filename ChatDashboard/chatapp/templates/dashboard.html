@@ -7,16 +7,17 @@
     <title>Dashboard</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script>
+          var socket;
+          var host = "ws://localhost:1025/ws";
+
 // Move to its own file later
 $(document).ready(function() {
       connect();
 
       function connect(){
-          var socket;
-          var host = "ws://localhost:1025/ws";
 
           try{
-              var socket = new WebSocket(host);
+              socket = new WebSocket(host);
 
               displayMessage('<p class="event">Connecting... ');
 
@@ -48,7 +49,35 @@ $(document).ready(function() {
              displayMessage('<p>Error'+exception);
           }
 
-          function send(topicname, text){
+
+
+          $('.textbox').keypress(function(event) {
+              if (event.keyCode == '13') {
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                var text = $(event.target).val()
+                send(id, text);
+                $(event.target).val("");
+              }
+          });
+
+          $('.addTopicWindow').keypress(function(event) {
+              if (event.keyCode == '13') {
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                var text = $(event.target).val()
+                addTopicWindow(id, text);
+                $(event.target).val("");
+                $('.addTopicWindow').remove();
+              }
+          });
+
+          $('#disconnect').click(function(){
+             socket.close();
+          });
+
+      }//End connect
+});
+
+         function send(topicname, text){
               var username = "{{ user }}"
               var dashboardname = "{{ dashboard.title }}"
               var textToSend = dashboardname + "::" + topicname + "::" + username + "::" + text
@@ -68,27 +97,42 @@ $(document).ready(function() {
             $('.'+ topicname + ' > #chatLog').append(msg+'</p>');
           }
 
-          $('.textbox').keypress(function(event) {
+function promptForNewTopicWindow() {
+            var topicWindowString = '<div class="addTopicWindow">' + "Name of new topic:" +
+            ' </div><input class="addTopicWindow"  type="text" name="message" placeholder="Message">';
+
+            $('.cdbody').append(topicWindowString);
+
+            $('.cdbody > .addTopicWindow').bind('keypress', function(event) {
+              if (event.keyCode == '13') {
+              console.log('This worked')
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                console.log("Event: " + event)
+                var text = $(event.target).val()
+                console.log("Text: " + text)
+                addTopicWindow(text);
+                $(event.target).val("");
+                $('.addTopicWindow').remove();
+              }
+          });
+
+          }
+
+          function addTopicWindow(topicWindowName) {
+            console.log("Topic window name: " + topicWindowName)
+            var topicWindowString = '<div class="' + topicWindowName + '">' + topicWindowName +
+            '<div id="chatLog"></div> </div><input class="textbox" id="' + topicWindowName + '" type="text" name="message" placeholder="Message">';
+
+            $('.cdbody').append(topicWindowString);
+
+            $('.cdbody > .topicWindowName').bind('keypress', (function(event) {
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 var text = $(event.target).val()
                 send(id, text);
                 $(event.target).val("");
               }
-          });
-
-          $('#disconnect').click(function(){
-             socket.close();
-          });
-
-      }//End connect
-});
-
-          function addTopicWindow(topicWindowName) {
-            var topicWindowString = '<div class="' + topicWindowName + '">' + topicWindowName +
-            '<div id="chatLog"></div> </div><input class="textbox" id="' + topicWindowName + '" type="text" name="message" placeholder="Message">';
-
-            $('.cdbody').append(topicWindowString);
+          }));
           }
 
     </script>
@@ -118,7 +162,7 @@ $(document).ready(function() {
 		<input class="textbox" id="topic2" type="text" name="message" placeholder="Message">
 	</div>
 <p>
-    <a href="javascript:addTopicWindow('New Topic Window')">Add Topic Window</a><br />
+    <a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a><br />
     <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Edit Dashboard Users</a>
 	{% include "footer.html"%}
 </body>
