@@ -97,7 +97,7 @@ $(document).ready(function() {
             $('.'+ topicname + ' > #chatLog').append(msg+'</p>');
           }
 
-function promptForNewTopicWindow() {
+        function promptForNewTopicWindow() {
             var topicWindowString = '<div class="addTopicWindow">' + "Name of new topic:" +
             ' </div><input class="addTopicWindow"  type="text" name="message" placeholder="Message">';
 
@@ -124,8 +124,9 @@ function promptForNewTopicWindow() {
             '<div id="chatLog"></div> </div><input class="textbox" id="' + topicWindowName + '" type="text" name="message" placeholder="Message">';
 
             $('.cdbody').append(topicWindowString);
-
-            $('.cdbody > .topicWindowName').bind('keypress', (function(event) {
+            console.log("Adding a new topic window with name: " + topicWindowName)
+            $('.cdbody > .textbox').bind('keypress', (function(event) {
+            console.log("Keypress event on new window")
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 var text = $(event.target).val()
