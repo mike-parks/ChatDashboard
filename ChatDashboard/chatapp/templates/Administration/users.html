@@ -9,7 +9,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" name="username" placeholder="User Name" /><br />
+					<input type="text" name="username" id="usernameText" style="display:none" placeholder="User Name" /><br />
 				</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr>
@@ -20,32 +20,32 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="adminaction" value="viewactiveusers" />View Active Users
+					<input type="radio" name="adminaction" value="viewactiveusers" onClick="changeUserAction()" />View Active Users
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="adminaction" value="viewsiteadmins" />View Site Admins
+					<input type="radio" name="adminaction" value="viewsiteadmins" onClick="changeUserAction()"/>View Site Admins
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="adminaction" value="viewusers" />View All Users
+					<input type="radio" name="adminaction" value="viewusers" onClick="changeUserAction()"/>View All Users
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="adminaction" value="setadmin" />Set Site Admin Permissions
+					<input type="radio" name="adminaction" value="setadmin" onClick="changeUserAction()"/>Set Site Admin Permissions
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="adminaction" value="removeadmin" />Remove Site Admin Permissions
+					<input type="radio" name="adminaction" value="removeadmin" onClick="changeUserAction()"/>Remove Site Admin Permissions
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="adminaction" value="delete" />Delete User
+					<input type="radio" name="adminaction" value="delete" onClick="changeUserAction()"/>Delete User
 				</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr>
@@ -76,3 +76,41 @@
 
 	</div> 
 </div>
+
+<script>
+			function changeUserAction() {
+				var usernameText = document.getElementById("usernameText");
+				var selectedActionsRadios = document.getElementsByName("adminaction");
+				var selectedAction = "";
+				var radlength = selectedActionsRadios.length;
+				
+				for (var i = 0;  i < radlength; i++) {
+					if (selectedActionsRadios[i].checked) {
+						selectedAction = selectedActionsRadios[i].value;
+						// only one radio can be logically checked, don't check the rest
+						break;
+					}
+				}
+				
+				switch (selectedAction)
+				{
+					case "viewactiveusers":
+						usernameText.style.display = 'none';
+						break;
+					case "viewsiteadmins":
+						usernameText.style.display = 'none';
+						break;
+					case "viewusers":
+						usernameText.style.display = 'none';
+						break;
+					case "setadmin":
+						usernameText.style.display = 'block';
+						break;
+					case "removeadmin":
+						usernameText.style.display = 'block';
+						break;
+					case "delete":
+						usernameText.style.display = 'block';	
+				}
+			}
+		</script>

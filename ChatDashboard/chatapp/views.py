@@ -25,7 +25,7 @@ def list(request):
     error_messages = []
     
     if (not request.user.is_authenticated()):
-        return login_user(request)
+        return redirect(settings.BASE_URL)
 
     username = request.user.username
 #should check to make sure dashboard doesn't already exist
@@ -72,6 +72,14 @@ def list(request):
 def render_dashboard(request, title):
     if (not request.user.is_authenticated()):
         return login_user(request)
+    
+    dash = Dashboard.objects.filter(title=title)
+    if len(dash) == 0:
+        return redirect(settings.BASE_URL + "/list/")
+    
+    dashPerms = Dashboard_Permission.objects.filter(dashboard_title=title, user=request.user.username)
+    if len(dashPerms)==0:
+        return redirect(settings.BASE_URL + "/list/")
     
     messages_here_1 = Message.objects(dashboardtitle=title, topic="topic1")
     messages_here_2 = Message.objects(dashboardtitle=title, topic="topic2")
@@ -264,6 +272,7 @@ def admin_functions(request):
     usernames = []
     dashboards = []
     userids = []
+    dashprivfound = []
     
     if (not request.user.is_superuser):
         #remove before production... add setadminuser as parameter and use username as value
@@ -308,13 +317,16 @@ def admin_functions(request):
         dash_objs = Dashboard.objects()
         for dash in dash_objs:
             dashboards.append(dash.title)
+    elif request.method=="POST" and request.POST['adminaction'] == "viewuserdashboards":
+        actionselected = "dashboard"
+        dashprivfound = Dashboard_Permission.objects.filter(user=request.POST['dashusername'])
     elif request.method=="POST":
         print(request.POST['adminaction'])
     
         
     print(actionselected)
     template = loader.get_template('Administration/adminfunctions.html')
-    context = RequestContext(request, {'ursfound': usernames , 'dashboardsfound': dashboards, 'actionselected': actionselected }) 
+    context = RequestContext(request, {'ursfound': usernames , 'dashboardsfound': dashboards, 'actionselected': actionselected, 'dashprivfound':dashprivfound }) 
     return HttpResponse(template.render(context))
 
 def admin_dashboard_functions(request):

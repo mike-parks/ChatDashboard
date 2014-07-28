@@ -100,15 +100,18 @@ def delete_dashboard(dashboard):
     if len(dboards) > 0:
         for dboard in dboards:
             dboard.delete()
-    else: # if there are no dashboards, there is no need to continue
-        return False
+    else: 
+        successfull = False
     
     #delete user permissions
     dperms = Dashboard_Permission.objects.filter(dashboard_title=dashboard)
     if len(dperms) > 0:
         for dperm in dperms:
-            dperm.delete
+            dperm.delete()
     else:
+    #    print("\"" + dashboard + "\" failed to delete")
+    #    for dper in Dashboard_Permission.objects:
+    #        print("\"" + dper.dashboard_title + "\"")
         successfull = False
     
     #delete messages: note may not always have messages

@@ -9,7 +9,8 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="text" name="dashboard" {% if dashboardsfound %}value="{{db}}"{%endif%} placeholder="Dashboard Name" /><br />
+						<input type="text" name="dashboard" id="dashboardtext" style="display:none" {% if dashboardsfound %}value="{{db}}"{%endif%} placeholder="Dashboard Name" />
+						<input type="text" name="dashusername" id="dashusernametext" style="display:none" {% if usersfound %}value="{{db}}"{%endif%} placeholder="Username" />
 					</td>
 				</tr>
 				<tr><td>&nbsp;</td></tr>
@@ -20,22 +21,22 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="radio" name="adminaction" value="viewactivedashboards" />View Active Dashboards
+						<input type="radio" name="adminaction" value="viewactivedashboards" onClick="changeDashboardAction()" />View Dashboard Permissions
 					</td>
 				</tr>				
 				<tr>
 					<td>
-						<input type="radio" name="adminaction" value="viewuserdashboards" />View Dashboards By User
+						<input type="radio" name="adminaction" value="viewuserdashboards" onClick="changeDashboardAction()"/>View Dashboards By User
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="radio" name="adminaction" value="viewalldashboards" />View All Dashboards
+						<input type="radio" name="adminaction" value="viewalldashboards" onClick="changeDashboardAction()"/>View All Dashboards
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="radio" name="adminaction" value="deletedashboard" />Delete dashboard
+						<input type="radio" name="adminaction" value="deletedashboard" onClick="changeDashboardAction()"/>Delete dashboard
 					</td>
 				</tr>
 				<tr><td>&nbsp;</td></tr>
@@ -48,7 +49,25 @@
 			</table>
 		</form>
 		
-		
+		<div  >
+			{% if dashprivfound %}
+				<table id="admintable">
+						<tr>
+							<td>Dashboard</td>
+							<td>Privilege</td>
+						</tr>
+					{% for dashpriv in dashprivfound %}
+						<tr>
+							<td>{{ dashpriv.dashboard_title }}</td>
+							<td>{{ dashpriv.privilege }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>No Privileges Found!</p>
+			{% endif %}  
+
+		</div>
 		
 		<div id='message_strings' >
 			{% if dashboardsfound %}
@@ -66,5 +85,43 @@
 			{% else %}
 				<p>No Dashboards Found!</p>
 			{% endif %}  
-</div>
+		</div>
 		</div> 
+		
+		<script>
+			function changeDashboardAction() {
+				var dashboardText = document.getElementById("dashboardtext");
+				var usernameText = document.getElementById("dashusernametext");
+				var selectedActionsRadios = document.getElementsByName("adminaction");
+				var selectedAction = "";
+				var radlength = selectedActionsRadios.length;
+				
+				for (var i = 0;  i < radlength; i++) {
+					if (selectedActionsRadios[i].checked) {
+						selectedAction = selectedActionsRadios[i].value;
+						// only one radio can be logically checked, don't check the rest
+						break;
+					}
+				}
+				
+				switch (selectedAction)
+				{
+					case "viewactivedashboards":
+						dashboardText.style.display = 'none';
+						usernameText.style.display = 'none';
+						break;
+					case "viewuserdashboards":
+						dashboardText.style.display = 'none';
+						usernameText.style.display = 'block';
+						break;
+					case "viewalldashboards":
+						dashboardText.style.display = 'none';
+						usernameText.style.display = 'none';
+						break;
+					case "deletedashboard":
+						dashboardText.style.display = 'block';
+						usernameText.style.display = 'none';
+					
+				}
+			}
+		</script>
