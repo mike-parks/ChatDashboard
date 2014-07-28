@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
+    <title>Dashboard</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script>
+          var socket;
+          var host = "ws://localhost:1025/ws";
+
+// Move to its own file later
+$(document).ready(function() {
+      connect();
+
+      function connect(){
+
+          try{
+              socket = new WebSocket(host);
+
+              displayMessage('<p class="event">Connecting... ');
+
+              socket.onopen = function(){
+                 displayMessage('<p class="event">Connected!');
+              }
+
+              socket.onmessage = function(msg){
+                 //console.log("Msg: " + msg.data)
+                 var msgcomponents = msg.data.split("::");
+                 var dashTemp = String(msgcomponents[0]);
+                 var dashboard = dashTemp.split("\)>")[1];
+                 var topicname = msgcomponents[1];
+                 var username = msgcomponents[2];
+                 var userMessage = msgcomponents[3];
+                 console.log("dash from msg is "+ dashboard)
+                 var stringToDisplay = '<p class="message">' + username + ': ' + userMessage;
+                 var dashTitle = String("{{dashboard.title}}")
+                 if(dashboard.trim() == dashTitle.trim()) {
+                    displayMessage(stringToDisplay, topicname);
+                 }
+              }
+
+              socket.onclose = function(){
+                 displayMessage('<p class="event">Lost connection.');
+              }
+
+          } catch(exception){
+             displayMessage('<p>Error'+exception);
+          }
+
+
+
+          $('.textbox').keypress(function(event) {
+              if (event.keyCode == '13') {
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                var text = $(event.target).val()
+                send(id, text);
+                $(event.target).val("");
+              }
+          });
+
+          $('.addTopicWindow').keypress(function(event) {
+              if (event.keyCode == '13') {
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                var text = $(event.target).val()
+                addTopicWindow(id, text);
+                $(event.target).val("");
+                $('.addTopicWindow').remove();
+              }
+          });
+
+          $('#disconnect').click(function(){
+             socket.close();
+          });
+
+      }//End connect
+});
+
+         function send(topicname, text){
+              var username = "{{ user }}"
+              var dashboardname = "{{ dashboard.title }}"
+              var textToSend = dashboardname + "::" + topicname + "::" + username + "::" + text
+
+              if(text==""){
+                  displayMessage('<p class="warning">Please enter a message');
+                  return ;
+              }
+              try{
+                  socket.send(textToSend);
+              } catch(exception){
+                 displayMessage('<p class="warning">');
+              }
+          }
+
+          function displayMessage(msg, topicname){
+            $('.'+ topicname + ' > #chatLog').append(msg+'</p>');
+          }
+
+        function promptForNewTopicWindow() {
+            var topicWindowString = '<div class="addTopicWindow">' + "Name of new topic:" +
+            ' </div><input class="addTopicWindow"  type="text" name="message" placeholder="Message">';
+
+            $('.cdbody').append(topicWindowString);
+
+            $('.cdbody > .addTopicWindow').bind('keypress', function(event) {
+              if (event.keyCode == '13') {
+              console.log('This worked')
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                console.log("Event: " + event)
+                var text = $(event.target).val()
+                console.log("Text: " + text)
+                addTopicWindow(text);
+                $(event.target).val("");
+                $('.addTopicWindow').remove();
+              }
+          });
+
+          }
+
+          function addTopicWindow(topicWindowName) {
+            console.log("Topic window name: " + topicWindowName)
+            var topicWindowString = '<div class="' + topicWindowName + '">' + topicWindowName +
+            '<div id="chatLog"></div> </div><input class="textbox" id="' + topicWindowName + '" type="text" name="message" placeholder="Message">';
+
+            $('.cdbody').append(topicWindowString);
+            console.log("Adding a new topic window with name: " + topicWindowName)
+            $('.cdbody > .textbox').bind('keypress', (function(event) {
+            console.log("Keypress event on new window")
+              if (event.keyCode == '13') {
+                var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                var text = $(event.target).val()
+                send(id, text);
+                $(event.target).val("");
+              }
+          }));
+          }
+
+    </script>
+</head>
+<body>
+	{% include "header.html"%}
+	<div class="cdbody">
+		<h1>You found {{ dashboard.title }}</h1>
+        <div class="topic1">
+            Topic1
+		<div id="chatLog">
+        <!--{% for message in all_messages_1 %}
+			<p class="message">{{ message.msgtext }}
+		{% endfor %}-->
+		</div>
+        </div>
+        <input class="textbox" id="topic1" type="text" name="message" placeholder="Message">
+
+        <div class="topic2">
+            Topic2
+		<div id="chatLog">
+        <!--{% for message in all_messages_2 %}
+			<p class="message">{{ message.msgtext }}
+		{% endfor %}-->
+		</div>
+        </div>
+		<input class="textbox" id="topic2" type="text" name="message" placeholder="Message">
+		<br />
+	</div>
+<p>
+    <a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a><br />
+    <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Edit Dashboard Users</a>
+
+	{% include "footer.html"%}
+</body>
+</html>

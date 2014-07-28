@@ -17,12 +17,15 @@
 			<input type="hidden" name="action_user" id="userHidden"/>
 			<input type="hidden" name="user_permission" id="permissionHidden" value="user" />
 			<input type="hidden" name="dashboard_action" id ="actionHidden" value="change_permissions" />
-            <select name="formAction" id="actionTypeSelect" onchange="changeActionType()">
-                <option value="usertable">Perform User Actions</option>
+            <label>Type of Action:</label>
+			<select name="formAction" id="actionTypeSelect" onchange="changeActionType();">
+                <option value="userchangetable">Change/Remove User</option>
+                <option value="useraddtable">Add User</option>
+                <option value="topicaddtable">Add Topic</option>
                 <option value="metricstable">Metrics Report</option>
             </select>
 
-			<div id="usertable">
+			<div id="userchangetable" style="display:none">
                 <div class="table">
                     <div class="col"> </div>
                     <div class="col"> </div>
@@ -61,7 +64,12 @@
 
                 <br />
                 <br />
-                    <div class="row">
+                    
+                </div>
+            </div>
+			
+			<div id="useraddtable">
+				<div class="row">
                         <div class="cell">
                             Username: <input type="text" id="newUserInput" placeholder="New User" />
                         </div>
@@ -76,11 +84,37 @@
                         </div>
                         <div class="cell"> </div>
                         <div class="cell"> </div>
-                    </div>
                 </div>
-            </div>
+				{% if user_permissions %}
+				<div class="table">
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="col"> </div>
+                    <div class="row">
+                        <div class="cell">Username</div>
+                        <div class="cell">Privilege</div>
+                        <div class="cell"> </div>
+                        <div class="cell"> </div>
+                        <div class="cell"> </div>
+                    </div>
+					{% for userpriv in user_permissions %}
+						<div class="row">
+							<div class="cell">{{userpriv.user}}</div>
+							<div class="cell">{{userpriv.privilege}}</div>
+						</div>
+					{% endfor %}
+				</div>
+				{% endif %}	
+			</div>
+			
+			<div id="topicaddtable" style="display:none">
+				
+			</div>
 
-            <div id="metricstable">
+            <div id="metricstable" style="display:none">
+				<input type="submit" name="metricsReportSubmit" onsubmit="onmetricsReportSubmit()" onclick="onmetricsReportSubmit()" onkeypress="onmetricsReportSubmit()"/>
                {% include "reports.html"%}
             </div>
 		</form>
@@ -88,8 +122,8 @@
 
 
 		<div id="passfuncsform_messageloc" class="message_strings">
-			{% if messages %}
-				{% for message in messages %}
+			{% if show_messages %}
+				{% for message in show_messages %}
 					<li>{{ message }}</li>
 				{% endfor %}
 			{% endif %}
@@ -132,20 +166,39 @@
 
         function changeActionType() {
             var myselect = document.getElementById("actionTypeSelect");
-            var usertable = document.getElementById("usertable");
+            var userchangetable = document.getElementById("userchangetable");
+            var useraddtable = document.getElementById("useraddtable");
+            var topicaddtable = document.getElementById("topicaddtable");
             var metricstable = document.getElementById("metricstable");
 
             var selectedValue = myselect.options[myselect.selectedIndex].value;
 
-            if (selectedValue === "usertable") {
-                usertable.style.display = "block";
-				metricstable.style.display = "none";
-            } else {
-                if (selectedValue === "metricstable") {
-					usertable.style.display = "none";
-				    metricstable.style.display = "block";
-                }
-            }
+			switch (selectedValue) {
+				case "userchangetable":					
+					userchangetable.style.display = "block";
+					topicaddtable.style.display = "none";
+					useraddtable.style.display = "none";
+					metricstable.style.display = "none";
+					break;
+				case "metricstable":
+					userchangetable.style.display = "none";
+				    topicaddtable.style.display = "none";
+					useraddtable.style.display = "none";
+					metricstable.style.display = "block";
+					break;
+				case "useraddtable":
+					userchangetable.style.display = "none";
+				    topicaddtable.style.display = "none";
+					useraddtable.style.display = "block";
+					metricstable.style.display = "none";
+					break;
+				case "topicaddtable":
+					userchangetable.style.display = "none";
+				    topicaddtable.style.display = "block";
+					useraddtable.style.display = "none";
+					metricstable.style.display = "none";
+					break;
+			}
         }
 
 
@@ -160,8 +213,7 @@
             
         }
 		
-		function addActionUserSubmit(username){
-			
+		function addActionUserSubmit(username){			
             var userHidden = document.getElementById("userHidden");
 			userHidden.value = username;
 		}
@@ -175,6 +227,11 @@
             permissionHidden.value = selectedValue;
 
         }
+		
+		function onmetricsReportSubmit(){
+            var actionHidden = document.getElementById("actionHidden");
+            actionHidden.value = "viewmetricsreport";
+		}
 
         function addUserSubmit() {
             var myUserInput = document.getElementById("newUserInput");

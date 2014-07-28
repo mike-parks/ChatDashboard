@@ -114,61 +114,74 @@ def dashboard_user_administration(request):
         
     # retrieve dashboard and verify that the user has admin permissions
     dashboard = Dashboard.objects.get(title=dash_title)
-    user_admin_perm = None
+    user_perm_level = None
     try:
-        user_admin_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user, privilege=Dashboard_Permissions.ADMIN)
+        if request.user.is_superuser:
+            user_perm_level = Dashboard_Permissions.ADMIN
+        else:    
+            user_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user)
+            user_perm_level = user_perm.privilege
     except:
         print "User," + request_user + " , does not have permissions for the " + dash_title + " Dashboard."
     
-    if (user_admin_perm == None):
+    if user_perm_level == None:
         error_messages.append("You do not have admin permission on this Dashboard.")
         user_permissions_list = Dashboard_Permission.objects()
     else:  
         user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dash_title)
         
-        if  request.method == "POST":
-
-            if request.POST['dashboard_action']== "viewmetricsreport":
-                postsbymonth = retrieve_dashboard_posts_by_month(None, None)
-            else:
-                dash_action = request.POST['dashboard_action']
+        if  request.method == "POST":            
+            dash_action = request.POST['dashboard_action']
+            
+            #implement for all users with access
+            if dash_action=="add_user":
                 action_user = request.POST['action_user']
-
-                if action_user == dashboard.creator:
-                    error_messages.append("Unable to perform Dashboard user action on Dashboard creator.")
+                
+                user_permission = request.POST["user_permission"]
+                print user_permission
+                success = add_dashboard_user(dash_title, action_user, user_permission)
+                if (success):
+                    messages.append("Successfully added the user: " + action_user)
                 else:
-                    if dash_action == "delete_user":
-                        success = delete_dashboard_user(dash_title, action_user)
-                        if (success):
-                            messages.append("Successfully deleted the user: " + action_user)
-                        else:
-                            error_messages.append("Unable to delete user")
-                    elif dash_action=="add_user":
-                        user_permission = request.POST["user_permission"]
-                        print user_permission
-                        success = add_dashboard_user(dash_title, action_user, user_permission)
-                        if (success):
-                            messages.append("Successfully added the user: " + action_user)
-                        else:
-                            error_messages.append("Unable to add user")
-                    elif dash_action == "change_permissions":
-                        user_permission = request.POST["user_permission"]
-                        success = change_dashboard_permissions(dash_title, action_user, user_permission)
-                        if (success):
-                            messages.append("Successfully change the user permissions." + action_user)
-                        else:
-                            error_messages.append("Unable to change user permissions.")
+                    error_messages.append("Unable to add user")
+            elif dash_action=="add_topic":
+                #todo: implement
+                pass
+            
+            #implement for admin users
+            elif (user_perm_level == Dashboard_Permissions.ADMIN ):
+                
+                if request.POST['dashboard_action']== "viewmetricsreport":
+                    postsbymonth = retrieve_dashboard_posts_by_month(None, None)
+                else:
+                    action_user = request.POST['action_user']
+                    if action_user == dashboard.creator:
+                        error_messages.append("Unable to perform Dashboard user action on Dashboard creator.")
                     else:
-                        error_messages.append("Invalid Dashboard User Action.")
+                        if dash_action == "delete_user":
+                            success = delete_dashboard_user(dash_title, action_user)
+                            if (success):
+                                messages.append("Successfully deleted the user: " + action_user)
+                            else:
+                                error_messages.append("Unable to delete user")
+                        elif dash_action == "change_permissions":
+                            user_permission = request.POST["user_permission"]
+                            success = change_dashboard_permissions(dash_title, action_user, user_permission)
+                            if (success):
+                                messages.append("Successfully change the user permissions." + action_user)
+                            else:
+                                error_messages.append("Unable to change user permissions.")
+                        else:
+                            error_messages.append("Invalid Dashboard User Action.")
 
 
-
-
+                            
+    print(messages)
     template = loader.get_template('dashboarduseractions.html')
     context = RequestContext(request, {
         'dashboard': dashboard,
         'user_permissions': user_permissions_list,
-        'messages': messages,
+        'show_messages': messages,
         'error_messages': error_messages,
         'postsbymonth':postsbymonth
     })
