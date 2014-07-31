@@ -17,15 +17,16 @@
 			<input type="hidden" name="action_user" id="userHidden"/>
 			<input type="hidden" name="user_permission" id="permissionHidden" value="user" />
 			<input type="hidden" name="dashboard_action" id ="actionHidden" value="change_permissions" />
+			<input type="hidden" name="actionType" id ="actionType" value="{{request_type}}" />
             <label>Type of Action:</label>
-			<select name="formAction" id="actionTypeSelect" onchange="changeActionType();">
-                <option value="userchangetable">Change/Remove User</option>
-                <option value="useraddtable">Add User</option>
-                <option value="topicaddtable">Add Topic</option>
-                <option value="metricstable">Metrics Report</option>
+			<select name="actionTypeSelect" id="actionTypeSelect" onchange="changeActionType();">
+                {% if user_perm_level == 'admin' %} <option value="userchangetable" {% if request_type == "userchangetable" %} selected {% endif %} >Change/Remove User</option> {% endif %}
+                <option value="useraddtable" {% if request_type == "useraddtable" %} selected {% endif %} >Add User</option>
+                <option value="topicaddtable"{% if request_type == "topicaddtable" %} selected {% endif %} >Add Topic</option>
+                {% if user_perm_level == 'admin' %} <option value="metricstable"{% if request_type == "metricstable" %} selected {% endif %} >Metrics Report</option> {% endif %}
             </select>
 
-			<div id="userchangetable" style="display:none">
+			<div id="userchangetable" {% if request_type != "userchangetable" %} style="display:none" {% endif %}>
                 <div class="table">
                     <div class="col"> </div>
                     <div class="col"> </div>
@@ -68,7 +69,7 @@
                 </div>
             </div>
 			
-			<div id="useraddtable">
+			<div id="useraddtable" {% if request_type != "useraddtable" %} style="display:none" {% endif %}>
 				<div class="row">
                         <div class="cell">
                             Username: <input type="text" id="newUserInput" placeholder="New User" />
@@ -76,7 +77,7 @@
                         <div class="cell">
                             Privilege: <select name="addUserPrivilegeSelect" id="addUserPrivilegeSelect" onchange="changeAddUserPrivilegeSelect()">
                                         <option value="user">User</option>
-                                        <option value="admin">Admin</option>
+                                        {% if user_perm_level == 'admin' %}<option value="admin">Admin</option> {% endif %}
                                     </select>
                         </div>
                         <div class="cell">
@@ -109,11 +110,11 @@
 				{% endif %}	
 			</div>
 			
-			<div id="topicaddtable" style="display:none">
+			<div id="topicaddtable" {% if request_type != "topicaddtable" %} style="display:none" {% endif %}>
 				
 			</div>
 
-            <div id="metricstable" style="display:none">
+            <div id="metricstable" {% if request_type != "metricstable" %} style="display:none" {% endif %}>
 				<input type="submit" name="metricsReportSubmit" onsubmit="onmetricsReportSubmit()" onclick="onmetricsReportSubmit()" onkeypress="onmetricsReportSubmit()"/>
                {% include "reports.html"%}
             </div>
@@ -170,8 +171,10 @@
             var useraddtable = document.getElementById("useraddtable");
             var topicaddtable = document.getElementById("topicaddtable");
             var metricstable = document.getElementById("metricstable");
+            var actionType = document.getElementById("actionType");
 
             var selectedValue = myselect.options[myselect.selectedIndex].value;
+			actionType.value = selectedValue;
 
 			switch (selectedValue) {
 				case "userchangetable":					

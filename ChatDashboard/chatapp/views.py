@@ -98,6 +98,7 @@ def dashboard_user_administration(request):
     error_messages = []
     postsbymonth = []
     user_permissions_list = None
+    request_type = "useraddtable"
     
     if (not request.user.is_authenticated()):
         return redirect(settings.BASE_URL)
@@ -119,19 +120,17 @@ def dashboard_user_administration(request):
         if request.user.is_superuser:
             user_perm_level = Dashboard_Permissions.ADMIN
         else:    
-            user_perm = Dashboard_Permission.objects.filter(dashboard_title=dash_title, user=request_user)
+            user_perm = Dashboard_Permission.objects.get(dashboard_title=dash_title, user=request_user)
             user_perm_level = user_perm.privilege
     except:
         print "User," + request_user + " , does not have permissions for the " + dash_title + " Dashboard."
-    
-    if user_perm_level == None:
-        error_messages.append("You do not have admin permission on this Dashboard.")
-        user_permissions_list = Dashboard_Permission.objects()
-    else:  
+    print(user_perm_level)
+    if user_perm_level != None:
         user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dash_title)
         
         if  request.method == "POST":            
             dash_action = request.POST['dashboard_action']
+            request_type = request.POST['actionType']
             
             #implement for all users with access
             if dash_action=="add_user":
@@ -181,6 +180,8 @@ def dashboard_user_administration(request):
     context = RequestContext(request, {
         'dashboard': dashboard,
         'user_permissions': user_permissions_list,
+        'user_perm_level': user_perm_level,
+        'request_type': request_type,
         'show_messages': messages,
         'error_messages': error_messages,
         'postsbymonth':postsbymonth
