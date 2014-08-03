@@ -24,3 +24,8 @@ class PasswordReset(Document):
     time_issued = DateTimeField()
     time_expire = DateTimeField()
     used = BooleanField()
+
+class Topic(Document):
+    topic_title = StringField(max_length=200)
+    topic_active = BooleanField()
+    dashboard_title = StringField(max_length=200)

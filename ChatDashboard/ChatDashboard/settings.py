@@ -86,6 +86,7 @@ DATABASES = {
 SESSION_ENGINE = 'mongoengine.django.sessions'
 SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
 SESSION_COOKIE_AGE = 3600 #set session age limit to 1 hour
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 AUTHENTICATION_BACKENDS = (
     'mongoengine.django.auth.MongoEngineBackend',
 )

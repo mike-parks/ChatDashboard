@@ -26,7 +26,7 @@ $(document).ready(function() {
               }
 
               socket.onmessage = function(msg){
-                 //console.log("Msg: " + msg.data)
+                 console.log("Template got msg: " + msg.data)
                  var msgcomponents = msg.data.split("::");
                  var dashTemp = String(msgcomponents[0]);
                  var dashboard = dashTemp.split("\)>")[1];
@@ -142,26 +142,6 @@ $(document).ready(function() {
 	{% include "header.html"%}
 	<div class="cdbody">
 		<h1>You found {{ dashboard.title }}</h1>
-        <div class="topic1">
-            Topic1
-		<div id="chatLog">
-        <!--{% for message in all_messages_1 %}
-			<p class="message">{{ message.msgtext }}
-		{% endfor %}-->
-		</div>
-        </div>
-        <input class="textbox" id="topic1" type="text" name="message" placeholder="Message">
-
-        <div class="topic2">
-            Topic2
-		<div id="chatLog">
-        <!--{% for message in all_messages_2 %}
-			<p class="message">{{ message.msgtext }}
-		{% endfor %}-->
-		</div>
-        </div>
-		<input class="textbox" id="topic2" type="text" name="message" placeholder="Message">
-		<br />
 	</div>
 <p>
     <a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a><br />
