@@ -31,9 +31,10 @@ $(document).ready(function() {
                  var dashTemp = String(msgcomponents[0]);
                  var dashboard = dashTemp.split("\)>")[1];
                  var topicname = msgcomponents[1];
+                 console.log("I'm sending this to: " + topicname)
                  var username = msgcomponents[2];
                  var userMessage = msgcomponents[3];
-                 console.log("dash from msg is "+ dashboard)
+                 console.log("topic is " + topicname)
                  var stringToDisplay = '<p class="message">' + username + ': ' + userMessage;
                  var dashTitle = String("{{dashboard.title}}")
                  if(dashboard.trim() == dashTitle.trim()) {
@@ -118,13 +119,17 @@ $(document).ready(function() {
 
           }
 
-          function addTopicWindow(topicWindowName) {
-            console.log("Topic window name: " + topicWindowName)
-            var topicWindowString = '<div class="' + topicWindowName + '">' + topicWindowName +
-            '<div id="chatLog"></div> </div><input class="textbox" id="' + topicWindowName + '" type="text" name="message" placeholder="Message">';
+          function addTopicWindow(displayTopicWindowName) {
+
+            var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
+            //var sanitizedTopicWindowName = displayTopicWindowName
+
+            console.log("Topic window name: " + sanitizedTopicWindowName)
+            var topicWindowString = '<div class="' + sanitizedTopicWindowName + '">' + displayTopicWindowName +
+            '<div id="chatLog"></div> </div><input class="textbox" id="' + sanitizedTopicWindowName + '" type="text" name="message" placeholder="Message">';
 
             $('.cdbody').append(topicWindowString);
-            console.log("Adding a new topic window with name: " + topicWindowName)
+            console.log("Adding a new topic window with name: " + sanitizedTopicWindowName)
             $('.cdbody > .textbox').bind('keypress', (function(event) {
             console.log("Keypress event on new window")
               if (event.keyCode == '13') {

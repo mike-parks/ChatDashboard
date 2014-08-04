@@ -81,14 +81,10 @@ def render_dashboard(request, title):
     dashPerms = Dashboard_Permission.objects.filter(dashboard_title=title, user=request.user.username)
     if len(dashPerms)==0:
         return redirect(settings.BASE_URL + "/list/")
-    
-    #messages_here_1 = Message.objects(dashboardtitle=title, topic="topic1")
-    #messages_here_2 = Message.objects(dashboardtitle=title, topic="topic2")
+
     template = loader.get_template('dashboard.html')
     dashboard = get_document_or_404(Dashboard, pk=title)
     context = RequestContext(request, {
-    #    'all_messages_1': messages_here_1,
-    #    'all_messages_2': messages_here_2,
         'dashboard': dashboard
     })
     return HttpResponse(template.render(context))

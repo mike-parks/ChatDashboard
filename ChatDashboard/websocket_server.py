@@ -58,12 +58,14 @@ class DashboardProtocol(basic.LineReceiver):
             topic.save()
 
         print "New message is:" + str(message)
-        print "dashboard is" + str(dashboardname)
+        print "dashboard is: " + str(dashboardname)
 
         for c in self.factory.clients:
-            c.sendLine("<{}> {}".format(self.transport.getHost(), dashboardname
+            messageFormatted = "<{}> {}".format(self.transport.getHost(), dashboardname
                                         + "::" + topicname + "::" + username +
-                                        "::" + messagetext))
+                                        "::" + messagetext)
+            print "Message formatted is:" + messageFormatted
+            c.sendLine(messageFormatted)
 
 """Factory for DashboardProtocol class.
 Each instance will store its own unique set of connected clients."""
