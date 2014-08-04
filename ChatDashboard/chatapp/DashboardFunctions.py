@@ -146,16 +146,17 @@ def add_topic_window(topicname, dashboardname):
     return to_save_topic
 
 def deactivate_topic_window(topicname, dashboardname):
-    deleted_topic = False
+    deactivated_topic = False
     
     topic_windows = Topic.objects.filter(topic_title=topicname, dashboard_title=dashboardname)
     
     for topic_window in topic_windows:
-        topic_window.delete()
-        deleted_topic = True
+        topic_window.topic_active = False
+        topic_window.save()
+        deactivated_topic = True
 
 
-    return deleted_topic
+    return deactivated_topic
 
 class Dashboard_Permissions(object):
     ADMIN = "admin"
