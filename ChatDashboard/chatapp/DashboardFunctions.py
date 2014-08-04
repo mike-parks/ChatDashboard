@@ -3,7 +3,7 @@ Created on Jul 9, 2014
 
 @author: Nick
 '''
-from models import Dashboard_Permission, Dashboard, Message
+from models import Dashboard_Permission, Dashboard, Message, Topic
 from mongoengine.django.auth import *
 from RegistrationFunctions import send_email
 
@@ -113,6 +113,11 @@ def delete_dashboard(dashboard):
     #    for dper in Dashboard_Permission.objects:
     #        print("\"" + dper.dashboard_title + "\"")
         successfull = False
+        
+    dtopics = Topic.objects.filter(dashboard_title=dashboard)
+    if len(dtopics) > 0:
+        for dtopic in dtopics:
+            dtopic.delete()
     
     #delete messages: note may not always have messages
     dmessages = Message.objects.filter(dashboardtitle=dashboard)
@@ -121,6 +126,36 @@ def delete_dashboard(dashboard):
             dmessage.delete()
             
     return successfull
+
+def add_topic_window(topicname, dashboardname):
+    to_save_topic = True
+    
+    topic_windows = Topic.objects.filter(topic_title=topicname, dashboard_title=dashboardname)
+      
+    if len(topic_windows) > 0:
+        to_save_topic = False
+    #for topic_window in topic_woindows:
+    #    if topic_window.topic_title == topicname:
+    #        to_save_topic = False
+
+    if to_save_topic:
+        topic = Topic(topic_title = topicname,
+                      topic_active = True,
+                      dashboard_title = dashboardname)
+        topic.save()
+    return to_save_topic
+
+def deactivate_topic_window(topicname, dashboardname):
+    deleted_topic = False
+    
+    topic_windows = Topic.objects.filter(topic_title=topicname, dashboard_title=dashboardname)
+    
+    for topic_window in topic_windows:
+        topic_window.delete()
+        deleted_topic = True
+
+
+    return deleted_topic
 
 class Dashboard_Permissions(object):
     ADMIN = "admin"
