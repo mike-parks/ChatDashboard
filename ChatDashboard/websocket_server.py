@@ -4,6 +4,7 @@ from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted_websockets import WebSocketsResource, lookupProtocolForFactory
 from chatapp.models import Message
+from chatapp.DashboardFunctions import add_topic_window
 from chatapp.models import Topic
 import datetime
 
@@ -46,16 +47,19 @@ class DashboardProtocol(basic.LineReceiver):
                           dashboardtitle=dashboardname,
                           topic=topicname)
         message.save()
-        to_save_topic = True
-        for topic_window in Topic.objects:
-            if topic_window.topic_title == topicname:
-                to_save_topic = False
 
-        if to_save_topic:
-            topic = Topic(topic_title = topicname,
-                          topic_active = True,
-                          dashboard_title = dashboardname)
-            topic.save()
+
+        add_topic_window(topicname, dashboardname)
+        #to_save_topic = True
+        #for topic_window in Topic.objects:
+        #    if topic_window.topic_title == topicname:
+        #        to_save_topic = False
+
+        #if to_save_topic:
+        #    topic = Topic(topic_title = topicname,
+        #                  topic_active = True,
+        #                  dashboard_title = dashboardname)
+        #    topic.save()
 
         print "New message is:" + str(message)
         print "dashboard is: " + str(dashboardname)
