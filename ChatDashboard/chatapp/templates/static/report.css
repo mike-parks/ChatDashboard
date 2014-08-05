@@ -1,0 +1,17 @@
+.metricstable{
+    border: 1px solid black;
+    width: 100%;
+}
+
+.reportheader{
+    font-weight:bold;
+    border: 1px solid black;
+}
+
+.reportcol{
+    border: 1px solid black;
+}
+
+.reportrow{
+    border: 1px solid black;
+}
