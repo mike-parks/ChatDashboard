@@ -61,9 +61,6 @@ class DashboardProtocol(basic.LineReceiver):
         #                  dashboard_title = dashboardname)
         #    topic.save()
 
-        print "New message is:" + str(message)
-        print "dashboard is: " + str(dashboardname)
-
         for c in self.factory.clients:
             messageFormatted = "<{}> {}".format(self.transport.getHost(), dashboardname
                                         + "::" + topicname + "::" + username +

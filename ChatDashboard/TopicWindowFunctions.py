@@ -8,7 +8,16 @@ def add_topic_window(topicname, dashboardname):
     topic_windows = Topic.objects.filter(topic_title=topicname, dashboard_title=dashboardname)
 
     if len(topic_windows) > 0:
+        for topic in topic_windows:
+            topic.topic_active = True
+            topic.save()
+            break
+
         to_save_topic = False
+    else:
+        active_topics = Topic.objects.filter(dashboard_title=dashboardname)
+        if len(active_topics)>= 6:
+            to_save_topic = False
     #for topic_window in topic_woindows:
     #    if topic_window.topic_title == topicname:
     #        to_save_topic = False
