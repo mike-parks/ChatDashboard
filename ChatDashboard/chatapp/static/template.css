@@ -78,3 +78,8 @@
     color: #0000FF;
     cursor: pointer;
 }
+
+.bufferdiv {
+    margin-top:2px;
+    margin-bottom: 2px;
+}

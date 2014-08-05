@@ -1,0 +1,31 @@
+
+
+<h1 align="center"> Metric Reports</h1>
+
+{% if postsbymonth %}
+                <table id="postsbymonthtable" class="metricstable">
+<<<<<<< HEAD
+						<tr class="reportrow">
+							<td class="reportheader">Month</td>
+							<td class="reportheader">Posts</td>
+						</tr>
+					{% for month in postsbymonth %}
+						<tr class="reportrow">
+							<td class="reportcol">{{ month.month }}</td>
+							<td class="reportcol">{{ month.num_posts }}</td>
+=======
+						<tr>
+							<td>Month</td>
+                            <td></td>
+							<td>Posts</td>
+						</tr>
+					{% for month in postsbymonth %}
+						<tr>
+							<td>{{ month.month }}</td>
+                            <td></td>
+							<td>{{ month.num_posts }}</td>
+>>>>>>> 3abdea8e5ad6cb9f3915b763f68ed62f4a28378c
+						</tr>
+					{% endfor %}
+				</table>
+{% endif %}

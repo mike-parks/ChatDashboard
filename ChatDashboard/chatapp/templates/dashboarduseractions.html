@@ -23,7 +23,7 @@
 			<select name="actionTypeSelect" id="actionTypeSelect" onchange="changeActionType();">
                 {% if user_perm_level == 'admin' %} <option value="userchangetable" {% if request_type == "userchangetable" %} selected {% endif %} >Change/Remove User</option> {% endif %}
                 <option value="useraddtable" {% if request_type == "useraddtable" %} selected {% endif %} >Add User</option>
-                <option value="topicaddtable"{% if request_type == "topicaddtable" %} selected {% endif %} >Add Topic</option>
+                <option value="topicaddtable"{% if request_type == "topicaddtable" %} selected {% endif %} >Add/Remove Topics</option>
                 {% if user_perm_level == 'admin' %} <option value="metricstable"{% if request_type == "metricstable" %} selected {% endif %} >Metrics Report</option> {% endif %}
             </select>
 
@@ -112,11 +112,22 @@
 			</div>
 			
 			<div id="topicaddtable" {% if request_type != "topicaddtable" %} style="display:none" {% endif %}>
+				<input type="text" name="topic" placeholder="Topic Title" />
+				<input type="submit" name="addTopicSubmit" value="Add Topic" onsubmit="onTopicSubmit('add')" onclick="onTopicSubmit('add')" onkeypress="onTopicSubmit('add')"/>
+				<input type="submit" name="removeTopicSubmit" value="Remove Topic" onsubmit="onTopicSubmit('remove')" onclick="onTopicSubmit('remove')" onkeypress="onTopicSubmit('remove')" />
 				
+				<h2>Current Topics</h2>
+				{% if topictitles %}
+					{% for topictitle in topictitles %}
+						<li>{{ topictitle.topic_title }}</li>
+					{% endfor %}
+				{% endif %}
 			</div>
 
             <div id="metricstable" {% if request_type != "metricstable" %} style="display:none" {% endif %}>
-				<input type="submit" name="metricsReportSubmit" onsubmit="onmetricsReportSubmit()" onclick="onmetricsReportSubmit()" onkeypress="onmetricsReportSubmit()"/>
+				<div class="bufferdiv">Report Start Date: <input type="date" name="metricStartDate" /></div>
+				<div class="bufferdiv">Report End Date: <input type="date" name="metricEndDate" /></div> 
+				<div class="bufferdiv"><input type="submit" name="metricsReportSubmit" onsubmit="onmetricsReportSubmit()" onclick="onmetricsReportSubmit()" onkeypress="onmetricsReportSubmit()"/></div> 
                {% include "reports.html"%}
             </div>
 		</form>
@@ -235,6 +246,17 @@
 		function onmetricsReportSubmit(){
             var actionHidden = document.getElementById("actionHidden");
             actionHidden.value = "viewmetricsreport";
+		}
+		
+		function onTopicSubmit(transactionType){
+			var actionHidden = document.getElementById("actionHidden");
+			if (transactionType == "add") {
+				actionHidden.value = "add_topic";
+			} else{
+				if (transactionType == "remove"){
+					actionHidden.value = "deactivate_topic";
+				}
+			}
 		}
 
         function addUserSubmit() {

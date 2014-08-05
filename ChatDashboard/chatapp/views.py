@@ -13,6 +13,7 @@ import RegistrationFunctions
 from DashboardFunctions import *
 from MetricsReportFunctions import *
 from django.http import HttpResponseRedirect
+from TopicWindowFunctions import add_topic_window, deactivate_topic_window
 
 from models import Dashboard, Message, Dashboard_Permission
 import datetime
@@ -93,6 +94,7 @@ def dashboard_user_administration(request):
     messages = []
     error_messages = []
     postsbymonth = []
+    topic_titles = []
     user_permissions_list = None
     request_type = "useraddtable"
     
@@ -123,6 +125,7 @@ def dashboard_user_administration(request):
     print(user_perm_level)
     if user_perm_level != None:
         user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dash_title)
+        topic_titles = Topic.objects.filter(dashboard_title=dash_title, topic_active=True)
         
         if  request.method == "POST":            
             dash_action = request.POST['dashboard_action']
@@ -140,14 +143,30 @@ def dashboard_user_administration(request):
                 else:
                     error_messages.append("Unable to add user")
             elif dash_action=="add_topic":
-                #todo: implement
-                pass
+                topic_name = request.POST['topic']
+                successfull = add_topic_window(topic_name, dash_title)
+                if successfull:
+                    messages.append("Successfully added topic " + topic_name)
+                else:
+                    error_messages.append("Failed to add topic.")
+                
+            
+            elif dash_action == "deactivate_topic":
+                topic_name = request.POST['topic']
+                successfull = deactivate_topic_window(topic_name, dash_title)
+                if successfull:
+                    messages.append("Successfully removed topic " + topic_name)
+                else:
+                    error_messages.append("Failed to remove topic.")
+
             
             #implement for admin users
             elif (user_perm_level == Dashboard_Permissions.ADMIN ):
                 
                 if request.POST['dashboard_action']== "viewmetricsreport":
-                    postsbymonth = retrieve_dashboard_posts_by_month(None, None)
+                    metricStartDate = request.POST["metricStartDate"]
+                    metricEndDate = request.POST["metricEndDate"]
+                    postsbymonth = retrieve_dashboard_posts_by_month(metricStartDate, metricEndDate)
                 else:
                     action_user = request.POST['action_user']
                     if action_user == dashboard.creator:
@@ -180,7 +199,8 @@ def dashboard_user_administration(request):
         'request_type': request_type,
         'show_messages': messages,
         'error_messages': error_messages,
-        'postsbymonth':postsbymonth
+        'postsbymonth':postsbymonth,
+        'topictitles':topic_titles
     })
     return HttpResponse(template.render(context))
 
