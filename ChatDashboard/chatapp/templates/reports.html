@@ -4,11 +4,13 @@
                 <table id="postsbymonthtable" class="metricstable">
 						<tr>
 							<td>Month</td>
+                            <td></td>
 							<td>Posts</td>
 						</tr>
 					{% for month in postsbymonth %}
 						<tr>
 							<td>{{ month.month }}</td>
+                            <td></td>
 							<td>{{ month.num_posts }}</td>
 						</tr>
 					{% endfor %}

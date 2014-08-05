@@ -4,7 +4,7 @@ from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted_websockets import WebSocketsResource, lookupProtocolForFactory
 from chatapp.models import Message
-from chatapp.DashboardFunctions import add_topic_window
+from TopicWindowFunctions import add_topic_window
 from chatapp.models import Topic
 import datetime
 
