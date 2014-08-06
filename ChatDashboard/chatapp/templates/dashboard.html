@@ -10,6 +10,8 @@
           var socket;
           var host = "ws://localhost:1025/ws";
 
+          var windowToDelete;
+
 // Move to its own file later
 $(document).ready(function() {
       connect();
@@ -117,7 +119,8 @@ $(document).ready(function() {
               }
          }
 
-         function send_delete_topic_window(name){
+         function send_delete_topic_window(){
+              var name = windowToDelete
               var dashboardname = "{{ dashboard.title }}"
               var dashboardAddCommandMsg = dashboardname + ":-:" + name + ":-:" + "delete"
               try {
@@ -156,7 +159,6 @@ $(document).ready(function() {
 
             $('.cdbody > .addTopicWindow').bind('keypress', function(event) {
               if (event.keyCode == '13') {
-              console.log('This worked')
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 console.log("Event: " + event)
                 var text = $(event.target).val()
@@ -173,14 +175,18 @@ $(document).ready(function() {
 
             var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
             //var sanitizedTopicWindowName = displayTopicWindowName
-
             console.log("Topic window name: " + sanitizedTopicWindowName)
-            var topicWindowString = '<div class="' + sanitizedTopicWindowName + '">' + displayTopicWindowName +
-            '<div id="chatLog"></div> </div><input class="textbox" id="' + sanitizedTopicWindowName + '" type="text" name="message" placeholder="Message">';
+            var topicWindowString = '<div class="' + sanitizedTopicWindowName + '">' +
+            displayTopicWindowName +
+            '   <a href="javascript:windowToDelete = \'' + sanitizedTopicWindowName + '\'\;send_delete_topic_window()">(X)</a>' +
+            '<div id="chatLog"></div><input class="textbox" id="' +
+            sanitizedTopicWindowName +
+            '" type="text" name="message" placeholder="Message"></div>';
 
             $('.cdbody').append(topicWindowString);
             console.log("Adding a new topic window with name: " + sanitizedTopicWindowName)
-            $('.cdbody > .textbox').bind('keypress', (function(event) {
+
+            $('.cdbody .textbox').bind('keypress', (function(event) {
             console.log("Keypress event on new window")
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
@@ -193,6 +199,11 @@ $(document).ready(function() {
 
           function removeTopicWindow(displayTopicWindowName) {
             console.log("Removing topic window: " + displayTopicWindowName);
+            windowToDelete = displayTopicWindowName
+            var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
+            //var sanitizedTopicWindowName = displayTopicWindowName
+
+            $('.cdbody ' + '.' + sanitizedTopicWindowName).remove();
           }
 
     </script>
