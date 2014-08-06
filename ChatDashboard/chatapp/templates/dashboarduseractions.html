@@ -112,14 +112,20 @@
 			</div>
 			
 			<div id="topicaddtable" {% if request_type != "topicaddtable" %} style="display:none" {% endif %}>
-				<input type="text" name="topic" placeholder="Topic Title" />
-				<input type="submit" name="addTopicSubmit" value="Add Topic" onsubmit="onTopicSubmit('add')" onclick="onTopicSubmit('add')" onkeypress="onTopicSubmit('add')"/>
-				<input type="submit" name="removeTopicSubmit" value="Remove Topic" onsubmit="onTopicSubmit('remove')" onclick="onTopicSubmit('remove')" onkeypress="onTopicSubmit('remove')" />
+				<table>
+					<tr><td>
+						<input type="text" name="topic" placeholder="Topic Title" />
+						<input type="submit" name="addTopicSubmit" value="Add Topic" onsubmit="onTopicSubmit('add')" onclick="onTopicSubmit('add')" onkeypress="onTopicSubmit('add')"/><br />
+					</td></tr>
+					<tr><td>
+						<input type="submit" name="removeTopicSubmit" value="Remove Selected Topics" onsubmit="onTopicSubmit('remove')" onclick="onTopicSubmit('remove')" onkeypress="onTopicSubmit('remove')" />
+					</td></tr>
+				</table>
 				
 				<h2>Current Topics</h2>
 				{% if topictitles %}
 					{% for topictitle in topictitles %}
-						<li>{{ topictitle.topic_title }}</li>
+						<input type="checkbox" value="{{ topictitle.topic_title }}" name="checkedtopics">{{ topictitle.topic_title }}
 					{% endfor %}
 				{% endif %}
 			</div>

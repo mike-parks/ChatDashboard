@@ -144,6 +144,7 @@ def dashboard_user_administration(request):
                     error_messages.append("Unable to add user")
             elif dash_action=="add_topic":
                 topic_name = request.POST['topic']
+                
                 successfull = add_topic_window(topic_name, dash_title)
                 if successfull:
                     messages.append("Successfully added topic " + topic_name)
@@ -152,10 +153,16 @@ def dashboard_user_administration(request):
                 
             
             elif dash_action == "deactivate_topic":
-                topic_name = request.POST['topic']
-                successfull = deactivate_topic_window(topic_name, dash_title)
+                topic_names = request.POST.getlist("checkedtopics")
+                successfull = True
+    
+                for topic_name in topic_names:
+                    if not deactivate_topic_window(topic_name, dash_title):
+                        successfull = False
+                #topic_name = request.POST['topic']
+                #successfull = deactivate_topic_window(topic_name, dash_title)
                 if successfull:
-                    messages.append("Successfully removed topic " + topic_name)
+                    messages.append("Successfully removed topics" )
                 else:
                     error_messages.append("Failed to remove topic.")
 
