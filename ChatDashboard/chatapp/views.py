@@ -13,7 +13,7 @@ import RegistrationFunctions
 from DashboardFunctions import *
 from MetricsReportFunctions import *
 from django.http import HttpResponseRedirect
-from TopicWindowFunctions import add_topic_window, deactivate_topic_window
+import TopicWindowFunctions
 
 from models import Dashboard, Message, Dashboard_Permission
 import datetime
@@ -85,8 +85,11 @@ def render_dashboard(request, title):
 
     template = loader.get_template('dashboard.html')
     dashboard = get_document_or_404(Dashboard, pk=title)
+    topic_names = TopicWindowFunctions.get_topic_windows(dashboard.title)
+    print("topic_names is " + str(topic_names))
     context = RequestContext(request, {
-        'dashboard': dashboard
+        'dashboard': dashboard,
+        'topic_names': topic_names
     })
     return HttpResponse(template.render(context))
 
@@ -145,7 +148,8 @@ def dashboard_user_administration(request):
             elif dash_action=="add_topic":
                 topic_name = request.POST['topic']
                 
-                successfull = add_topic_window(topic_name, dash_title)
+                successfull = TopicWindowFunctions.add_topic_window(topic_name,
+                                                                    dash_title)
                 if successfull:
                     messages.append("Successfully added topic " + topic_name)
                 else:
@@ -157,7 +161,8 @@ def dashboard_user_administration(request):
                 successfull = True
     
                 for topic_name in topic_names:
-                    if not deactivate_topic_window(topic_name, dash_title):
+                    if not TopicWindowFunctions.deactivate_topic_window(topic_name,
+                                                                        dash_title):
                         successfull = False
                 #topic_name = request.POST['topic']
                 #successfull = deactivate_topic_window(topic_name, dash_title)

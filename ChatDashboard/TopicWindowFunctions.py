@@ -1,6 +1,11 @@
 __author__ = 'Nick'
 from chatapp.models import Topic
 
+def get_topic_windows(dashboardname):
+    topic_windows = Topic.objects.filter(dashboard_title = dashboardname,
+                                         topic_active=True)
+
+    return topic_windows
 
 def add_topic_window(topicname, dashboardname):
     to_save_topic = True

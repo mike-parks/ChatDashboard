@@ -13,6 +13,15 @@
 // Move to its own file later
 $(document).ready(function() {
       connect();
+      showTopics();
+
+      function showTopics(){
+          var topicNamesList = "{{ topic_names }}"
+          console.log("topicNamesList is " + topicNamesList)
+          {% for topic in topic_names %}
+              addTopicWindow("{{ topic.topic_title }}")
+          {% endfor %}
+      }
 
       function connect(){
 
@@ -176,6 +185,7 @@ $(document).ready(function() {
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 var text = $(event.target).val()
+                send(id, text)
                 $(event.target).val("");
               }
           }));
