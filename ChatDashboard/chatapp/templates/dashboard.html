@@ -26,7 +26,24 @@ $(document).ready(function() {
               }
 
               socket.onmessage = function(msg){
-                 console.log("Template got msg: " + msg.data)
+              console.log("Template got msg: " + msg.data)
+              var topicWindowMessageSplit = msg.data.split(":-:")
+              if (topicWindowMessageSplit.length > 1) {
+                // this is a message concerning topic window addition/removal
+                 var dashTemp = String(topicWindowMessageSplit[0]);
+                 var dashboard = dashTemp.split("\)>")[1];
+                 var topicWindowName = topicWindowMessageSplit[1];
+                 var action = topicWindowMessageSplit[2];
+                 if (action.trim() == "add") {
+                    addTopicWindow(topicWindowName)
+                 }
+                 else {
+                     //action is remove
+                     removeTopicWindow(topicWindowName)
+                 }
+              }
+              else {
+              // message is a chat message
                  var msgcomponents = msg.data.split("::");
                  var dashTemp = String(msgcomponents[0]);
                  var dashboard = dashTemp.split("\)>")[1];
@@ -40,6 +57,7 @@ $(document).ready(function() {
                  if(dashboard.trim() == dashTitle.trim()) {
                     displayMessage(stringToDisplay, topicname);
                  }
+              }
               }
 
               socket.onclose = function(){
@@ -65,7 +83,7 @@ $(document).ready(function() {
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 var text = $(event.target).val()
-                addTopicWindow(id, text);
+                send_add_topic_window(text)
                 $(event.target).val("");
                 $('.addTopicWindow').remove();
               }
@@ -77,6 +95,29 @@ $(document).ready(function() {
 
       }//End connect
 });
+
+         function send_add_topic_window(name){
+              var dashboardname = "{{ dashboard.title }}"
+              var dashboardAddCommandMsg = dashboardname + ":-:" + name + ":-:" + "add"
+              console.log("Sending topic window add message: " + dashboardAddCommandMsg);
+              try {
+                  socket.send(dashboardAddCommandMsg);
+              }
+              catch(exception) {
+                 displayMessage('<p class="warning">');
+              }
+         }
+
+         function send_delete_topic_window(name){
+              var dashboardname = "{{ dashboard.title }}"
+              var dashboardAddCommandMsg = dashboardname + ":-:" + name + ":-:" + "delete"
+              try {
+                  socket.send(dashboardAddCommandMsg);
+              }
+              catch(exception) {
+                 displayMessage('<p class="warning">');
+              }
+         }
 
          function send(topicname, text){
               var username = "{{ user }}"
@@ -110,8 +151,8 @@ $(document).ready(function() {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 console.log("Event: " + event)
                 var text = $(event.target).val()
-                console.log("Text: " + text)
-                addTopicWindow(text);
+                console.log("New topic window name: " + text)
+                send_add_topic_window(text)
                 $(event.target).val("");
                 $('.addTopicWindow').remove();
               }
@@ -135,10 +176,13 @@ $(document).ready(function() {
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 var text = $(event.target).val()
-                send(id, text);
                 $(event.target).val("");
               }
           }));
+          }
+
+          function removeTopicWindow(displayTopicWindowName) {
+            console.log("Removing topic window: " + displayTopicWindowName);
           }
 
     </script>

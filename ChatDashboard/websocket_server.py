@@ -4,7 +4,7 @@ from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted_websockets import WebSocketsResource, lookupProtocolForFactory
 from chatapp.models import Message
-from TopicWindowFunctions import add_topic_window
+from TopicWindowFunctions import add_topic_window, deactivate_topic_window
 from chatapp.models import Topic
 import datetime
 
@@ -35,6 +35,21 @@ class DashboardProtocol(basic.LineReceiver):
     def dataReceived(self, data):
         print "Received data: " + str(data)
 
+        topic_window_split = str(data).split(":-:")
+        if len(topic_window_split) > 1:
+            dashboardname = topic_window_split[0]
+            topicname = topic_window_split[1]
+            action = topic_window_split[2]
+            if action == "add":
+                add_topic_window(topicname, dashboardname)
+            elif action == "delete":
+                deactivate_topic_window(topicname, dashboardname)
+            for c in self.factory.clients:
+                messageFormatted = "<{}> {}".format(self.transport.getHost(), dashboardname
+                                            + ":-:" + topicname + ":-:" + action)
+                c.sendLine(messageFormatted)
+            return
+
         # construct a model object message
         splitinfo = str(data).split("::",3)
         username = splitinfo[2]
@@ -49,7 +64,6 @@ class DashboardProtocol(basic.LineReceiver):
         message.save()
 
 
-        add_topic_window(topicname, dashboardname)
         #to_save_topic = True
         #for topic_window in Topic.objects:
         #    if topic_window.topic_title == topicname:
