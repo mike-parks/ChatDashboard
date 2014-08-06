@@ -84,6 +84,11 @@
     position: relative;
     top: 5px;
     bottom: 5px;
-    margin: 10px;
+    margin: auto;
     padding:10px;
+}
+
+.bufferinput {
+    margin: -5px;
+    padding: 10px;
 }
