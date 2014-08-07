@@ -86,10 +86,16 @@ def render_dashboard(request, title):
     template = loader.get_template('dashboard.html')
     dashboard = get_document_or_404(Dashboard, pk=title)
     topic_names = TopicWindowFunctions.get_topic_windows(dashboard.title)
+    user_permissions_list = Dashboard_Permission.objects.filter(dashboard_title=dashboard.title)
+    list_of_usernames = []
+    for user_obj in user_permissions_list:
+        list_of_usernames.append(user_obj.user)
+    matched_usernames = check_for_active_users(list_of_usernames)
     print("topic_names is " + str(topic_names))
     context = RequestContext(request, {
         'dashboard': dashboard,
-        'topic_names': topic_names
+        'topic_names': topic_names,
+        'connected_users': matched_usernames
     })
     return HttpResponse(template.render(context))
 

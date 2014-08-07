@@ -50,6 +50,17 @@ class DashboardProtocol(basic.LineReceiver):
                 c.sendLine(messageFormatted)
             return
 
+        topic_window_split = str(data).split(":--:")
+        if len(topic_window_split) > 1:
+            dashboardname = topic_window_split[0]
+            username = topic_window_split[1]
+            action = topic_window_split[2]
+            for c in self.factory.clients:
+                messageFormatted = "<{}> {}".format(self.transport.getHost(), dashboardname
+                                            + ":--:" + username + ":--:" + action)
+                c.sendLine(messageFormatted)
+            return
+
         # construct a model object message
         splitinfo = str(data).split("::",3)
         username = splitinfo[2]

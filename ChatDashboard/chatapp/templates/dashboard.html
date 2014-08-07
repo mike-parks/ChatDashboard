@@ -12,16 +12,32 @@
 
           var windowToDelete;
 
-// Move to its own file later
+    function disconnect() {
+        console.log("disconnecting")
+        send_user_disconnected('{{ user }}')
+        socket.close();
+    };
+
 $(document).ready(function() {
+
+
+
       connect();
       showTopics();
+      showConnectedUsers();
 
       function showTopics(){
           var topicNamesList = "{{ topic_names }}"
           console.log("topicNamesList is " + topicNamesList)
           {% for topic in topic_names %}
               addTopicWindow("{{ topic.topic_title }}")
+          {% endfor %}
+      }
+
+      function showConnectedUsers(){
+          var connectedUsers = "{{ connected_users }}"
+          {% for user in connectedUsers %}
+              userConnected("{{ user }}")
           {% endfor %}
       }
 
@@ -34,6 +50,8 @@ $(document).ready(function() {
 
               socket.onopen = function(){
                  displayMessage('<p class="event">Connected!');
+
+                 send_user_connected('{{ user }}')
               }
 
               socket.onmessage = function(msg){
@@ -54,6 +72,28 @@ $(document).ready(function() {
                  }
               }
               else {
+              var userConnectionEventSplit = msg.data.split(":--:")
+
+                if (userConnectionEventSplit.length > 1) {
+                    console.log(msg.data)
+                    //user connect/disconnect event
+                    var dashTemp = String(userConnectionEventSplit[0]);
+                    var dashboard = dashTemp.split("\)>")[1];
+                    var username = userConnectionEventSplit[1];
+                    var action = userConnectionEventSplit[2];
+                    console.log("dashboard is " + dashboard)
+                    console.log("username is " + username)
+                    console.log("action is " + action)
+                 if (action.trim() == "connect") {
+                    userConnected(username)
+                 }
+                 else {
+                     //action is a disconnect
+                     userDisconnected(username)
+                 }
+                }
+
+              else {
               // message is a chat message
                  var msgcomponents = msg.data.split("::");
                  var dashTemp = String(msgcomponents[0]);
@@ -72,6 +112,9 @@ $(document).ready(function() {
               }
 
               socket.onclose = function(){
+                console.log("disconnecting from chat")
+
+              }
                  displayMessage('<p class="event">Lost connection.');
               }
 
@@ -100,12 +143,32 @@ $(document).ready(function() {
               }
           });
 
-          $('#disconnect').click(function(){
-             socket.close();
-          });
-
       }//End connect
 });
+
+        function send_user_connected(username) {
+              var dashboardname = "{{ dashboard.title }}"
+              var dashboardConnectCommandMsg = dashboardname + ":--:" + username + ":--:" + "connect"
+              console.log("Connecting user: " + username);
+              try {
+                  socket.send(dashboardConnectCommandMsg);
+              }
+              catch(exception) {
+                 displayMessage('<p class="warning">');
+              }
+        }
+
+        function send_user_disconnected(username) {
+              var dashboardname = "{{ dashboard.title }}"
+              var dashboardDisconnectCommandMsg = dashboardname + ":--:" + username + ":--:" + "disconnect"
+              console.log("Disconnecting user: " + username);
+              try {
+                  socket.send(dashboardDisconnectCommandMsg);
+              }
+              catch(exception) {
+                 displayMessage('<p class="warning">');
+              }
+        }
 
          function send_add_topic_window(name){
               var dashboardname = "{{ dashboard.title }}"
@@ -206,6 +269,25 @@ $(document).ready(function() {
             $('.cdbody ' + '.' + sanitizedTopicWindowName).remove();
           }
 
+          function userConnected(username) {
+
+            var sanitizedUsername = username.replace(/ /g, "---");
+            var newUserString = '<div class="' + sanitizedUsername + '">' + username + '</div>';
+
+            $('.connectedUsers').append(newUserString);
+            console.log("User connected: " + username)
+
+
+          };
+
+          function userDisconnected(username) {
+            console.log("User disconnected: " + username);
+            var sanitizedUsername = username.replace(/ /g, "---");
+
+            $('.connectedUsers ' + '.' + sanitizedUsername).remove();
+          }
+
+
     </script>
 </head>
 <body>
@@ -213,9 +295,14 @@ $(document).ready(function() {
 	<div class="cdbody">
 		<h1>You found {{ dashboard.title }}</h1>
 	</div>
+    <div class="connectedUsers">
+		<h1>Connected Users</h1>
+
+	</div>
 <p>
     <a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a><br />
-    <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Dashboard Actions</a>
+    <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Dashboard Actions</a><br />
+    <a href="javascript:disconnect()">Disconnect</a>
 </p>
 	{% include "footer.html"%}
 </body>
