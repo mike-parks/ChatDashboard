@@ -139,7 +139,8 @@
 						<td><div class="bufferdiv">Report End Date: <input type="date" name="metricEndDate" class="bufferinput" /></div> </td>
 					</tr>
 					<tr>
-						<td><div class="bufferdiv"><input type="submit" name="metricsReportSubmit" class="bufferinput" onsubmit="onmetricsReportSubmit()" onclick="onmetricsReportSubmit()" onkeypress="onmetricsReportSubmit()"/></div> </td>
+						<td><div class="bufferdiv"><input type="submit" name="metricsReportSubmit" value="View Metrics Report" class="bufferinput" onsubmit="onmetricsReportSubmit('view')" onclick="onmetricsReportSubmit('view')" onkeypress="onmetricsReportSubmit('view')"/></div> </td>
+					    <td><div class="bufferdiv"><input type="submit" name="metricsReportSubmit" value="Print Metrics Report" class="bufferinput" onsubmit="onmetricsReportSubmit('print')" onclick="onmetricsReportSubmit('print')" onkeypress="onmetricsReportSubmit('print')"/></div> </td>
 					</tr>
 				</table>
 			   {% include "reports.html"%}
@@ -257,9 +258,14 @@
 
         }
 		
-		function onmetricsReportSubmit(){
+		function onmetricsReportSubmit(action){
             var actionHidden = document.getElementById("actionHidden");
-            actionHidden.value = "viewmetricsreport";
+
+            if (action === 'view'){
+                actionHidden.value = "viewmetricsreport";
+            } else {
+                actionHidden.value = "printmetricsreport";
+            }
 		}
 		
 		function onTopicSubmit(transactionType){

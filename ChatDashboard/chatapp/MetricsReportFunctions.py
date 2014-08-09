@@ -63,29 +63,30 @@ def retrieve_topic_window_posts(dashboard, start, end):
         addmessagetotopic(message, temp_messages)
 
 
+    month_metrics = sortmessagetotopics(temp_messages)
 
-    for topic in topicnames:
-        print(topic)
-        topictitle = topic.title
-        print(topictitle)
-
-        tempposts = dashboard_posts_metric()
-        #messagecounts = Message.objects.filter(dashboardtitle = dashboard, timestamp__gt = startdate, timestamp__lt = enddate).item_frequencies('username')
-        messagecounts = Message.objects.filter(dashboardtitle = dashboard, timestamp__gt = startdate, timestamp__lt = enddate, topic = topictitle).item_frequencies('username')
-        for messagecount in messagecounts:
-            myuserpost = userpost()
-            myuserpost.userid = messagecount.username
-            #myuserpost.ucount =
-
-
-        month_metrics.append(tempposts)
+    # for topic in topicnames:
+    #     print(topic)
+    #     topictitle = topic.title
+    #     print(topictitle)
+    #
+    #     tempposts = dashboard_posts_metric()
+    #     #messagecounts = Message.objects.filter(dashboardtitle = dashboard, timestamp__gt = startdate, timestamp__lt = enddate).item_frequencies('username')
+    #     messagecounts = Message.objects.filter(dashboardtitle = dashboard, timestamp__gt = startdate, timestamp__lt = enddate, topic = topictitle).item_frequencies('username')
+    #     for messagecount in messagecounts:
+    #         myuserpost = userpost()
+    #         myuserpost.userid = messagecount.username
+    #         #myuserpost.ucount =
+    #
+    #
+    #     month_metrics.append(tempposts)
 
     #messagecounts = Message.objects.filter(dashboardtitle = dashboard, timestamp__gt = startdate, timestamp__lt = enddate).item_frequencies('username')
     #counts = Message.objects.values('username').annotate(dcount=Count('username'))
-    print(messagecounts)
-    temp_metric = dashboard_posts_metric()
+    #print(messagecounts)
+    #temp_metric = dashboard_posts_metric()
 
-    month_metrics.append( temp_metric)
+    #month_metrics.append( temp_metric)
 
     return month_metrics
 
@@ -94,12 +95,15 @@ def addmessagetotopic(message, messagecounts):
     for dashpost in messagecounts:
         if dashpost.topic == message.topic:
             addmesagecounttouser(message.username, dashpost.userposts)
+            dashpost.numposts = dashpost.numposts + 1
             found_topic = True
             break
 
     if not found_topic:
         temp_post = dashboard_posts_metric()
         temp_post.topic = message.topic
+        temp_post.numposts = 1
+        temp_post.userposts = []
 
         temp_user = userpost()
         temp_user.userid = message.username
@@ -114,9 +118,10 @@ def addmessagetotopic(message, messagecounts):
 
 def addmesagecounttouser(username, userposts):
     founduser = False
-    for userpost in userposts:
-        if userpost.userid == username:
-            userpost.numposts = userpost.numposts + 1
+    for post in userposts:
+        if post.userid == username:
+            post.numposts = post.numposts + 1
+            founduser = True
             break
 
     if not founduser:
@@ -126,9 +131,48 @@ def addmesagecounttouser(username, userposts):
         userposts.append(temp_userpost)
 
 
+def sortmessagetotopics(unsortedtopics):
+    sortedtopic = []
+
+
+    if len(unsortedtopics)>0:
+        temp_topic = getlargestmessagetopic(unsortedtopics)
+        sortedtopic.append(temp_topic)
+
+    if len(unsortedtopics)>0:
+        temp_topic = getlargestmessagetopic(unsortedtopics)
+        sortedtopic.append(temp_topic)
+
+    if len(unsortedtopics)>0:
+        temp_topic = getlargestmessagetopic(unsortedtopics)
+        sortedtopic.append(temp_topic)
+
+    return sortedtopic
+
+
+def getlargestmessagetopic(unsortedtopics):
+    chosentopic = None
+
+    largesttopic = 0
+    largestposts = 0
+    index = 0
+
+    for topic in unsortedtopics:
+        if topic.numposts > largestposts:
+            largestposts = topic.numposts
+            largesttopic = index
+
+        index = index + 1
+
+
+
+    chosentopic = unsortedtopics[largesttopic]
+    unsortedtopics.remove(unsortedtopics[largesttopic])
+    return chosentopic
 
 class dashboard_posts_metric():
     topic = ""
+    numposts = 0
     userposts = []
 
 class userpost():

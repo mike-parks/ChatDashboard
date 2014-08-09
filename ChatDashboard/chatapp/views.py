@@ -181,6 +181,9 @@ def dashboard_user_administration(request):
             
             #implement for admin users
             elif (user_perm_level == Dashboard_Permissions.ADMIN ):
+                print (request.POST['dashboard_action'])
+                if request.POST['dashboard_action'] =="printmetricsreport":
+                    return print_metrics(request)#redirect(settings.BASE_URL + "PrintMetrics/", request)
                 
                 if request.POST['dashboard_action']== "viewmetricsreport":
                     metricStartDate = request.POST["metricStartDate"]
@@ -219,6 +222,56 @@ def dashboard_user_administration(request):
         'request_type': request_type,
         'show_messages': messages,
         'error_messages': error_messages,
+        'postsbymonth':postsbymonth,
+        'topicposts':topicposts,
+        'topictitles':topic_titles
+    })
+    return HttpResponse(template.render(context))
+
+def print_metrics(request):
+    postsbymonth = []
+    topic_titles = []
+    user_permissions_list = None
+    request_type = "useraddtable"
+    topicposts = []
+
+    if (not request.user.is_authenticated()):
+        return redirect(settings.BASE_URL)
+
+    request_user = request.user.username
+
+
+    # get dashboard title
+    if  request.method <> "POST":
+        redirect(settings.BASE_URL)
+
+    dash_title = request.POST['dashboard']
+
+    # retrieve dashboard and verify that the user has admin permissions
+    dashboard = Dashboard.objects.get(title=dash_title)
+    user_perm_level = None
+    try:
+        if request.user.is_superuser:
+            user_perm_level = Dashboard_Permissions.ADMIN
+        else:
+            user_perm = Dashboard_Permission.objects.get(dashboard_title=dash_title, user=request_user)
+            user_perm_level = user_perm.privilege
+    except:
+        print "User," + request_user + " , does not have permissions for the " + dash_title + " Dashboard."
+
+    if user_perm_level ==  Dashboard_Permissions.ADMIN and request.method == "POST":
+        metricStartDate = request.POST["metricStartDate"]
+        metricEndDate = request.POST["metricEndDate"]
+        postsbymonth = retrieve_dashboard_posts_by_month(dash_title, metricStartDate, metricEndDate)
+        topicposts = retrieve_topic_window_posts(dash_title, metricStartDate, metricEndDate)
+
+
+    template = loader.get_template('printdashboardmetrics.html')
+    context = RequestContext(request, {
+        'dashboard': dash_title,
+        'user_permissions': user_permissions_list,
+        'user_perm_level': user_perm_level,
+        'request_type': request_type,
         'postsbymonth':postsbymonth,
         'topicposts':topicposts,
         'topictitles':topic_titles

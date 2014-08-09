@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'Logoff/$', views.logoff_user),
     url(r'DashboardPermissions/$', views.dashboard_user_administration),
     url(r'PasswordFunctions/$', views.password_functions),
+    url(r'PrintMetrics/$', views.print_metrics),
     url(r'(?P<title>\w+/?)$', views.render_dashboard, name="render_dashboard"),
     url(r'$', views.homepage),
 )

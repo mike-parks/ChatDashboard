@@ -1,6 +1,6 @@
 
 
-<h1 align="center"> Metric Reports</h1>
+{% if postsbymonth or topicposts %} <h1 align="center"> Metric Reports - {{dashboard}}</h1> {% endif %}
 
 {% if postsbymonth %}
                 <h2>Number of Posts By Month</h2>
@@ -24,6 +24,7 @@
 
         {% for topicpost in topicposts %}
             <h3>{{topicpost.topic}}</h3>
+            <h5>Number of Posts: {{topicpost.numposts}}</h5>
             <table id="postsbymonthtable" class="metricstable">
 					<tr class="reportrow">
 						<td class="reportheader">User</td>

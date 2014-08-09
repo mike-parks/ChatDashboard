@@ -1,0 +1,12 @@
+<html>
+    <head lang="en">
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'report.css' %}">
+        <meta charset="UTF-8">
+        <title>{{dashboard.title}} User Administration</title>
+    </head>
+    <body>
+        {% include "reports.html"%}
+    </body>
+</html>

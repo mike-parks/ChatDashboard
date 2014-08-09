@@ -16,12 +16,15 @@
 }
 .cdbody{
 	padding: 10px;
+	padding-bottom: 60px;
+	position: relative;
 }
 .cdfooter {
-	position: absolute; 
+	position: fixed;
     height: 50px; 
     top: 100%;
 	left: 0;
+	bottom:0;
     margin-top:-50px; 
 	display: block;
 	background-color: #b0c4de;
