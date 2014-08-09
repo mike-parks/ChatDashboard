@@ -125,7 +125,7 @@
 				<h2>Current Topics</h2>
 				{% if topictitles %}
 					{% for topictitle in topictitles %}
-						<input type="checkbox" value="{{ topictitle.topic_title }}" name="checkedtopics">{{ topictitle.topic_title }}
+						<input type="checkbox" value="{{ topictitle.topic_title }}" name="checkedtopics">{{ topictitle.topic_title }}<br/>
 					{% endfor %}
 				{% endif %}
 			</div>
