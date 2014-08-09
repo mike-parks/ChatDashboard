@@ -3,6 +3,7 @@
 <h1 align="center"> Metric Reports</h1>
 
 {% if postsbymonth %}
+                <h2>Number of Posts By Month</h2>
                 <table id="postsbymonthtable" class="metricstable">
 						<tr class="reportrow">
 							<td class="reportheader">Month</td>
@@ -15,4 +16,26 @@
 						</tr>
 					{% endfor %}
 				</table>
+{% endif %}
+
+{% if topicposts %}
+
+        <h2>User Activity by Topic Window</h2>
+
+        {% for topicpost in topicposts %}
+            <h3>{{topicpost.topic}}</h3>
+            <table id="postsbymonthtable" class="metricstable">
+					<tr class="reportrow">
+						<td class="reportheader">User</td>
+						<td class="reportheader">Number of Posts</td>
+					</tr>
+                {% for useractivity in topicpost.userposts %}
+
+					<tr class="reportrow">
+						<td class="reportcol">{{ useractivity.userid }}</td>
+						<td class="reportcol">{{ useractivity.numposts }}</td>
+					</tr>
+                {% endfor %}
+			</table>
+		{% endfor %}
 {% endif %}

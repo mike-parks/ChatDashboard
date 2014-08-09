@@ -106,6 +106,7 @@ def dashboard_user_administration(request):
     topic_titles = []
     user_permissions_list = None
     request_type = "useraddtable"
+    topicposts = []
     
     if (not request.user.is_authenticated()):
         return redirect(settings.BASE_URL)
@@ -184,7 +185,8 @@ def dashboard_user_administration(request):
                 if request.POST['dashboard_action']== "viewmetricsreport":
                     metricStartDate = request.POST["metricStartDate"]
                     metricEndDate = request.POST["metricEndDate"]
-                    postsbymonth = retrieve_dashboard_posts_by_month(metricStartDate, metricEndDate)
+                    postsbymonth = retrieve_dashboard_posts_by_month(dash_title, metricStartDate, metricEndDate)
+                    topicposts = retrieve_topic_window_posts(dash_title, metricStartDate, metricEndDate)
                 else:
                     action_user = request.POST['action_user']
                     if action_user == dashboard.creator:
@@ -218,6 +220,7 @@ def dashboard_user_administration(request):
         'show_messages': messages,
         'error_messages': error_messages,
         'postsbymonth':postsbymonth,
+        'topicposts':topicposts,
         'topictitles':topic_titles
     })
     return HttpResponse(template.render(context))
