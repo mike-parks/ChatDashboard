@@ -211,7 +211,8 @@ $(document).ready(function() {
           }
 
           function displayMessage(msg, topicname){
-            $('.'+ topicname + ' > #chatLog').append(msg+'</p>');
+          console.log("DIsplaying message" + msg);
+            $('#'+ topicname + ' #chatLog').append(msg+'</p>');
           }
 
         function promptForNewTopicWindow() {
@@ -293,7 +294,7 @@ $(document).ready(function() {
 <body>
 	{% include "header.html"%}
 	<div class="cdbody">
-		<h1>You found {{ dashboard.title }}</h1>
+		<h1>{{ dashboard.title }}</h1><br />
 	</div>
     <div class="connectedUsers">
 		<h1>Connected Users</h1>
