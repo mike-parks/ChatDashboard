@@ -239,9 +239,9 @@ $(document).ready(function() {
             var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
             //var sanitizedTopicWindowName = displayTopicWindowName
             console.log("Topic window name: " + sanitizedTopicWindowName)
-            var topicWindowString = '<div class="' + sanitizedTopicWindowName + '">' +
+            var topicWindowString = '<div id="' + sanitizedTopicWindowName + '" class="topicWindow">' +
             displayTopicWindowName +
-            '   <a href="javascript:windowToDelete = \'' + sanitizedTopicWindowName + '\'\;send_delete_topic_window()">(X)</a>' +
+            '   <a href="javascript:windowToDelete = \'' + sanitizedTopicWindowName + '\'\;send_delete_topic_window()" class="deleteTopicWindow">X</a>' +
             '<div id="chatLog"></div><input class="textbox" id="' +
             sanitizedTopicWindowName +
             '" type="text" name="message" placeholder="Message"></div>';
@@ -266,7 +266,7 @@ $(document).ready(function() {
             var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
             //var sanitizedTopicWindowName = displayTopicWindowName
 
-            $('.cdbody ' + '.' + sanitizedTopicWindowName).remove();
+            $('.cdbody ' + '#' + sanitizedTopicWindowName).remove();
           }
 
           function userConnected(username) {
@@ -299,11 +299,12 @@ $(document).ready(function() {
 		<h1>Connected Users</h1>
 
 	</div>
-<p>
-    <a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a><br />
-    <a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Dashboard Actions</a><br />
-    <a href="javascript:disconnect()">Disconnect</a>
-</p>
+<div class="cdLinks">
+    <div class="cdLink"><a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a></div>
+    <div class="cdLink"><a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Dashboard Actions</a></div>
+    <div class="cdLink"><a href="javascript:disconnect()">Disconnect</a></div>
+</div>
+
 	{% include "footer.html"%}
 </body>
 </html>
