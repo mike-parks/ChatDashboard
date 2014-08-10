@@ -9,6 +9,7 @@
 </head>
 <body>
 	{% include "header.html"%}
+    <h2>Site Admin Actions</h2>
 	<div class="cdbody">
 		<select name="userPrivilageSelect" id="AdminActionSelect" onchange="changeFormAction()">
 			<option value="user_actions" {% if actionselected == "user" %} selected=\"selected\" {% endif %}>User Actions</option>

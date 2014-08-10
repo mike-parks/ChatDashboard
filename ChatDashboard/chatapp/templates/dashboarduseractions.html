@@ -11,7 +11,7 @@
 <body>
 	{% include "header.html"%}
 	<div class="cdbody">
-		
+		<h2>Dashboard Actions</h2>
 		<form method="post" name="LoginForm" onSubmit="return validateLoginForm();" >
 			{% csrf_token %}
 			<input type="hidden" name="dashboard" id ="dashboardHidden" value="{{dashboard.title}}" />
@@ -49,7 +49,7 @@
                                 <div class="cell">{{userpriv.privilege}}</div>
                                 <div class="cell"><select name="formAction" id="formActionSelect{{userpriv.user}}" onchange="changeFormAction('{{userpriv.user}}')">
                                         <option value="change_permissions">Change Permissions</option>
-                                        <option value="delete_user">Delete User</option>
+                                        <option value="delete_user">Delete User Permissions</option>
                                     </select>
                                 </div>
                                 <div class="cell" ><select name="userPrivilegeSelect" id="userPrivilegeSelect{{userpriv.user}}" onchange="changeUserPrivilegeSelect('{{userpriv.user}}')">

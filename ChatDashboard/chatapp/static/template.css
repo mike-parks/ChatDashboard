@@ -133,8 +133,19 @@
     box-sizing: border-box;
 }
 
+.topics{
+    width: 80%;
+    height: 80%;
+    display: block;
+}
+
 .connectedUsers {
-    width: 30%;
+    position: fixed;
+    display: block;
+    right: 5px;
+    bottom: 50px;
+    width: 20%;
+    height: 80%;
     padding: 3px;
     margin: 3px;
     float: right;
@@ -143,6 +154,13 @@
     border-radius: 5px;
     border-color: #b0c4de;
     box-sizing:  content-box;
+}
+
+.dashboardlinks{
+    position: fixed;
+    display: inline;
+    bottom: 50px;
+    width: 100%;
 }
 
 .cdLinks {

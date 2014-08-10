@@ -301,17 +301,23 @@ $(document).ready(function() {
 <body>
 	{% include "header.html"%}
 	<div class="cdbody">
-		<h1>{{ dashboard.title }}</h1><br />
-	</div>
-    <div class="connectedUsers">
-		<h1>Connected Users</h1>
+        <div class="topics">
+		    <h1>{{ dashboard.title }}</h1><br />
 
+
+        </div>
+        <div class="connectedUsers">
+		    <h1>Connected Users</h1>
+
+	    </div>
+        <div class="dashboardlinks">
+            <div class="cdLinks">
+                <div class="cdLink"><a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a></div>
+                <div class="cdLink"><a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Dashboard Actions</a></div>
+                <div class="cdLink"><a href="javascript:disconnect()">Disconnect</a></div>
+            </div>
+        </div>
 	</div>
-<div class="cdLinks">
-    <div class="cdLink"><a href="javascript:promptForNewTopicWindow()">Add New Topic Window</a></div>
-    <div class="cdLink"><a href="/DashboardPermissions/?dashboard={{dashboard.title}}">Dashboard Actions</a></div>
-    <div class="cdLink"><a href="javascript:disconnect()">Disconnect</a></div>
-</div>
 
 	{% include "footer.html"%}
 </body>
