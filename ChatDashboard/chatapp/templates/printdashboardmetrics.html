@@ -4,9 +4,13 @@
         <link rel="stylesheet" type="text/css" href="{% static 'template.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'report.css' %}">
         <meta charset="UTF-8">
-        <title>{{dashboard.title}} User Administration</title>
+        <title>{{dashboard}} User Administration</title>
     </head>
     <body>
         {% include "reports.html"%}
+        <div align="center" style="padding: 20px" >
+            <button name="return" onclick="window.location = '{{BASE_URL}}/DashboardPermissions/?dashboard={{dashboard}}';">Return</button>
+            <button name="print" onclick="window.print();" >Print</button>
+        </div>
     </body>
 </html>
