@@ -133,13 +133,14 @@ $(document).ready(function() {
               }
           });
 
-          $('.addTopicWindow').keypress(function(event) {
+          $('.addTopicWindowBox').keypress(function(event) {
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
                 var text = $(event.target).val()
                 send_add_topic_window(text)
                 $(event.target).val("");
                 $('.addTopicWindow').remove();
+                $('.addTopicWindowBox').remove();
               }
           });
 
@@ -223,22 +224,32 @@ $(document).ready(function() {
           }
 
         function promptForNewTopicWindow() {
-            var topicWindowString = '<div class="addTopicWindow"><b>' + "Name of new topic:" +
-            '</b></div><input class="addTopicWindow"  type="text" name="message" placeholder="Message">';
 
-            $('.cdbody').append(topicWindowString);
+             var topicWindowCount = $('.topicWindow').length;
 
-            $('.cdbody > .addTopicWindow').bind('keypress', function(event) {
-              if (event.keyCode == '13') {
-                var id = $(event.target).attr("id")// get attribute for the textbox pressed
-                console.log("Event: " + event)
-                var text = $(event.target).val()
-                console.log("New topic window name: " + text)
-                send_add_topic_window(text)
-                $(event.target).val("");
-                $('.addTopicWindow').remove();
-              }
-          });
+             if (topicWindowCount < 6) {
+
+                 var topicWindowString = '<div class="addTopicWindow"><b>' + "Name of new topic:" +
+                '</b><input class="addTopicWindowBox"  type="text" name="message" placeholder="Message"></div>';
+
+                $('.topics').append(topicWindowString);
+
+                $('.topics .addTopicWindowBox').bind('keypress', function(event) {
+                if (event.keyCode == '13') {
+                    var id = $(event.target).attr("id")// get attribute for the textbox pressed
+                    console.log("Event: " + event)
+                    var text = $(event.target).val()
+                    console.log("New topic window name: " + text)
+                    send_add_topic_window(text)
+                    $(event.target).val("");
+                    $('.addTopicWindow').remove();
+                    $('.addTopicWindowBox').remove();
+                }
+            });
+          }
+          else {
+          //too many windows already exist to add another
+          }
 
           }
 
@@ -254,10 +265,10 @@ $(document).ready(function() {
             sanitizedTopicWindowName +
             '" type="text" name="message" placeholder="Message"></div>';
 
-            $('.cdbody').append(topicWindowString);
+            $('.topics').append(topicWindowString);
             console.log("Adding a new topic window with name: " + sanitizedTopicWindowName)
 
-            $('.cdbody .textbox').bind('keypress', (function(event) {
+            $('.topics .textbox').bind('keypress', (function(event) {
             console.log("Keypress event on new window")
               if (event.keyCode == '13') {
                 var id = $(event.target).attr("id")// get attribute for the textbox pressed
@@ -274,7 +285,7 @@ $(document).ready(function() {
             var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
             //var sanitizedTopicWindowName = displayTopicWindowName
 
-            $('.cdbody ' + '#' + sanitizedTopicWindowName).remove();
+            $('.topics ' + '#' + sanitizedTopicWindowName).remove();
           }
 
           function userConnected(username) {
@@ -301,7 +312,7 @@ $(document).ready(function() {
 <body>
 	{% include "header.html"%}
 	<div class="cdbody">
-        <div class="topics">
+        <div class="topics" id="topics" name="topics">
 		    <h1>{{ dashboard.title }}</h1><br />
 
 
