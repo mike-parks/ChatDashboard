@@ -213,11 +213,18 @@ $(document).ready(function() {
           function displayMessage(msg, topicname){
           console.log("DIsplaying message" + msg);
             $('#'+ topicname + ' #chatLog').append(msg+'</p>');
+
+            var messageCount = $('#'+ topicname + ' #chatLog .message').length;
+            console.log ("Message count: " + messageCount);
+            if (messageCount > 10) {
+            // delete oldest message
+                $('#'+ topicname + ' #chatLog').find('.message').first().remove();
+            }
           }
 
         function promptForNewTopicWindow() {
-            var topicWindowString = '<div class="addTopicWindow">' + "Name of new topic:" +
-            ' </div><input class="addTopicWindow"  type="text" name="message" placeholder="Message">';
+            var topicWindowString = '<div class="addTopicWindow"><b>' + "Name of new topic:" +
+            '</b></div><input class="addTopicWindow"  type="text" name="message" placeholder="Message">';
 
             $('.cdbody').append(topicWindowString);
 
@@ -240,9 +247,9 @@ $(document).ready(function() {
             var sanitizedTopicWindowName = displayTopicWindowName.replace(/ /g, "---");
             //var sanitizedTopicWindowName = displayTopicWindowName
             console.log("Topic window name: " + sanitizedTopicWindowName)
-            var topicWindowString = '<div id="' + sanitizedTopicWindowName + '" class="topicWindow">' +
+            var topicWindowString = '<div id="' + sanitizedTopicWindowName + '" class="topicWindow"><b>' +
             displayTopicWindowName +
-            '   <a href="javascript:windowToDelete = \'' + sanitizedTopicWindowName + '\'\;send_delete_topic_window()" class="deleteTopicWindow">X</a>' +
+            '</b> <a href="javascript:windowToDelete = \'' + sanitizedTopicWindowName + '\'\;send_delete_topic_window()" class="deleteTopicWindow">X</a>' +
             '<div id="chatLog"></div><input class="textbox" id="' +
             sanitizedTopicWindowName +
             '" type="text" name="message" placeholder="Message"></div>';

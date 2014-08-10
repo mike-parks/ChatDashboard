@@ -18,6 +18,7 @@
 }
 .cdbody{
     width: 66%;
+    height: 90%;
 	padding: 10px;
 	padding-bottom: 60px;
 	position: relative;
@@ -101,6 +102,7 @@
 
 .topicWindow {
     width: 30%;
+    height: 40%;
     padding: 3px;
     margin: 3px;
     float: left;
@@ -113,7 +115,7 @@
 
 .deleteTopicWindow {
     width: 10%;
-    height: 10%
+    height: 10%;
     padding: 3px;
     margin: 3px;
     float: right;
