@@ -18,9 +18,10 @@
 }
 .cdbody{
     width: 66%;
-    height: 90%;
+    height: 80%;
 	padding: 10px;
 	padding-bottom: 60px;
+	top:75px;
 	position: relative;
 }
 .cdfooter {

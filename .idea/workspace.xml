@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34aa0644-b362-4cae-9e42-b68c61bc8481" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ChatDashboard.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,21 +35,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dashboard.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="dashboard.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4149578" vertical-offset="3668" max-vertical-offset="5780">
-              <caret line="236" column="26" selection-start-line="236" selection-start-column="26" selection-end-line="236" selection-end-column="26" />
+            <state vertical-scroll-proportion="-3.148148" vertical-offset="0" max-vertical-offset="5780">
+              <caret line="10" column="36" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="template.css" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="template.css" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.716981" vertical-offset="2009" max-vertical-offset="3468">
-              <caret line="136" column="7" selection-start-line="136" selection-start-column="7" selection-end-line="136" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.26626506" vertical-offset="51" max-vertical-offset="3485">
+              <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -80,8 +78,8 @@
       <file leaf-file-name="header.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/header.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="510">
-              <caret line="3" column="31" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="31" />
+            <state vertical-scroll-proportion="-1.9615384" vertical-offset="0" max-vertical-offset="510">
+              <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -100,7 +98,7 @@
       <file leaf-file-name="adminfunctions.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/Administration/adminfunctions.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="850">
+            <state vertical-scroll-proportion="-7.1923075" vertical-offset="0" max-vertical-offset="850">
               <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
               <folding />
             </state>
@@ -150,8 +148,8 @@
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/printdashboardmetrics.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboarduseractions.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/Administration/adminfunctions.html" />
-        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
+        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css" />
       </list>
     </option>
   </component>
@@ -950,14 +948,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/header.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="510">
-          <caret line="3" column="31" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/printdashboardmetrics.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="357">
@@ -974,9 +964,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.148148" vertical-offset="0" max-vertical-offset="5780">
+          <caret line="10" column="36" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.9615384" vertical-offset="0" max-vertical-offset="510">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/Administration/adminfunctions.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="850">
+        <state vertical-scroll-proportion="-7.1923075" vertical-offset="0" max-vertical-offset="850">
           <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
           <folding />
         </state>
@@ -984,16 +990,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.716981" vertical-offset="2009" max-vertical-offset="3468">
-          <caret line="136" column="7" selection-start-line="136" selection-start-column="7" selection-end-line="136" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4149578" vertical-offset="3668" max-vertical-offset="5780">
-          <caret line="236" column="26" selection-start-line="236" selection-start-column="26" selection-end-line="236" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.26626506" vertical-offset="51" max-vertical-offset="3485">
+          <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
           <folding />
         </state>
       </provider>
