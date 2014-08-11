@@ -36,7 +36,8 @@ $(document).ready(function() {
 
       function showConnectedUsers(){
           var connectedUsers = "{{ connected_users }}"
-          {% for user in connectedUsers %}
+          console.log("COnnected users: " + connectedUsers);
+          {% for user in connected_users %}
               userConnected("{{ user }}")
           {% endfor %}
       }
@@ -85,7 +86,7 @@ $(document).ready(function() {
                     console.log("username is " + username)
                     console.log("action is " + action)
                  if (action.trim() == "connect") {
-                    userConnected(username)
+                    
                  }
                  else {
                      //action is a disconnect
@@ -212,7 +213,6 @@ $(document).ready(function() {
           }
 
           function displayMessage(msg, topicname){
-          console.log("DIsplaying message" + msg);
             $('#'+ topicname + ' #chatLog').append(msg+'</p>');
 
             $('#'+ topicname + ' #chatLog').scrollTop(1000000);

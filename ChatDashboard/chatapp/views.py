@@ -91,11 +91,11 @@ def render_dashboard(request, title):
     for user_obj in user_permissions_list:
         list_of_usernames.append(user_obj.user)
     matched_usernames = check_for_active_users(list_of_usernames)
-    print("topic_names is " + str(topic_names))
+    print("connected users: " + str(matched_usernames))
     context = RequestContext(request, {
         'dashboard': dashboard,
         'topic_names': topic_names,
-        'connected_users': matched_usernames
+        'connected_users': matched_usernames,
     })
     return HttpResponse(template.render(context))
 
