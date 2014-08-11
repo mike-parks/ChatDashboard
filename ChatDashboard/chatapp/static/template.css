@@ -198,3 +198,9 @@
     width: 25%;
 	float: left;
 }
+
+#chatLog {
+    clear:both;
+    height: 75%;
+    overflow-y: scroll;
+}

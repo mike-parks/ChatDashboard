@@ -215,12 +215,7 @@ $(document).ready(function() {
           console.log("DIsplaying message" + msg);
             $('#'+ topicname + ' #chatLog').append(msg+'</p>');
 
-            var messageCount = $('#'+ topicname + ' #chatLog .message').length;
-            console.log ("Message count: " + messageCount);
-            if (messageCount > 10) {
-            // delete oldest message
-                $('#'+ topicname + ' #chatLog').find('.message').first().remove();
-            }
+            $('#'+ topicname + ' #chatLog').scrollTop(1000000);
           }
 
         function promptForNewTopicWindow() {
