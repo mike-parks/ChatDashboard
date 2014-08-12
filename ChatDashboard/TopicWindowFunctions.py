@@ -37,10 +37,9 @@ def add_topic_window(topicname, dashboardname):
     return to_save_topic
 
 def deactivate_topic_window(topicname, dashboardname):
+    topicname = topicname.replace("---", " ")
     deactivated_topic = False
-
     topic_windows = Topic.objects.filter(topic_title=topicname, dashboard_title=dashboardname)
-
     for topic_window in topic_windows:
         topic_window.topic_active = False
         topic_window.save()
