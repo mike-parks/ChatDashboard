@@ -53,8 +53,8 @@
 			{% if dashprivfound %}
 				<table id="admintable">
 						<tr>
-							<td>Dashboard</td>
-							<td>Privilege</td>
+							<td style="font-weight:bold;" >Dashboard</td>
+							<td style="font-weight:bold;" >Privilege</td>
 						</tr>
 					{% for dashpriv in dashprivfound %}
 						<tr>
@@ -64,17 +64,19 @@
 					{% endfor %}
 				</table>
 			{% else %}
-				<p>No Privileges Found!</p>
+				{% if not dashboardsfound %}
+					<p>No Privileges Found!</p>
+				{% endif %}
 			{% endif %}  
 
 		</div>
 		
 		<div id='message_strings' >
-			{% if dashboardsfound %}
+			{% if dashboardsfound  %}
 			<p>{{db}}</p>
 				<table id="usertable">
 						<tr>
-							<td>Dashboard Name</td>
+							<td style="font-weight:bold;" >Dashboard Name</td>
 						</tr>
 					{% for dashboard in dashboardsfound %}
 						<tr>
@@ -83,7 +85,9 @@
 					{% endfor %}
 				</table>
 			{% else %}
-				<p>No Dashboards Found!</p>
+				{% if not dashprivfound %}
+					<p>No Dashboards Found!</p>
+				{% endif %}
 			{% endif %}  
 		</div>
 		</div> 

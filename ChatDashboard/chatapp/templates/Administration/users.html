@@ -59,10 +59,10 @@
 	</form>
 		
 	<div id='message_strings' >
-		{% if ursfound %}
+		{% if ursfound and actionselected = "user" %}
 			<table id="usertable">
 					<tr>
-						<td>Username</td>
+						<td style="font-weight:bold;">Username</td>
 					</tr>
 				{% for usr in ursfound %}
 					<tr>
