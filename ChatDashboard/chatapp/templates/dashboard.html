@@ -39,8 +39,10 @@ $(document).ready(function() {
       function showConnectedUsers(){
           var connectedUsers = "{{ connected_users }}"
           console.log("COnnected users: " + connectedUsers);
-          {% for user in connected_users %}
-              userConnected("{{ user }}")
+          {% for connected_user in connected_users %}
+                if ("{{ connected_user }}" != "{{ user }}") {
+                    userConnected("{{ connected_user }}")
+                }
           {% endfor %}
       }
 
@@ -88,7 +90,7 @@ $(document).ready(function() {
                     console.log("username is " + username)
                     console.log("action is " + action)
                  if (action.trim() == "connect") {
-                    
+                      userConnected(username)
                  }
                  else {
                      //action is a disconnect
