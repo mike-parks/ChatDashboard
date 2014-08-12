@@ -16,6 +16,8 @@
         console.log("disconnecting")
         send_user_disconnected('{{ user }}')
         socket.close();
+        $('.connectedUsers').remove();
+
     };
 
 $(document).ready(function() {

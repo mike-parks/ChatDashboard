@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34aa0644-b362-4cae-9e42-b68c61bc8481" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/TopicWindowFunctions.py" afterPath="$PROJECT_DIR$/ChatDashboard/TopicWindowFunctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" afterPath="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ChatDashboard/websocket_server.py" afterPath="$PROJECT_DIR$/ChatDashboard/websocket_server.py" />
     </list>
     <ignored path="ChatDashboard.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dashboard.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="dashboard.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.018518" vertical-offset="2899" max-vertical-offset="5695">
-              <caret line="196" column="10" selection-start-line="196" selection-start-column="10" selection-end-line="196" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.75868726" vertical-offset="4792" max-vertical-offset="5729">
+              <caret line="305" column="0" selection-start-line="305" selection-start-column="0" selection-end-line="305" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -49,18 +49,18 @@
       <file leaf-file-name="websocket_server.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/websocket_server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.607143" vertical-offset="444" max-vertical-offset="1921">
-              <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+            <state vertical-scroll-proportion="-12.678572" vertical-offset="546" max-vertical-offset="1938">
+              <caret line="61" column="26" selection-start-line="61" selection-start-column="18" selection-end-line="61" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopicWindowFunctions.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TopicWindowFunctions.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatDashboard/TopicWindowFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6803419" vertical-offset="333" max-vertical-offset="918">
-              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="333" max-vertical-offset="918">
+              <caret line="45" column="32" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -158,7 +158,6 @@
         <option value="$PROJECT_DIR$/ChatDashboard/ChatDashboard/settings.py" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/models.py" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/DashboardFunctions.py" />
-        <option value="$PROJECT_DIR$/ChatDashboard/websocket_server.py" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/header.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/MetricsReportFunctions.py" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/urls.py" />
@@ -169,8 +168,9 @@
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/Administration/adminfunctions.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/static/template.css" />
         <option value="$PROJECT_DIR$/ChatDashboard/chatapp/views.py" />
-        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
         <option value="$PROJECT_DIR$/ChatDashboard/TopicWindowFunctions.py" />
+        <option value="$PROJECT_DIR$/ChatDashboard/websocket_server.py" />
+        <option value="$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html" />
       </list>
     </option>
   </component>
@@ -988,14 +988,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.018518" vertical-offset="2899" max-vertical-offset="5695">
-          <caret line="196" column="10" selection-start-line="196" selection-start-column="10" selection-end-line="196" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="27" max-vertical-offset="612">
@@ -1004,18 +996,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/websocket_server.py">
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/TopicWindowFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.607143" vertical-offset="444" max-vertical-offset="1921">
-          <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="333" max-vertical-offset="918">
+          <caret line="45" column="32" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ChatDashboard/TopicWindowFunctions.py">
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/websocket_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6803419" vertical-offset="333" max-vertical-offset="918">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+        <state vertical-scroll-proportion="-12.678572" vertical-offset="546" max-vertical-offset="1938">
+          <caret line="61" column="26" selection-start-line="61" selection-start-column="18" selection-end-line="61" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ChatDashboard/chatapp/templates/dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75868726" vertical-offset="4792" max-vertical-offset="5729">
+          <caret line="305" column="0" selection-start-line="305" selection-start-column="0" selection-end-line="305" selection-end-column="0" />
           <folding />
         </state>
       </provider>

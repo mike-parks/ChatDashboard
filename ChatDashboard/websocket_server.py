@@ -52,6 +52,7 @@ class DashboardProtocol(basic.LineReceiver):
 
         topic_window_split = str(data).split(":--:")
         if len(topic_window_split) > 1:
+            print "Splitting dis/connect message: " + str(topic_window_split)
             dashboardname = topic_window_split[0]
             username = topic_window_split[1]
             action = topic_window_split[2]
